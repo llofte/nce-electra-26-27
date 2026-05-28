@@ -1,0 +1,2124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>NCE Electra 26-27</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script>
+    if (window.ResizeObserver) {
+      const _RO = window.ResizeObserver;
+      window.ResizeObserver = class extends _RO {
+        constructor(cb) {
+          super((entries, observer) => {
+            window.requestAnimationFrame(() => cb(entries, observer));
+          });
+        }
+      };
+    }
+    const _origError = console.error;
+    console.error = function(...args) {
+      const msg = args[0]?.message || args[0] || '';
+      if (typeof msg === 'string' && msg.includes('ResizeObserver loop')) return;
+      _origError.apply(console, args);
+    };
+    window.addEventListener('error', (e) => {
+      if (e.message && e.message.includes('ResizeObserver loop')) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+      }
+    }, true);
+  </script>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel">
+/* data.jsx — Electra parent-hub data
+   Season: May 2026 – May 2027
+   TODAY = Jan 10, 2027 (Cali Classic Showcase is 6 days out)
+ */
+
+const TODAY = new Date(2027, 0, 10); // Jan 10, 2027
+
+const ATHLETE = {
+  name: 'Lucy',
+  team: 'Electra',
+  division: 'L2 Senior Small',
+  parent: 'M.',
+};
+
+const TEAM = {
+  gym: 'NorCal Elite All-Stars',
+  location: 'San Jose, CA',
+  team: 'Electra',
+  division: 'Level 2 Senior Small',
+  coach: 'Coach Tay & Coach Reagan',
+  season: '2026–27',
+};
+
+const _iso = (d) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
+function _buildSchedule() {
+  const events = [];
+  const seasonStart = new Date(2026, 4, 1);
+  const seasonEnd   = new Date(2027, 4, 31);
+
+  for (let d = new Date(seasonStart); d <= seasonEnd; d = new Date(d.getTime() + 86400000)) {
+    const dow = d.getDay();
+    if (dow === 1 || dow === 3) {
+      events.push({ date: _iso(d), kind: 'practice', title: 'Practice', meta: '', time: '5:30 – 8:30pm' });
+    }
+  }
+
+  const satPractices = [
+    '2026-10-10', '2026-11-07', '2026-12-05',
+    '2027-01-09', '2027-02-06', '2027-03-06',
+    '2027-04-10', '2027-04-24',
+  ];
+  satPractices.forEach(date => events.push({
+    date, kind: 'practice', title: 'Saturday Practice',
+    meta: 'Pre-comp full-out', time: '10:00am – 1:00pm',
+  }));
+
+  [
+    { date: '2026-05-22', meta: 'All teams · drop in' },
+    { date: '2026-06-19', meta: 'All teams · drop in' },
+    { date: '2026-07-17', meta: 'Summer skills' },
+    { date: '2026-08-21', meta: 'All teams · drop in' },
+    { date: '2026-09-18', meta: 'All teams · drop in' },
+    { date: '2026-10-23', meta: 'Flexibility focus' },
+    { date: '2026-11-20', meta: 'All teams · drop in' },
+    { date: '2026-12-18', meta: 'Last open gym of 2026' },
+    { date: '2027-01-22', meta: 'All teams · drop in' },
+    { date: '2027-02-20', meta: 'All teams · drop in' },
+    { date: '2027-03-19', meta: 'Flexibility focus' },
+    { date: '2027-04-23', meta: 'Pre-finals open gym' },
+    { date: '2027-05-15', meta: 'Off-season prep' },
+  ].forEach(o => events.push({
+    date: o.date, kind: 'opengym', title: 'Open Gym', meta: o.meta, time: '6:00 – 8:00pm',
+  }));
+
+  [
+    '2026-05-13', '2026-06-10', '2026-07-15', '2026-08-12', '2026-09-09',
+    '2026-10-14', '2026-11-11', '2026-12-09',
+    '2027-01-13', '2027-02-10', '2027-03-10', '2027-04-14', '2027-05-12',
+  ].forEach(date => events.push({
+    date, kind: 'lucy', title: 'Lucy Tumbling Private',
+    meta: 'with Coach Dom', time: '4:00 – 5:00pm',
+  }));
+
+  [
+    '2026-05-27', '2026-06-24', '2026-07-29', '2026-08-26', '2026-09-23',
+    '2026-10-28', '2026-11-25', '2026-12-30',
+    '2027-01-27', '2027-02-24', '2027-03-31', '2027-04-28', '2027-05-26',
+  ].forEach(date => events.push({
+    date, kind: 'lucy', title: 'Lucy Stunting Private',
+    meta: 'with Coach Reagan', time: '4:00 – 5:00pm',
+  }));
+
+  events.push({
+    date: '2026-09-19', kind: 'other', title: 'Team Photos',
+    meta: 'Full uniform · hair & makeup is athlete choice · arrive extra early for small group photos',
+    time: '5:00 – 7:00pm',
+  });
+
+  const comps = [
+    { d1: '2026-10-17', d2: '2026-10-18', name: 'Battle by the Bay',     city: 'Oakland, CA' },
+    { d1: '2026-11-14', d2: '2026-11-15', name: 'Bay City Brawl',        city: 'Daly City, CA' },
+    { d1: '2026-12-12', d2: '2026-12-13', name: 'Volt Open',             city: 'San Jose, CA' },
+    { d1: '2027-01-16', d2: '2027-01-17', name: 'Cali Classic Showcase', city: 'Anaheim, CA' },
+    { d1: '2027-02-13', d2: '2027-02-14', name: 'Spirit Showdown West',  city: 'San Diego, CA' },
+    { d1: '2027-03-13', d2: '2027-03-14', name: 'California Classic',    city: 'Anaheim, CA' },
+    { d1: '2027-04-17', d2: '2027-04-18', name: 'Western Nationals',     city: 'Las Vegas, NV' },
+    { d1: '2027-05-01', d2: '2027-05-02', name: 'Worlds Bid Comp',       city: 'Orlando, FL' },
+  ];
+  comps.forEach(c => {
+    const d1 = new Date(c.d1 + 'T00:00:00');
+    const travel = new Date(d1.getTime() - 86400000);
+    events.push({
+      date: _iso(travel), kind: 'travel',
+      title: `Travel → ${c.city.split(',')[0]}`,
+      meta: 'See comp page for details', time: '',
+    });
+    events.push({ date: c.d1, kind: 'comp', title: `${c.name} · Day 1`, meta: 'Prelims', time: 'See comp page' });
+    events.push({ date: c.d2, kind: 'comp', title: `${c.name} · Day 2`, meta: 'Finals + Awards', time: 'See comp page' });
+  });
+
+  return events.sort((a, b) => a.date.localeCompare(b.date));
+}
+
+const SCHEDULE = _buildSchedule();
+
+const COMPETITIONS = [
+  {
+    id: 'bbb-2026', name: 'Battle by the Bay', short: 'BBB',
+    venue: 'Oakland Convention Center', city: 'Oakland, CA',
+    date: '2026-10-17', endDate: '2026-10-18', status: 'past',
+    placement: 1, of: 8, score: 92.78, hasScoresheet: false,
+  },
+  {
+    id: 'bcb-2026', name: 'Bay City Brawl', short: 'Bay City Brawl',
+    venue: 'Cow Palace', city: 'Daly City, CA',
+    date: '2026-11-14', endDate: '2026-11-15', status: 'past',
+    placement: 3, of: 9, score: 88.95, hasScoresheet: true,
+  },
+  {
+    id: 'volt-2026', name: 'Volt Open', short: 'Volt Open',
+    venue: 'SAP Center', city: 'San Jose, CA',
+    date: '2026-12-12', endDate: '2026-12-13', status: 'past',
+    placement: 5, of: 9, score: 95.60, hasScoresheet: true,
+  },
+  {
+    id: 'ccs-2027', name: 'Cali Classic Showcase', short: 'Cali Classic',
+    venue: 'Anaheim Convention Center', city: 'Anaheim, CA',
+    date: '2027-01-16', endDate: '2027-01-17', status: 'upcoming',
+    varsityUrl: 'https://varsity.com/events/cali-classic-showcase-2027',
+    mat: 'Mat A',
+    performance: '2027-01-16T14:18:00', day2Performance: '2027-01-17T11:45:00', awards: '2027-01-17T17:00:00',
+    travel: {
+      hotel: 'Sheraton Park at the Anaheim Resort',
+      hotelAddr: '1855 S Harbor Blvd, Anaheim CA 92802',
+      hotelMapUrl: 'https://www.google.com/maps/search/?api=1&query=Sheraton+Park+at+the+Anaheim+Resort',
+      ttsUrl: 'https://travelteamsports.com/event/cali-classic-2027',
+      checkIn: 'Fri 1/15 after 3pm', checkOut: 'Sun 1/17 by 12pm',
+      parking: '$22/day valet · $14 self-park (Garage East)',
+      drive: '~12 min',
+      spectators: {
+        dayPrice: '$20',
+        weekendPrice: '$50',
+        ticketUrl: 'https://varsity.com/events/cali-classic-showcase-2027/tickets',
+      },
+    },
+    lucyItinerary: {
+      flights: {
+        outbound: { airline: 'Southwest', flight: 'WN 234', from: 'SJC', to: 'SNA', date: 'Fri 1/15', depart: '2:10pm', arrive: '3:30pm' },
+        ret:      { airline: 'Southwest', flight: 'WN 998', from: 'SNA', to: 'SJC', date: 'Sun 1/17', depart: '7:45pm', arrive: '9:00pm' },
+      },
+      hotel: {
+        name: 'Sheraton Park at the Anaheim Resort',
+        confNum: 'M-NCE2027-LE', checkIn: 'Fri 1/15', checkOut: 'Sun 1/17',
+        distToVenue: '~10 min walk',
+        mapUrl: 'https://www.google.com/maps/search/?api=1&query=Sheraton+Park+at+the+Anaheim+Resort',
+      },
+    },
+    schedule: {
+      day1: [
+        { t: '07:00', what: 'Team call · lobby check-in', who: 'Coaches Tay & Reagan' },
+        { t: '08:30', what: 'Hair & makeup', who: 'Hotel Suite 1204' },
+        { t: '11:00', what: 'Walk-through (closed)', who: 'Warm-up room C' },
+        { t: '13:30', what: 'Stretch & warm-up', who: 'Warm-up mat 3' },
+        { t: '14:18', what: 'PERFORMANCE — Mat A', who: 'Electra · L2 Senior Small · Prelims' },
+        { t: '15:00', what: 'Team photo', who: 'Lobby step-and-repeat' },
+        { t: '17:00', what: 'Team dinner', who: 'Pacific Catch · 1pp meal voucher' },
+      ],
+      day2: [
+        { t: '08:00', what: 'Team call · hotel lobby', who: 'Coaches Tay & Reagan' },
+        { t: '09:00', what: 'Hair & makeup touch-up', who: 'Hotel Suite 1204' },
+        { t: '10:30', what: 'Stretch & warm-up', who: 'Warm-up mat 3' },
+        { t: '11:45', what: 'PERFORMANCE — Mat A', who: 'Electra · L2 Senior Small · Finals' },
+        { t: '13:00', what: 'Team lunch + recovery', who: 'Hotel ballroom' },
+        { t: '17:00', what: 'AWARDS CEREMONY', who: 'Main floor · full team' },
+      ],
+    },
+    docs: [
+      { name: 'CCS 2027 — Final Itinerary',     size: '412 KB', updated: 'Jan 8' },
+      { name: 'Packing List & Uniform Check',   size: '88 KB',  updated: 'Jan 2' },
+      { name: 'Hotel Group Block Confirmation', size: '120 KB', updated: 'Dec 28' },
+      { name: 'Athlete Waiver — Travel Comp',   size: '64 KB',  updated: 'Dec 20' },
+      { name: 'Parent Cheering Section Map',    size: '210 KB', updated: 'Jan 5' },
+    ],
+    division: [
+      { id: 'electra',   us: true, name: 'Electra',   gym: 'NorCal Elite · San Jose',   slot: '2:18pm', slot2: '11:45am' },
+      { id: 'lightning',           name: 'Lightning',  gym: 'Bay City All-Stars',         slot: '2:24pm', slot2: '11:39am' },
+      { id: 'onyx',                name: 'Onyx',       gym: 'Pacific Storm',              slot: '2:30pm', slot2: '11:33am' },
+      { id: 'royals',              name: 'Royals',     gym: 'Golden State Spirit',        slot: '2:36pm', slot2: '11:27am' },
+      { id: 'crystals',            name: 'Crystals',   gym: 'Coastal Cheer Co.',          slot: '2:42pm', slot2: '11:21am' },
+      { id: 'voltage',             name: 'Voltage',    gym: 'Summit Cheer',               slot: '2:48pm', slot2: '11:15am' },
+      { id: 'cobalt',              name: 'Cobalt',     gym: 'Premier Athletics West',     slot: '2:54pm', slot2: '11:09am' },
+      { id: 'edge',                name: 'Edge',       gym: 'East Bay Elite',             slot: '3:00pm', slot2: '11:03am' },
+    ],
+  },
+  {
+    id: 'ssw-2027', name: 'Spirit Showdown West', short: 'Spirit Showdown',
+    venue: 'San Diego Convention Center', city: 'San Diego, CA',
+    date: '2027-02-13', endDate: '2027-02-14', status: 'upcoming',
+    docs: [{ name: 'SSW Pre-Travel Packet', size: '380 KB', updated: 'Jan 9' }],
+  },
+  {
+    id: 'ccc-2027', name: 'California Classic', short: 'Cali Classic',
+    venue: 'Anaheim Convention Center', city: 'Anaheim, CA',
+    date: '2027-03-13', endDate: '2027-03-14', status: 'upcoming',
+  },
+  {
+    id: 'wn-2027', name: 'Western Nationals', short: 'Western Nats',
+    venue: 'Las Vegas Convention Center', city: 'Las Vegas, NV',
+    date: '2027-04-17', endDate: '2027-04-18', status: 'upcoming', crown: true,
+  },
+  {
+    id: 'worlds-2027', name: 'Worlds Bid Comp', short: 'Worlds',
+    venue: 'ESPN Wide World of Sports', city: 'Orlando, FL',
+    date: '2027-05-01', endDate: '2027-05-02', status: 'upcoming', crown: true,
+  },
+];
+
+const COMP_BY_DATE = {};
+COMPETITIONS.forEach(c => {
+  COMP_BY_DATE[c.date] = c.id;
+  if (c.endDate) COMP_BY_DATE[c.endDate] = c.id;
+});
+
+const SCORESHEET = {
+  compId: 'volt-2026', comp: 'Volt Open', city: 'San Jose, CA',
+  date: '2026-12-13', division: 'L2 Senior Small',
+  // ── Day 1 (Prelims) — RS 47.50 · DED 0 · PS 95.00 · 6th/9 ─
+  totals1: { raw: 95.00, deductions: 0, final: 95.00, placement: 6, of: 9 },
+  categories1: [
+    { id: 'stunts',  name: 'Stunt',                   of: 10.0, d: 4.50, e: 3.73, d_of: 4.5, e_of: 4.0, judges: [{ n: 'Judge 1', s: 9.55 }, { n: 'Judge 2', s: 9.57 }, { n: 'Judge 3', s: 9.60 }], dod: { of: 0.8, score: 0.72 }, max: { of: 0.7, score: 0.62 }, notes: 'Top Person – Minor break in control during transition with legs not locked out on single leg stunts variations' },
+    { id: 'pyramid', name: 'Pyramid',                  of:  8.0, d: 3.77, e: 3.70, d_of: 4.0, e_of: 4.0, judges: [{ n: 'Judge 1', s: 7.45 }, { n: 'Judge 2', s: 7.47 }, { n: 'Judge 3', s: 7.49 }], notes: 'Excellent control maintained throughout with stunts remaining strong and clean.' },
+    { id: 'tosses',  name: 'Toss',            of:  4.0, d: 2.00, e: 1.87, d_of: 2.0, e_of: 2.0, judges: [{ n: 'Judge 1', s: 3.85 }, { n: 'Judge 2', s: 3.87 }, { n: 'Judge 3', s: 3.89 }], notes: 'Good height and control; strong landings' },
+    { id: 'st',      name: 'Standing Tumbling',        of:  8.0, d: 3.00, e: 3.72, d_of: 3.0, e_of: 4.0, judges: [{ n: 'Judge 1', s: 7.57 }, { n: 'Judge 2', s: 7.59 }, { n: 'Judge 3', s: 7.61 }], dod: { of: 1.0, score: 0.87 }, notes: 'Body Control - Several athletes are leading knees and have flexed feet in back walkover skills.' },
+    { id: 'rt',      name: 'Running Tumbling',         of:  8.0, d: 3.00, e: 3.75, d_of: 3.0, e_of: 4.0, judges: [{ n: 'Judge 1', s: 7.60 }, { n: 'Judge 2', s: 7.62 }, { n: 'Judge 3', s: 7.64 }], dod: { of: 0.5, score: 0.45 }, max: { of: 0.5, score: 0.42 }, notes: 'Body Control - Athletes ar not engaging leg muscles and pointed toes in back walkover skills creating bent knees when skill is being performed. Ensure athletes are driving with hips and straight legs in front walkover skills.' },
+    { id: 'jumps',   name: 'Jumps',                    of:  4.0, d: 2.00, e: 1.97, d_of: 2.0, e_of: 2.0, judges: [{ n: 'Judge 1', s: 3.95 }, { n: 'Judge 2', s: 3.97 }, { n: 'Judge 3', s: 3.99 }], notes: 'Arm Placement - Not all arms are uniformed in hurdlers\nLeg Placement - Lack of flexibility causing low front leg placement in hurdlers. Lack if hip rotation in toe touch skills.' },
+    { id: 'rc',      name: 'Routine Creativity',       of:  2.0, d: 1.80, d_of: 2.0, judges: [{ n: 'Judge 1', s: 1.79 }, { n: 'Judge 2', s: 1.80 }, { n: 'Judge 3', s: 1.81 }], notes: 'Rushed routine, maintain a steady pace and all move through those pathways seamlessly. Running noted with athletes from the right side into background work and rushing into right side of after stunt group work. Nice job with those visual elements from rippling of stunt groups to background work at the beginning with structure work to background work during jumps.' },
+    { id: 'ft',      name: 'Formations & Transitions', of:  2.0, d: 2.00, d_of: 2.0, judges: [{ n: 'Judge 1', s: 1.99 }, { n: 'Judge 2', s: 2.00 }, { n: 'Judge 3', s: 2.00 }], notes: 'no obvious issues were noted.' },
+    { id: 'dance',   name: 'Dance',                    of:  2.0, d: 0.88, e: 0.85, d_of: 1.0, e_of: 1.0, judges: [{ n: 'Judge 1', s: 1.72 }, { n: 'Judge 2', s: 1.73 }, { n: 'Judge 3', s: 1.74 }], notes: 'Fast paced transition into dance but control rushing those motions as some are being cut short of their precise placement. Single arm motion varies as well as synchronization is off. Watch motions as you move from one formation to the next.' },
+    { id: 'show',    name: 'Showmanship',              of:  2.0, d: 1.88, d_of: 2.0, judges: [{ n: 'Judge 1', s: 1.87 }, { n: 'Judge 2', s: 1.88 }, { n: 'Judge 3', s: 1.89 }], notes: 'Engaging routine filled with confidence. Eye contact fades at times along with those facials. Energy starts off nicely then it fades and appears at the end of dance. Consistency is the key.' },
+  ],
+  deductions1: [],
+  // ── Day 2 (Finals) — RS 47.80 · DED 0 · PS 95.60 · 5th/9 ──
+  totals: { raw: 95.60, deductions: 0, final: 95.60, placement: 5, of: 9 },
+  categories: [
+    { id: 'stunts',  name: 'Stunt',                   of: 10.0, d: 4.50, e: 3.75, d_of: 4.5, e_of: 4.0, judges: [{ n: 'Judge 1', s: 9.60 }, { n: 'Judge 2', s: 9.63 }, { n: 'Judge 3', s: 9.67 }], dod: { of: 0.8, score: 0.74 }, max: { of: 0.7, score: 0.64 }, notes: 'Top Person – Minor break in control during transition with legs not locked out on single leg stunts variations' },
+    { id: 'pyramid', name: 'Pyramid',                  of:  8.0, d: 3.80, e: 3.80, d_of: 4.0, e_of: 4.0, judges: [{ n: 'Judge 1', s: 7.58 }, { n: 'Judge 2', s: 7.60 }, { n: 'Judge 3', s: 7.62 }], notes: 'Excellent control maintained throughout with stunts remaining strong and clean.' },
+    { id: 'tosses',  name: 'Toss',            of:  4.0, d: 2.00, e: 1.88, d_of: 2.0, e_of: 2.0, judges: [{ n: 'Judge 1', s: 3.86 }, { n: 'Judge 2', s: 3.88 }, { n: 'Judge 3', s: 3.90 }], notes: 'Both tosses hit; max difficulty landed clean' },
+    { id: 'st',      name: 'Standing Tumbling',        of:  8.0, d: 3.00, e: 3.78, d_of: 3.0, e_of: 4.0, judges: [{ n: 'Judge 1', s: 7.64 }, { n: 'Judge 2', s: 7.66 }, { n: 'Judge 3', s: 7.68 }], dod: { of: 1.0, score: 0.88 }, notes: 'Body Control - Several athletes are leading knees and have flexed feet in back walkover skills.' },
+    { id: 'rt',      name: 'Running Tumbling',         of:  8.0, d: 3.00, e: 3.78, d_of: 3.0, e_of: 4.0, judges: [{ n: 'Judge 1', s: 7.65 }, { n: 'Judge 2', s: 7.67 }, { n: 'Judge 3', s: 7.70 }], dod: { of: 0.5, score: 0.46 }, max: { of: 0.5, score: 0.43 }, notes: 'Body Control - Athletes ar not engaging leg muscles and pointed toes in back walkover skills creating bent knees when skill is being performed. Ensure athletes are driving with hips and straight legs in front walkover skills.' },
+    { id: 'jumps',   name: 'Jumps',                    of:  4.0, d: 2.00, e: 1.93, d_of: 2.0, e_of: 2.0, judges: [{ n: 'Judge 1', s: 3.91 }, { n: 'Judge 2', s: 3.93 }, { n: 'Judge 3', s: 3.95 }], notes: 'Arm Placement - Not all arms are uniformed in hurdlers\nLeg Placement - Lack of flexibility causing low front leg placement in hurdlers. Lack if hip rotation in toe touch skills.' },
+    { id: 'rc',      name: 'Routine Creativity',       of:  2.0, d: 1.83, d_of: 2.0, judges: [{ n: 'Judge 1', s: 1.82 }, { n: 'Judge 2', s: 1.83 }, { n: 'Judge 3', s: 1.84 }], notes: 'Rushed routine, maintain a steady pace and all move through those pathways seamlessly. Running noted with athletes from the right side into background work and rushing into right side of after stunt group work. Nice job with those visual elements from rippling of stunt groups to background work at the beginning with structure work to background work during jumps.' },
+    { id: 'ft',      name: 'Formations & Transitions', of:  2.0, d: 1.97, d_of: 2.0, judges: [{ n: 'Judge 1', s: 1.96 }, { n: 'Judge 2', s: 1.97 }, { n: 'Judge 3', s: 1.98 }], notes: 'no obvious issues were noted.' },
+    { id: 'dance',   name: 'Dance',                    of:  2.0, d: 0.90, e: 0.88, d_of: 1.0, e_of: 1.0, judges: [{ n: 'Judge 1', s: 1.77 }, { n: 'Judge 2', s: 1.78 }, { n: 'Judge 3', s: 1.79 }], notes: 'Fast paced transition into dance but control rushing those motions as some are being cut short of their precise placement. Single arm motion varies as well as synchronization is off. Watch motions as you move from one formation to the next.' },
+    { id: 'show',    name: 'Showmanship',              of:  2.0, d: 1.85, d_of: 2.0, judges: [{ n: 'Judge 1', s: 1.84 }, { n: 'Judge 2', s: 1.85 }, { n: 'Judge 3', s: 1.86 }], notes: 'Engaging routine filled with confidence. Eye contact fades at times along with those facials. Energy starts off nicely then it fades and appears at the end of dance. Consistency is the key.' },
+  ],
+  deductions: [],
+  sectionNotes: {
+    building: 'Strong use of multipole creative elements throughout the routine with a consistent pace and flow.',
+    tumbling: 'Good use of variety in patterns to highlight tumbling skills performed. Some skills lacked clarity which took away from visual effect.',
+  },
+  deductionCards: [
+    { type: 'deduction', name: 'Athlete Fall', amount: 0.15, note: 'center athlete fell during BHS during pyramid' },
+    { type: 'warning', name: 'Building Out of Level', note: 'VT 1:32 – Lacks required spotter' },
+    { type: 'warning', name: 'Building Out of Level', note: 'VT 1:42 – Lacked required spotter' },
+    { type: 'warning', name: 'Building Out of Level', note: 'VT 2:17 – Lacks required spotter' },
+  ],
+  // Leaderboard — ranked by 2-day event score (ES)
+  // Day 1 = Prelims, Day 2 = Finals. All teams hit full DOD/MAX bonuses
+  // except California Storm Day 2 (dropped stunt DOD skill, 0.20/0.80).
+  leaderboard: [
+    { rank: 1, name: 'Royal Heirs',   gym: 'Fierce Cheer Elite',       score: 97.82, deductions: 0.25, score1: 97.80, deductions1: 0,
+      catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
+      catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
+    { rank: 2, name: 'VICIOUS',       gym: 'WC Fame Allstars',         score: 97.73, deductions: 0,    score1: 96.38, deductions1: 0.75,
+      catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
+      catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
+    { rank: 3, name: 'Turquoise',     gym: 'Almaden Spirit',           score: 96.33, deductions: 1.00, score1: 97.00, deductions1: 0,
+      catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
+      catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
+    { rank: 4, name: 'Heat',          gym: 'Champion Cheer Athletics', score: 96.13, deductions: 0,    score1: 95.87, deductions1: 0,
+      catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
+      catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
+    { rank: 5, name: 'Electra',       gym: 'NorCal Elite · S.J.',      score: 95.60, deductions: 0,    score1: 95.00, deductions1: 0, us: true },
+    { rank: 6, name: 'Pink Diamonds', gym: 'West Coast Icons',         score: 96.00, deductions: 0,    score1: 93.07, deductions1: 2.00,
+      catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
+      catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
+    { rank: 7, name: 'Firestorm',     gym: 'Las Vegas Elements',       score: 96.07, deductions: 0,    score1: 91.82, deductions1: 2.25,
+      catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
+      catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
+    { rank: 8, name: 'HEAT',          gym: 'Univ All Stars',           score: 93.75, deductions: 0.25, score1: 94.00, deductions1: 0,
+      catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
+      catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
+    { rank: 9, name: 'HEAT',          gym: 'California Storm',         score: 85.88, deductions: 3.25, score1: 97.62, deductions1: 0.25,
+      catSub:  { stunts: { dod: 0.20, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
+      catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
+  ],
+};
+
+const SCORESHEET_BCB = {
+  compId: 'bcb-2026', comp: 'Bay City Brawl', city: 'Daly City, CA',
+  date: '2026-11-14', division: 'L2 Senior Small',
+  pendingDay2: true,
+  totals1: { raw: 89.20, deductions: 0.25, final: 88.95, placement: 3, of: 9 },
+  categories1: [
+    { id:'stunts',  name:'Stunt',                   of:10.0, d:4.20, e:3.40, d_of:4.5, e_of:4.0, judges:[{n:'Judge 1',s:8.83},{n:'Judge 2',s:8.85},{n:'Judge 3',s:8.87}], dod:{of:0.8,score:0.65}, max:{of:0.7,score:0.60} },
+    { id:'pyramid', name:'Pyramid',                  of: 8.0, d:3.70, e:3.62, d_of:4.0, e_of:4.0, judges:[{n:'Judge 1',s:7.30},{n:'Judge 2',s:7.32},{n:'Judge 3',s:7.34}] },
+    { id:'tosses',  name:'Toss',            of: 4.0, d:1.85, e:1.75, d_of:2.0, e_of:2.0, judges:[{n:'Judge 1',s:3.58},{n:'Judge 2',s:3.60},{n:'Judge 3',s:3.62}] },
+    { id:'st',      name:'Standing Tumbling',        of: 8.0, d:3.00, e:3.22, d_of:3.0, e_of:4.0, judges:[{n:'Judge 1',s:7.08},{n:'Judge 2',s:7.10},{n:'Judge 3',s:7.12}], dod:{of:1.0,score:0.88} },
+    { id:'rt',      name:'Running Tumbling',         of: 8.0, d:3.00, e:3.12, d_of:3.0, e_of:4.0, judges:[{n:'Judge 1',s:6.98},{n:'Judge 2',s:7.00},{n:'Judge 3',s:7.02}], dod:{of:0.5,score:0.47}, max:{of:0.5,score:0.41} },
+    { id:'jumps',   name:'Jumps',                    of: 4.0, d:1.75, e:1.77, d_of:2.0, e_of:2.0, judges:[{n:'Judge 1',s:3.50},{n:'Judge 2',s:3.52},{n:'Judge 3',s:3.54}] },
+    { id:'rc',      name:'Routine Creativity',       of: 2.0, d:1.82, d_of:2.0, judges:[{n:'Judge 1',s:1.81},{n:'Judge 2',s:1.82},{n:'Judge 3',s:1.83}] },
+    { id:'ft',      name:'Formations & Transitions', of: 2.0, d:1.88, d_of:2.0, judges:[{n:'Judge 1',s:1.87},{n:'Judge 2',s:1.88},{n:'Judge 3',s:1.89}] },
+    { id:'dance',   name:'Dance',                    of: 2.0, d:0.87, e:0.85, d_of:1.0, e_of:1.0, judges:[{n:'Judge 1',s:1.71},{n:'Judge 2',s:1.72},{n:'Judge 3',s:1.73}] },
+    { id:'show',    name:'Showmanship',              of: 2.0, d:1.79, d_of:2.0, judges:[{n:'Judge 1',s:1.78},{n:'Judge 2',s:1.79},{n:'Judge 3',s:1.80}] },
+  ],
+  deductions1: [{ reason: 'Out of bounds', amount: 0.25 }],
+  leaderboard: [
+    { rank:1, name:'Reign',     gym:'Bay City Allstars',      score1:92.15, deductions1:0,    score:92.15, deductions:0,    catSub1:{stunts:{dod:0.72,max:0.65},st:{dod:0.92},rt:{dod:0.49,max:0.45}} },
+    { rank:2, name:'Ice',       gym:'Pacific Wave Cheer',     score1:90.48, deductions1:0,    score:90.48, deductions:0,    catSub1:{stunts:{dod:0.71,max:0.63},st:{dod:0.90},rt:{dod:0.48,max:0.44}} },
+    { rank:3, name:'Electra',   gym:'NorCal Elite · S.J.',    score1:88.95, deductions1:0.25, score:88.95, deductions:0.25, us:true },
+    { rank:4, name:'Voltage',   gym:'Summit Cheer',           score1:88.12, deductions1:0,    score:88.12, deductions:0,    catSub1:{stunts:{dod:0.65,max:0.58},st:{dod:0.86},rt:{dod:0.47,max:0.41}} },
+    { rank:5, name:'Gold Rush', gym:'Golden State Spirit',    score1:87.63, deductions1:0,    score:87.63, deductions:0,    catSub1:{stunts:{dod:0.63,max:0.55},st:{dod:0.85},rt:{dod:0.46,max:0.40}} },
+    { rank:6, name:'Storm',     gym:'East Bay Elite',         score1:86.20, deductions1:0,    score:86.20, deductions:0,    catSub1:{stunts:{dod:0.60,max:0.52},st:{dod:0.83},rt:{dod:0.45,max:0.39}} },
+    { rank:7, name:'Emerald',   gym:'Coastal Cheer Co.',      score1:84.55, deductions1:0,    score:84.55, deductions:0,    catSub1:{stunts:{dod:0.58,max:0.50},st:{dod:0.80},rt:{dod:0.44,max:0.38}} },
+    { rank:8, name:'Nitro',     gym:'Premier Athletics West', score1:83.90, deductions1:0,    score:83.90, deductions:0,    catSub1:{stunts:{dod:0.55,max:0.48},st:{dod:0.78},rt:{dod:0.43,max:0.37}} },
+    { rank:9, name:'Blaze',     gym:'Bay Area Allstars',      score1:81.25, deductions1:2.00, score:81.25, deductions:2.00, catSub1:{stunts:{dod:0.60,max:0.52},st:{dod:0.82},rt:{dod:0.45,max:0.40}} },
+  ],
+};
+
+const SCORESHEETS = { 'volt-2026': SCORESHEET, 'bcb-2026': SCORESHEET_BCB };
+
+const SEASON_MONTHS = (() => {
+  const months = [];
+  for (let i = 0; i < 13; i++) months.push(new Date(2026, 4 + i, 1));
+  return months;
+})();
+
+Object.assign(window, { TODAY, ATHLETE, TEAM, SCHEDULE, COMPETITIONS, SCORESHEET, SCORESHEET_BCB, SCORESHEETS, COMP_BY_DATE, SEASON_MONTHS });
+  </script>
+  <script type="text/babel">
+/* shared.jsx — common UI pieces */
+
+const Icon = {
+  Home:   ({ s = 22 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l9-7 9 7v9a2 2 0 01-2 2h-4v-7h-6v7H5a2 2 0 01-2-2v-9z"/></svg>,
+  Cal:    ({ s = 22 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>,
+  Trophy: ({ s = 22 }) => (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 3h10v6a5 5 0 01-10 0V3z"/>
+      <path d="M7 5H4v2a3 3 0 003 3"/>
+      <path d="M17 5h3v2a3 3 0 01-3 3"/>
+      <path d="M12 14v4"/>
+      <path d="M9 18h6v3H9z"/>
+    </svg>
+  ),
+  Bolt:   ({ s = 22 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg>,
+  Bell:   ({ s = 18 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 8a6 6 0 0112 0c0 7 3 9 3 9H3s3-2 3-9zM10 21a2 2 0 004 0"/></svg>,
+  Chev:   ({ s = 18, dir = 'right' }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ transform: dir === 'left' ? 'rotate(180deg)' : dir === 'down' ? 'rotate(90deg)' : dir === 'up' ? 'rotate(-90deg)' : 'none' }}><path d="M9 6l6 6-6 6"/></svg>,
+  Pin:    ({ s = 14 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s7-7 7-12a7 7 0 00-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>,
+  Clock:  ({ s = 14 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>,
+  Hotel:  ({ s = 16 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 21h18M5 21V7a2 2 0 012-2h10a2 2 0 012 2v14"/><path d="M9 9h2M9 13h2M13 9h2M13 13h2M10 21v-4h4v4"/></svg>,
+  Car:    ({ s = 16 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 16h14l-1.5-6.5A2 2 0 0015.6 8H8.4a2 2 0 00-1.9 1.5L5 16zM5 16v3M19 16v3"/><circle cx="8" cy="16" r="1.5"/><circle cx="16" cy="16" r="1.5"/></svg>,
+  Drive:  ({ s = 14 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l18-7-7 18-2-8-9-3z"/></svg>,
+  Doc:    ({ s = 18 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2h8l4 4v14a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z"/><path d="M14 2v4h4M8 13h8M8 17h6"/></svg>,
+  Dl:     ({ s = 16 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>,
+  Plane:  ({ s = 16 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 00-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>,
+  External: ({ s = 14 }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6"/><path d="M10 14L20 4"/><path d="M19 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h6"/></svg>,
+};
+
+const LightningBolt = ({ size = 60, color = 'var(--volt)', glow = true, style }) => (
+  <svg width={size} height={size * 1.6} viewBox="0 0 60 96" style={style}>
+    <defs>
+      {glow && <filter id="glo" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="3"/></filter>}
+    </defs>
+    {glow && <path filter="url(#glo)" opacity="0.7" fill={color} d="M38 0 L8 56 L26 56 L18 96 L52 38 L34 38 L42 0 Z"/>}
+    <path fill={color} stroke="rgba(0,0,0,0.55)" strokeWidth="1.5" strokeLinejoin="round" d="M38 0 L8 56 L26 56 L18 96 L52 38 L34 38 L42 0 Z"/>
+  </svg>
+);
+
+function AppHeader({ unread = 3 }) {
+  return (
+    <div className="app-hdr">
+      <div className="who">
+        <img src="assets/electra-logo.png?v=2" alt="Electra"/>
+        <div>
+          <div className="tag">NorCal Elite · San Jose</div>
+          <div className="name">Welcome back, <b>{ATHLETE.parent}</b></div>
+        </div>
+      </div>
+      <button className="bell" aria-label="Notifications">
+        <Icon.Bell/>
+        {unread > 0 && <span className="dot"/>}
+      </button>
+    </div>
+  );
+}
+
+function BrandMark() {
+  return (
+    <div className="brand-mark">
+      <img src="assets/electra-logo.png?v=2" alt="Electra"/>
+      <div>
+        <div className="tag">NorCal Elite All-Stars</div>
+        <div className="name"><b>Electra</b> · Level 2 Senior</div>
+      </div>
+    </div>
+  );
+}
+
+function ScreenHeader({ title, sub, onBack, right }) {
+  return (
+    <div className="scr-hdr">
+      {onBack && (
+        <button className="back" onClick={onBack} aria-label="Back">
+          <Icon.Chev dir="left"/>
+        </button>
+      )}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="ttl">{title}</div>
+        {sub && <div className="sub">{sub}</div>}
+      </div>
+      {right}
+    </div>
+  );
+}
+
+function BottomNav({ tab, setTab }) {
+  const items = [
+    { id: 'home',     label: 'Home',     icon: Icon.Home },
+    { id: 'calendar', label: 'Calendar', icon: Icon.Cal },
+    { id: 'comps',    label: 'Comps',    icon: Icon.Bolt },
+    { id: 'results',  label: 'Results',  icon: Icon.Trophy },
+  ];
+  return (
+    <div className="nav">
+      <div className="pill">
+        {items.map(it => {
+          const I = it.icon;
+          return (
+            <button key={it.id} onClick={() => setTab(it.id)} className={tab === it.id ? 'is-active' : ''}>
+              <I/><span>{it.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+const D = {
+  parse: (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); },
+  fmt: (d, opt) => d.toLocaleDateString('en-US', opt),
+  dow: (d) => d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase(),
+  dom: (d) => d.getDate(),
+  mon: (d) => d.toLocaleDateString('en-US', { month: 'short' }).toUpperCase(),
+  days: (a, b) => Math.round((b - a) / 86400000),
+  same: (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(),
+  startOfWeek: (d) => { const day = d.getDay(); const x = new Date(d); x.setDate(d.getDate() - day); return x; },
+  addDays: (d, n) => { const x = new Date(d); x.setDate(d.getDate() + n); return x; },
+  range: (start, count) => Array.from({ length: count }, (_, i) => D.addDays(start, i)),
+};
+
+function getCompetitions(tweaks) {
+  if (tweaks?.preSeason) return COMPETITIONS.map(c => ({ ...c, status: 'upcoming' }));
+  return COMPETITIONS;
+}
+function getEffectiveToday(tweaks) {
+  if (tweaks?.preSeason) return new Date(2026, 8, 1);
+  return TODAY;
+}
+function nextComp(tweaks) {
+  const today = getEffectiveToday(tweaks);
+  return getCompetitions(tweaks)
+    .filter(c => c.status === 'upcoming')
+    .map(c => ({ ...c, daysOut: Math.max(0, D.days(today, D.parse(c.date))) }))
+    .sort((a, b) => a.daysOut - b.daysOut)[0];
+}
+function countdownTo(targetISO, fromToday) {
+  const today = fromToday || TODAY;
+  const target = new Date(targetISO);
+  const diff = target - today;
+  const days  = Math.max(0, Math.floor(diff / 86400000));
+  const hours = Math.max(0, Math.floor((diff / 3600000) % 24));
+  return { days, hours };
+}
+
+Object.assign(window, { Icon, LightningBolt, AppHeader, BrandMark, ScreenHeader, BottomNav, D, nextComp, countdownTo, getCompetitions, getEffectiveToday });
+  </script>
+  <script type="text/babel">
+// ios-frame.jsx
+
+function IOSStatusBar({ dark = false, time = '9:41' }) {
+  const c = dark ? '#fff' : '#000';
+  return (
+    <div style={{ display:'flex',gap:154,alignItems:'center',justifyContent:'center',padding:'21px 24px 19px',boxSizing:'border-box',position:'relative',zIndex:20,width:'100%' }}>
+      <div style={{ flex:1,height:22,display:'flex',alignItems:'center',justifyContent:'center',paddingTop:1.5 }}>
+        <span style={{ fontFamily:'-apple-system,"SF Pro",system-ui',fontWeight:590,fontSize:17,lineHeight:'22px',color:c }}>{time}</span>
+      </div>
+      <div style={{ flex:1,height:22,display:'flex',alignItems:'center',justifyContent:'center',gap:7,paddingTop:1,paddingRight:1 }}>
+        <svg width="19" height="12" viewBox="0 0 19 12">
+          <rect x="0" y="7.5" width="3.2" height="4.5" rx="0.7" fill={c}/>
+          <rect x="4.8" y="5" width="3.2" height="7" rx="0.7" fill={c}/>
+          <rect x="9.6" y="2.5" width="3.2" height="9.5" rx="0.7" fill={c}/>
+          <rect x="14.4" y="0" width="3.2" height="12" rx="0.7" fill={c}/>
+        </svg>
+        <svg width="17" height="12" viewBox="0 0 17 12">
+          <path d="M8.5 3.2C10.8 3.2 12.9 4.1 14.4 5.6L15.5 4.5C13.7 2.7 11.2 1.5 8.5 1.5C5.8 1.5 3.3 2.7 1.5 4.5L2.6 5.6C4.1 4.1 6.2 3.2 8.5 3.2Z" fill={c}/>
+          <path d="M8.5 6.8C9.9 6.8 11.1 7.3 12 8.2L13.1 7.1C11.8 5.9 10.2 5.1 8.5 5.1C6.8 5.1 5.2 5.9 3.9 7.1L5 8.2C5.9 7.3 7.1 6.8 8.5 6.8Z" fill={c}/>
+          <circle cx="8.5" cy="10.5" r="1.5" fill={c}/>
+        </svg>
+        <svg width="27" height="13" viewBox="0 0 27 13">
+          <rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke={c} strokeOpacity="0.35" fill="none"/>
+          <rect x="2" y="2" width="20" height="9" rx="2" fill={c}/>
+          <path d="M25 4.5V8.5C25.8 8.2 26.5 7.2 26.5 6.5C26.5 5.8 25.8 4.8 25 4.5Z" fill={c} fillOpacity="0.4"/>
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function IOSGlassPill({ children, dark = false, style = {} }) {
+  return (
+    <div style={{ height:44,minWidth:44,borderRadius:9999,position:'relative',overflow:'hidden',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:dark?'0 2px 6px rgba(0,0,0,0.35),0 6px 16px rgba(0,0,0,0.2)':'0 1px 3px rgba(0,0,0,0.07),0 3px 10px rgba(0,0,0,0.06)',...style }}>
+      <div style={{ position:'absolute',inset:0,borderRadius:9999,backdropFilter:'blur(12px) saturate(180%)',WebkitBackdropFilter:'blur(12px) saturate(180%)',background:dark?'rgba(120,120,128,0.28)':'rgba(255,255,255,0.5)' }}/>
+      <div style={{ position:'absolute',inset:0,borderRadius:9999,boxShadow:dark?'inset 1.5px 1.5px 1px rgba(255,255,255,0.15),inset -1px -1px 1px rgba(255,255,255,0.08)':'inset 1.5px 1.5px 1px rgba(255,255,255,0.7),inset -1px -1px 1px rgba(255,255,255,0.4)',border:dark?'0.5px solid rgba(255,255,255,0.15)':'0.5px solid rgba(0,0,0,0.06)' }}/>
+      <div style={{ position:'relative',zIndex:1,display:'flex',alignItems:'center',padding:'0 4px' }}>{children}</div>
+    </div>
+  );
+}
+
+function IOSNavBar({ title = 'Title', dark = false, trailingIcon = true }) {
+  const muted = dark ? 'rgba(255,255,255,0.6)' : '#404040';
+  const text = dark ? '#fff' : '#000';
+  const pillIcon = (content) => (
+    <IOSGlassPill dark={dark}>
+      <div style={{ width:36,height:36,display:'flex',alignItems:'center',justifyContent:'center' }}>{content}</div>
+    </IOSGlassPill>
+  );
+  return (
+    <div style={{ display:'flex',flexDirection:'column',gap:10,paddingTop:62,paddingBottom:10,position:'relative',zIndex:5 }}>
+      <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 16px' }}>
+        {pillIcon(<svg width="12" height="20" viewBox="0 0 12 20" fill="none" style={{ marginLeft:-1 }}><path d="M10 2L2 10l8 8" stroke={muted} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>)}
+        {trailingIcon && pillIcon(<svg width="22" height="6" viewBox="0 0 22 6"><circle cx="3" cy="3" r="2.5" fill={muted}/><circle cx="11" cy="3" r="2.5" fill={muted}/><circle cx="19" cy="3" r="2.5" fill={muted}/></svg>)}
+      </div>
+      <div style={{ padding:'0 16px',fontFamily:'-apple-system,system-ui',fontSize:34,fontWeight:700,lineHeight:'41px',color:text,letterSpacing:0.4 }}>{title}</div>
+    </div>
+  );
+}
+
+function IOSListRow({ title, detail, icon, chevron = true, isLast = false, dark = false }) {
+  const text = dark ? '#fff' : '#000';
+  const sec = dark ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
+  const ter = dark ? 'rgba(235,235,245,0.3)' : 'rgba(60,60,67,0.3)';
+  const sep = dark ? 'rgba(84,84,88,0.65)' : 'rgba(60,60,67,0.12)';
+  return (
+    <div style={{ display:'flex',alignItems:'center',minHeight:52,padding:'0 16px',position:'relative',fontFamily:'-apple-system,system-ui',fontSize:17,letterSpacing:-0.43 }}>
+      {icon && <div style={{ width:30,height:30,borderRadius:7,background:icon,marginRight:12,flexShrink:0 }}/>}
+      <div style={{ flex:1,color:text }}>{title}</div>
+      {detail && <span style={{ color:sec,marginRight:6 }}>{detail}</span>}
+      {chevron && <svg width="8" height="14" viewBox="0 0 8 14" style={{ flexShrink:0 }}><path d="M1 1l6 6-6 6" stroke={ter} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+      {!isLast && <div style={{ position:'absolute',bottom:0,right:0,left:icon?58:16,height:0.5,background:sep }}/>}
+    </div>
+  );
+}
+
+function IOSList({ header, children, dark = false }) {
+  const hc = dark ? 'rgba(235,235,245,0.6)' : 'rgba(60,60,67,0.6)';
+  const bg = dark ? '#1C1C1E' : '#fff';
+  return (
+    <div>
+      {header && <div style={{ fontFamily:'-apple-system,system-ui',fontSize:13,color:hc,textTransform:'uppercase',padding:'8px 36px 6px',letterSpacing:-0.08 }}>{header}</div>}
+      <div style={{ background:bg,borderRadius:26,margin:'0 16px',overflow:'hidden' }}>{children}</div>
+    </div>
+  );
+}
+
+function IOSDevice({ children, width = 402, height = 874, dark = false, title, keyboard = false }) {
+  return (
+    <div style={{ width,height,borderRadius:48,overflow:'hidden',position:'relative',background:dark?'#000':'#F2F2F7',boxShadow:'0 40px 80px rgba(0,0,0,0.18),0 0 0 1px rgba(0,0,0,0.12)',fontFamily:'-apple-system,system-ui,sans-serif',WebkitFontSmoothing:'antialiased' }}>
+      <div style={{ position:'absolute',top:11,left:'50%',transform:'translateX(-50%)',width:126,height:37,borderRadius:24,background:'#000',zIndex:50 }}/>
+      <div style={{ position:'absolute',top:0,left:0,right:0,zIndex:10 }}><IOSStatusBar dark={dark}/></div>
+      <div style={{ height:'100%',display:'flex',flexDirection:'column' }}>
+        {title !== undefined && <IOSNavBar title={title} dark={dark}/>}
+        <div style={{ flex:1,overflow:'auto' }}>{children}</div>
+        {keyboard && <IOSKeyboard dark={dark}/>}
+      </div>
+      <div style={{ position:'absolute',bottom:0,left:0,right:0,zIndex:60,height:34,display:'flex',justifyContent:'center',alignItems:'flex-end',paddingBottom:8,pointerEvents:'none' }}>
+        <div style={{ width:139,height:5,borderRadius:100,background:dark?'rgba(255,255,255,0.7)':'rgba(0,0,0,0.25)' }}/>
+      </div>
+    </div>
+  );
+}
+
+function IOSKeyboard({ dark = false }) {
+  const glyph = dark ? 'rgba(255,255,255,0.7)' : '#595959';
+  const sugg = dark ? 'rgba(255,255,255,0.6)' : '#333';
+  const keyBg = dark ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.85)';
+  const icons = {
+    shift: <svg width="19" height="17" viewBox="0 0 19 17"><path d="M9.5 1L1 9.5h4.5V16h8V9.5H18L9.5 1z" fill={glyph}/></svg>,
+    del: <svg width="23" height="17" viewBox="0 0 23 17"><path d="M7 1h13a2 2 0 012 2v11a2 2 0 01-2 2H7l-6-7.5L7 1z" fill="none" stroke={glyph} strokeWidth="1.6" strokeLinejoin="round"/><path d="M10 5l7 7M17 5l-7 7" stroke={glyph} strokeWidth="1.6" strokeLinecap="round"/></svg>,
+    ret: <svg width="20" height="14" viewBox="0 0 20 14"><path d="M18 1v6H4m0 0l4-4M4 7l4 4" fill="none" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+  };
+  const key = (content, { w, flex, ret, fs = 25, k } = {}) => (
+    <div key={k} style={{ height:42,borderRadius:8.5,flex:flex?1:undefined,width:w,minWidth:0,background:ret?'#08f':keyBg,boxShadow:'0 1px 0 rgba(0,0,0,0.075)',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'-apple-system,"SF Compact",system-ui',fontSize:fs,fontWeight:458,color:ret?'#fff':glyph }}>{content}</div>
+  );
+  const row = (keys, pad = 0) => (
+    <div style={{ display:'flex',gap:6.5,justifyContent:'center',padding:`0 ${pad}px` }}>
+      {keys.map(l => key(l, { flex:true,k:l }))}
+    </div>
+  );
+  return (
+    <div style={{ position:'relative',zIndex:15,borderRadius:27,overflow:'hidden',padding:'11px 0 2px',display:'flex',flexDirection:'column',alignItems:'center' }}>
+      <div style={{ position:'absolute',inset:0,borderRadius:27,backdropFilter:'blur(12px) saturate(180%)',WebkitBackdropFilter:'blur(12px) saturate(180%)',background:dark?'rgba(120,120,128,0.14)':'rgba(255,255,255,0.25)' }}/>
+      <div style={{ display:'flex',gap:20,alignItems:'center',padding:'8px 22px 13px',width:'100%',boxSizing:'border-box',position:'relative' }}>
+        {['"The"','the','to'].map((w,i) => (
+          <React.Fragment key={i}>
+            {i > 0 && <div style={{ width:1,height:25,background:'#ccc',opacity:0.3 }}/>}
+            <div style={{ flex:1,textAlign:'center',fontFamily:'-apple-system,system-ui',fontSize:17,color:sugg,letterSpacing:-0.43,lineHeight:'22px' }}>{w}</div>
+          </React.Fragment>
+        ))}
+      </div>
+      <div style={{ display:'flex',flexDirection:'column',gap:13,padding:'0 6.5px',width:'100%',boxSizing:'border-box',position:'relative' }}>
+        {row(['q','w','e','r','t','y','u','i','o','p'])}
+        {row(['a','s','d','f','g','h','j','k','l'],20)}
+        <div style={{ display:'flex',gap:14.25,alignItems:'center' }}>
+          {key(icons.shift,{w:45,k:'shift'})}
+          <div style={{ display:'flex',gap:6.5,flex:1 }}>{['z','x','c','v','b','n','m'].map(l=>key(l,{flex:true,k:l}))}</div>
+          {key(icons.del,{w:45,k:'del'})}
+        </div>
+        <div style={{ display:'flex',gap:6,alignItems:'center' }}>
+          {key('ABC',{w:92.25,fs:18,k:'abc'})}
+          {key('',{flex:true,k:'space'})}
+          {key(icons.ret,{w:92.25,ret:true,k:'ret'})}
+        </div>
+      </div>
+      <div style={{ height:56,width:'100%',position:'relative' }}/>
+    </div>
+  );
+}
+
+Object.assign(window, { IOSDevice, IOSStatusBar, IOSNavBar, IOSGlassPill, IOSList, IOSListRow, IOSKeyboard });
+  </script>
+  <script type="text/babel">
+// tweaks-panel.jsx
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;max-height:calc(100vh - 32px);display:flex;flex-direction:column;transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;background:rgba(250,249,247,.78);color:#29261b;-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);border:.5px solid rgba(255,255,255,.6);border-radius:14px;box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;overflow-y:auto;overflow-x:hidden;min-height:0;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");background-repeat:no-repeat;background-position:right 8px center}
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:14px;height:14px;border-radius:50%;background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;overflow-wrap:anywhere}
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-chips{display:flex;gap:6px}
+  .twk-chip{position:relative;appearance:none;flex:1;min-width:0;height:46px;padding:0;border:0;border-radius:6px;overflow:hidden;cursor:default;box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
+  .twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),0 2px 6px rgba(0,0,0,.15)}
+  .twk-chip>span{position:absolute;top:0;bottom:0;right:0;width:34%;display:flex;flex-direction:column;box-shadow:-1px 0 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i{flex:1;box-shadow:0 -1px 0 rgba(0,0,0,.1)}
+  .twk-chip svg{position:absolute;top:6px;left:6px;width:13px;height:13px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+`;
+
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = { x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)), y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)) };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    window.addEventListener('resize', clampToViewport);
+    return () => window.removeEventListener('resize', clampToViewport);
+  }, [open, clampToViewport]);
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+  const dismiss = () => { setOpen(false); window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); };
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => { offsetRef.current = { x: startRight - (ev.clientX - sx), y: startBottom - (ev.clientY - sy) }; clampToViewport(); };
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" data-omelette-chrome="" style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks" onMouseDown={(e) => e.stopPropagation()} onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+function TweakSection({ label, children }) { return <><div className="twk-sect">{label}</div>{children}</>; }
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl"><span>{label}</span>{value != null && <span className="twk-val">{value}</span>}</div>
+      {children}
+    </div>
+  );
+}
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return <TweakRow label={label} value={`${value}${unit}`}><input type="range" className="twk-slider" min={min} max={max} step={step} value={value} onChange={(e) => onChange(Number(e.target.value))}/></TweakRow>;
+}
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'} role="switch" aria-checked={!!value} onClick={() => onChange(!value)}><i/></button>
+    </div>
+  );
+}
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => { const v = typeof o === 'object' ? o.value : o; const l = typeof o === 'object' ? o.label : o; return <option key={v} value={v}>{l}</option>; })}
+      </select>
+    </TweakRow>
+  );
+}
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
+  if (!fitsAsSegments) {
+    const resolve = (s) => { const m = options.find((o) => String(typeof o === 'object' ? o.value : o) === s); return m === undefined ? s : typeof m === 'object' ? m.value : m; };
+    return <TweakSelect label={label} value={value} options={options} onChange={(s) => onChange(resolve(s))}/>;
+  }
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+  const segAt = (clientX) => { const r = trackRef.current.getBoundingClientRect(); const inner = r.width - 4; const i = Math.floor(((clientX - r.left - 2) / inner) * n); return opts[Math.max(0, Math.min(n - 1, i))].value; };
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => { if (!trackRef.current) return; const v = segAt(ev.clientX); if (v !== valueRef.current) onChange(v); };
+    const up = () => { setDragging(false); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown} className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb" style={{ left:`calc(2px + ${idx} * (100% - 4px) / ${n})`, width:`calc((100% - 4px) / ${n})` }}/>
+        {opts.map((o) => <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>{o.label}</button>)}
+      </div>
+    </TweakRow>
+  );
+}
+function TweakText({ label, value, placeholder, onChange }) {
+  return <TweakRow label={label}><input className="twk-field" type="text" value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)}/></TweakRow>;
+}
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => { if (min != null && n < min) return min; if (max != null && n > max) return max; return n; };
+  const startRef = React.useRef({ x: 0, val: 0 });
+  const onScrubStart = (e) => {
+    e.preventDefault();
+    startRef.current = { x: e.clientX, val: value };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = (ev) => { const dx = ev.clientX - startRef.current.x; const raw = startRef.current.val + dx * step; const snapped = Math.round(raw / step) * step; onChange(clamp(Number(snapped.toFixed(decimals)))); };
+    const up = () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step} onChange={(e) => onChange(clamp(Number(e.target.value)))}/>
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+function __twkIsLight(hex) {
+  const h = String(hex).replace('#',''); const x = h.length===3?h.replace(/./g,(c)=>c+c):h.padEnd(6,'0');
+  const n = parseInt(x.slice(0,6),16); if (Number.isNaN(n)) return true;
+  const r=(n>>16)&255,g=(n>>8)&255,b=n&255; return r*299+g*587+b*114>148000;
+}
+const __TwkCheck = ({ light }) => <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M3 7.2 5.8 10 11 4.2" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" stroke={light?'rgba(0,0,0,.78)':'#fff'}/></svg>;
+function TweakColor({ label, value, options, onChange }) {
+  if (!options || !options.length) {
+    return <div className="twk-row twk-row-h"><div className="twk-lbl"><span>{label}</span></div><input type="color" className="twk-swatch" value={value} onChange={(e) => onChange(e.target.value)}/></div>;
+  }
+  const key = (o) => String(JSON.stringify(o)).toLowerCase();
+  const cur = key(value);
+  return (
+    <TweakRow label={label}>
+      <div className="twk-chips" role="radiogroup">
+        {options.map((o,i) => {
+          const colors = Array.isArray(o)?o:[o]; const [hero,...rest]=colors; const sup=rest.slice(0,4); const on=key(o)===cur;
+          return (
+            <button key={i} type="button" className="twk-chip" role="radio" aria-checked={on} data-on={on?'1':'0'} aria-label={colors.join(', ')} style={{ background:hero }} onClick={() => onChange(o)}>
+              {sup.length>0 && <span>{sup.map((c,j)=><i key={j} style={{ background:c }}/>)}</span>}
+              {on && <__TwkCheck light={__twkIsLight(hero)}/>}
+            </button>
+          );
+        })}
+      </div>
+    </TweakRow>
+  );
+}
+function TweakButton({ label, onClick, secondary = false }) {
+  return <button type="button" className={secondary?'twk-btn secondary':'twk-btn'} onClick={onClick}>{label}</button>;
+}
+
+Object.assign(window, { useTweaks, TweaksPanel, TweakSection, TweakRow, TweakSlider, TweakToggle, TweakRadio, TweakSelect, TweakText, TweakNumber, TweakColor, TweakButton });
+  </script>
+  <script type="text/babel">
+/* screens.jsx */
+
+function HeroComp({ comp, daysOut, onOpen }) {
+  return (
+    <div className="hero-next grunge" onClick={onOpen}>
+      <div className="chevron-bg"/>
+      <div className="hn-content">
+        <div className="hn-eyebrow">{daysOut === 0 ? 'COMPETITION DAY' : `${daysOut} ${daysOut === 1 ? 'day' : 'days'} out`}</div>
+        <div className="hn-ttl">{comp.name}</div>
+        <div className="hn-sub">{comp.city}</div>
+      </div>
+    </div>
+  );
+}
+
+function HeroAgenda() {
+  return (
+    <div className="hero-agenda grunge">
+      <div className="stripe-bg"/>
+      <div className="label">Mon · Mar 2 · {ATHLETE.team}</div>
+      <div className="ttl">Today: <b>Full-out</b><br/>Practice 5:30P</div>
+      <div className="sub">{TEAM.location} · Lucy + 23 teammates</div>
+    </div>
+  );
+}
+
+function HomeScreen({ tweaks, onOpenComp, onTab }) {
+  const allComps = getCompetitions(tweaks);
+  const today    = getEffectiveToday(tweaks);
+  const next = (() => {
+    const c = allComps.filter(c => c.status === 'upcoming')
+      .map(c => ({ ...c, daysOut: Math.max(0, D.days(today, D.parse(c.date))) }))
+      .sort((a, b) => a.daysOut - b.daysOut)[0];
+    return c || null;
+  })();
+  const upcoming = allComps.filter(c => c.status === 'upcoming').slice(0, 3);
+  const past = allComps.filter(c => c.status === 'past').sort((a, b) => b.date.localeCompare(a.date));
+  const hasPast = past.length > 0;
+  const last = past[0];
+  const ord = (p) => p === 1 ? 'st' : p === 2 ? 'nd' : p === 3 ? 'rd' : 'th';
+  const lastPlace = last ? { ordShort: `${last.placement}${ord(last.placement)}`, of: last.of } : null;
+  const seasonAvg = hasPast ? (past.reduce((s, c) => s + c.score, 0) / past.length).toFixed(2) : null;
+  const totalPerfs = past.reduce((n, c) => n + (c.endDate && c.endDate !== c.date ? 2 : 1), 0);
+  const startWeek = D.startOfWeek(today);
+  const weekEvents = SCHEDULE.filter(e => { const d = D.parse(e.date); return d >= today && d < D.addDays(startWeek, 7); }).slice(0, 4);
+  const todayDow = (() => {
+    const d = new Date();
+    return d.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
+  })();
+  const todayDate = (() => {
+    const d = new Date();
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }).toUpperCase();
+  })();
+
+  return (
+    <div className="scr">
+      <div style={{ position: 'relative' }}>
+        <BrandMark/>
+        <div style={{ position: 'absolute', top: 10, right: 'var(--pad-x)', textAlign: 'right' }}>
+          <div style={{ font: '800 11px/1 "Barlow Condensed"', letterSpacing: '.18em', color: 'var(--text-faint)', textTransform: 'uppercase' }}>{todayDow}</div>
+          <div style={{ font: '800 19px/1 "Barlow Condensed"', letterSpacing: '.06em', color: 'var(--text-dim)', textTransform: 'uppercase', marginTop: 4 }}>{todayDate}</div>
+        </div>
+      </div>
+      {next && <HeroComp comp={next} daysOut={next.daysOut} onOpen={() => onOpenComp(next.id)}/>}
+      {hasPast && (
+        <div className="statrow">
+          <div className="stat"><div className="l">Last Result</div><div className="v"><b>{lastPlace.ordShort}</b><span style={{ fontSize:14,color:'var(--text-dim)' }}> / {lastPlace.of}</span></div></div>
+          <div className="stat"><div className="l">Season Avg</div><div className="v">{seasonAvg}</div></div>
+          <div className="stat"><div className="l">Performances</div><div className="v">{totalPerfs}</div></div>
+        </div>
+      )}
+      <div className="section">
+        <h2><span className="title">This Week</span><span className="more" onClick={() => onTab('calendar')} style={{ cursor:'pointer' }}>Full Calendar →</span></h2>
+        <div>
+          {weekEvents.map((e, i) => {
+            const d = D.parse(e.date);
+            return (
+              <div key={i} className="day-row">
+                <div className={`date ${D.same(d, TODAY) ? 'today' : ''}`}>
+                  <div className="dow">{D.dow(d)}</div>
+                  <div className="dom">{D.dom(d)}</div>
+                </div>
+                <div className="events">
+                  <div className={`ev ${e.kind}`}>
+                    <div className="what"><div className="ttl">{e.title}</div>{e.meta && <div className="meta">{e.meta}</div>}</div>
+                    <div className="time">{e.time}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      <div className="section">
+        <h2><span className="title">Upcoming Comps</span><span className="more" onClick={() => onTab('comps')} style={{ cursor:'pointer' }}>All →</span></h2>
+        {upcoming.map(c => <CompCard key={c.id} comp={c} onOpen={() => onOpenComp(c.id)}/>)}
+      </div>
+    </div>
+  );
+}
+
+function CompCard({ comp, onOpen }) {
+  const d = D.parse(comp.date);
+  const days = D.days(TODAY, d);
+  const near = days >= 0 && days <= 7;
+  return (
+    <div className={`comp-card ${near ? 'near' : ''}`} onClick={onOpen}>
+      <div className="date-block"><div className="mo">{D.mon(d)}</div><div className="day">{D.dom(d)}</div></div>
+      <div className="info">
+        <div className="name">{comp.name}</div>
+        <div className="loc"><Icon.Pin s={11}/> {comp.city}{days >= 0 && days <= 30 && <> · <span style={{ color:'var(--volt)',fontWeight:700 }}>{days === 0 ? 'TODAY' : `${days}d`}</span></>}</div>
+      </div>
+      <div className="chev"><Icon.Chev/></div>
+    </div>
+  );
+}
+
+function ResultCard() {
+  const past = COMPETITIONS.filter(c => c.status === 'past' && c.hasScoresheet).sort((a, b) => b.date.localeCompare(a.date));
+  const c = past[0];
+  if (!c) return <div className="card" style={{ padding:16,color:'var(--text-dim)',fontSize:13,textAlign:'center' }}>No results yet this season.</div>;
+  const d = D.parse(c.date);
+  const place = c.placement;
+  const suf = place===1?'st':place===2?'nd':place===3?'rd':'th';
+  let behind = null;
+  if (SCORESHEET.compId === c.id && place > 1) {
+    const leader = SCORESHEET.leaderboard.find(t => t.rank === 1);
+    if (leader) behind = { name:leader.name,score:leader.score,gap:(leader.score-c.score).toFixed(2) };
+  }
+  return (
+    <div className="card tint-volt" style={{ padding:16,display:'flex',alignItems:'center',gap:16 }}>
+      <div style={{ textAlign:'center',flexShrink:0 }}>
+        <div style={{ font:'400 50px/1 Anton',color:'var(--volt)' }}>{place}<sup style={{ fontSize:20 }}>{suf}</sup></div>
+        <div className="eyebrow" style={{ marginTop:6 }}>of {c.of}</div>
+      </div>
+      <div style={{ flex:1,borderLeft:'1px solid var(--line)',paddingLeft:16 }}>
+        <div className="eyebrow" style={{ color:'var(--gold-soft)' }}>{c.name} · {D.mon(d)} {D.dom(d)}</div>
+        <div style={{ font:'700 14px/1.2 "Barlow Condensed"',textTransform:'uppercase',letterSpacing:'.04em',color:'var(--text)',marginTop:6 }}>Final score <span className="mono" style={{ color:'var(--volt)' }}>{c.score.toFixed(2)}</span></div>
+        {behind && <div style={{ fontSize:11.5,color:'var(--text-dim)',marginTop:4 }}>{behind.gap} behind 1st · {behind.name}, {behind.score.toFixed(2)}</div>}
+      </div>
+    </div>
+  );
+}
+
+function CalendarScreen({ onOpenComp }) {
+  const todayIdx = React.useMemo(() => {
+    for (let i = 0; i < SEASON_MONTHS.length; i++) {
+      const m = SEASON_MONTHS[i];
+      if (m.getFullYear()===TODAY.getFullYear()&&m.getMonth()===TODAY.getMonth()) return i;
+    }
+    return 0;
+  }, []);
+  const [activeIdx, setActiveIdx] = React.useState(todayIdx);
+  const trackRef = React.useRef(null);
+  const syncing = React.useRef(false);
+  const byDate = React.useMemo(() => { const map={}; SCHEDULE.forEach(e=>(map[e.date]||=[]).push(e)); return map; }, []);
+  React.useEffect(() => {
+    const el = trackRef.current; if (!el) return;
+    syncing.current = true;
+    el.scrollTo({ left: activeIdx * el.clientWidth, behavior: 'instant' });
+    const t = setTimeout(() => { syncing.current = false; }, 450);
+    return () => clearTimeout(t);
+  }, [activeIdx]);
+  const onScroll = () => {
+    if (syncing.current) return;
+    const el = trackRef.current; if (!el) return;
+    const idx = Math.round(el.scrollLeft / el.clientWidth);
+    if (idx !== activeIdx) setActiveIdx(idx);
+  };
+  const activeMonth = SEASON_MONTHS[activeIdx];
+  const canPrev = activeIdx > 0;
+  const canNext = activeIdx < SEASON_MONTHS.length - 1;
+  const onCurrentMonth = activeIdx === todayIdx;
+  const tapCompDate = (iso) => { const cid = COMP_BY_DATE[iso]; if (cid) onOpenComp(cid); };
+  return (
+    <div className="scr">
+      <ScreenHeader title="Season Calendar" sub="May 2026 – May 2027"/>
+      <div className="cal-monthbar">
+        <button className="mb-arr" onClick={() => canPrev && setActiveIdx(activeIdx-1)} disabled={!canPrev}><Icon.Chev dir="left"/></button>
+        <div className="mb-name">{activeMonth.toLocaleDateString('en-US',{month:'long',year:'numeric'})}</div>
+        <button className={`mb-today ${onCurrentMonth?'is-current':''}`} onClick={() => setActiveIdx(todayIdx)} disabled={onCurrentMonth}>Today</button>
+        <button className="mb-arr" onClick={() => canNext && setActiveIdx(activeIdx+1)} disabled={!canNext}><Icon.Chev/></button>
+      </div>
+      <div className="cal-track" ref={trackRef} onScroll={onScroll}>
+        {SEASON_MONTHS.map((m, i) => <div key={i} className="cal-page"><MonthGrid month={m} byDate={byDate}/></div>)}
+      </div>
+      <div className="cal-legend">
+        <span><i className="dot comp"/> Comp</span>
+        <span><i className="dot practice"/> Practice</span>
+        <span><i className="dot travel"/> Travel</span>
+        <span><i className="dot opengym"/> Open Gym</span>
+        <span><i className="dot lucy"/> Lucy</span>
+        <span><i className="dot other"/> Other</span>
+      </div>
+      <MonthAgenda key={activeIdx} month={activeMonth} byDate={byDate} isCurrentMonth={onCurrentMonth} onTapComp={tapCompDate}/>
+    </div>
+  );
+}
+
+function MonthGrid({ month, byDate }) {
+  const firstOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
+  const gridStart = new Date(firstOfMonth);
+  gridStart.setDate(1 - firstOfMonth.getDay());
+  const cells = [];
+  for (let i = 0; i < 42; i++) { const d = new Date(gridStart); d.setDate(gridStart.getDate()+i); cells.push(d); }
+  const _iso2 = (d) => { const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; };
+  const DOT_PRIORITY = { comp:0,lucy:1,travel:2,event:3,opengym:4,practice:5 };
+  return (
+    <div className="month-grid">
+      {['S','M','T','W','T','F','S'].map((d,i) => <div key={'h'+i} className="mg-dow">{d}</div>)}
+      {cells.map((d, i) => {
+        const inMonth = d.getMonth()===month.getMonth();
+        const isToday = D.same(d, TODAY);
+        const events = byDate[_iso2(d)] || [];
+        const kinds = [...new Set(events.map(e=>e.kind))].sort((a,b)=>(DOT_PRIORITY[a]??99)-(DOT_PRIORITY[b]??99));
+        return (
+          <div key={i} className={`mg-cell${inMonth?'':' out'}${isToday?' today':''}`}>
+            <div className="mg-dn">{d.getDate()}</div>
+            <div className="mg-dots">{kinds.slice(0,4).map((k,di)=><span key={di} className={`dot ${k}`}/>)}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function MonthAgenda({ month, byDate, isCurrentMonth, onTapComp }) {
+  const firstOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
+  const lastOfMonth  = new Date(month.getFullYear(), month.getMonth()+1, 0);
+  const weeks = [];
+  let cur = new Date(firstOfMonth);
+  cur.setDate(1 - firstOfMonth.getDay());
+  while (cur <= lastOfMonth) { weeks.push(new Date(cur)); cur = new Date(cur.getTime()+7*86400000); }
+  const _iso2 = (d) => { const y=d.getFullYear(); const m=String(d.getMonth()+1).padStart(2,'0'); const day=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${day}`; };
+  const initOpen = React.useMemo(() => {
+    const o = {};
+    weeks.forEach((ws, wi) => { const we=new Date(ws); we.setDate(ws.getDate()+6); o[wi]=isCurrentMonth?(TODAY>=ws&&TODAY<=we):true; });
+    return o;
+  }, [month, isCurrentMonth]);
+  const [open, setOpen] = React.useState(initOpen);
+  const toggle = (wi) => setOpen(s => ({ ...s, [wi]: !s[wi] }));
+  return (
+    <>
+      {weeks.map((ws, wi) => {
+        const days = Array.from({length:7},(_,i)=>{const d=new Date(ws);d.setDate(ws.getDate()+i);return d;});
+        const we = days[6];
+        const weekEvents = days.reduce((n,d)=>n+(byDate[_iso2(d)]?.length||0),0);
+        const isOpen = !!open[wi];
+        return (
+          <div key={wi} className="section week-section">
+            <h2 className="week-hdr" onClick={()=>toggle(wi)}>
+              <span className="title">Week of {D.mon(ws)} {D.dom(ws)}</span>
+              <span className="week-meta">
+                {!isOpen && weekEvents>0 && <span className="week-count">{weekEvents} {weekEvents===1?'event':'events'}</span>}
+                <Icon.Chev dir={isOpen?'up':'down'}/>
+              </span>
+            </h2>
+            <div style={{ overflow:'hidden', maxHeight:isOpen?2000:0, transition:'max-height 0.22s ease' }}>
+              {days.map((d, di) => {
+                const events = byDate[_iso2(d)] || [];
+                const isInMonth = d.getMonth()===month.getMonth();
+                const isToday = D.same(d, TODAY);
+                return (
+                  <div key={di} className={`day-row ${events.length===0?'empty':''} ${!isInMonth?'out-of-month':''}`}>
+                    <div className={`date ${isToday?'today':''}`}><div className="dow">{D.dow(d)}</div><div className="dom">{D.dom(d)}</div></div>
+                    <div className="events">
+                      {events.length===0
+                        ? <span>— rest day —</span>
+                        : events.map((e,i) => {
+                            const isComp = e.kind==='comp';
+                            return (
+                              <div key={i} className={`ev ${e.kind}`} onClick={isComp?()=>onTapComp(_iso2(d)):undefined} style={{ cursor:isComp?'pointer':'default' }}>
+                                <div className="what"><div className="ttl">{e.title}</div>{e.meta&&<div className="meta">{e.meta}</div>}</div>
+                                {e.time && <div className="time">{e.time}</div>}
+                              </div>
+                            );
+                          })
+                      }
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </>
+  );
+}
+
+function CompsScreen({ tweaks, onOpenComp }) {
+  const allComps = getCompetitions(tweaks);
+  const upcoming = allComps.filter(c => c.status === 'upcoming');
+  const past     = allComps.filter(c => c.status === 'past');
+  return (
+    <div className="scr">
+      <ScreenHeader title="Season Events" sub={`${TEAM.team} · ${TEAM.season}`}/>
+      <div className="section">
+        <h2><span className="title">Upcoming · {upcoming.length}</span><span className="more" style={{ color:'var(--text-faint)' }}>Sorted by date</span></h2>
+        {upcoming.map(c => <CompCard key={c.id} comp={c} onOpen={() => onOpenComp(c.id)}/>)}
+      </div>
+      {past.length > 0 && (
+        <div className="section">
+          <h2><span className="title">Past · {past.length}</span><span className="more" style={{ color:'var(--text-faint)' }}>This season</span></h2>
+          {past.map(c => (
+            <div key={c.id} className="comp-card" onClick={() => onOpenComp(c.id)}>
+              <div className="date-block"><div className="mo">{D.mon(D.parse(c.date))}</div><div className="day">{D.dom(D.parse(c.date))}</div></div>
+              <div className="info">
+                <div className="name">{c.name}</div>
+                <div className="loc"><Icon.Pin s={11}/> {c.city} · <span className="mono" style={{ color:'var(--volt)' }}>{c.score}</span> · <span style={{ color:'var(--gold-soft)',fontWeight:700 }}>{c.placement===1?'1st':c.placement===2?'2nd':c.placement===3?'3rd':`${c.placement}th`}{c.of?` / ${c.of}`:''}</span></div>
+              </div>
+              <div className="chev"><Icon.Chev/></div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+Object.assign(window, { HomeScreen, HeroComp, HeroAgenda, CompCard, ResultCard, CalendarScreen, CompsScreen });
+  </script>
+  <script type="text/babel">
+/* detail.jsx */
+
+function CompDetail({ compId, onBack }) {
+  const comp = COMPETITIONS.find(c => c.id === compId);
+  const [tab, setTab] = React.useState('overview');
+  if (!comp) return null;
+  const startD = D.parse(comp.date);
+  const endD   = D.parse(comp.endDate || comp.date);
+  const daysOut = D.days(TODAY, startD);
+  const tabs = [{ id:'overview',label:'Info' },{ id:'sched',label:'Sched' },{ id:'docs',label:'Docs' },{ id:'div',label:'Teams' }];
+  return (
+    <div className="scr">
+      <ScreenHeader title={comp.name} sub={`${comp.city} · ${D.mon(startD)} ${D.dom(startD)}–${D.dom(endD)}`} onBack={onBack}/>
+      <CompHero comp={comp} daysOut={daysOut}/>
+      <div className="tabs">
+        {tabs.map(t => <button key={t.id} className={tab===t.id?'on':''} onClick={()=>setTab(t.id)}>{t.label}</button>)}
+      </div>
+      {tab==='overview' && <CompOverview comp={comp}/>}
+      {tab==='sched'    && <CompSchedule comp={comp}/>}
+      {tab==='docs'     && <CompDocs comp={comp}/>}
+      {tab==='div'      && <CompDivision comp={comp}/>}
+    </div>
+  );
+}
+
+function CompHero({ comp, daysOut }) {
+  return (
+    <div style={{ margin:'0 var(--pad-x) 14px' }}>
+      <div className="card grunge" style={{ padding:14,position:'relative',overflow:'hidden' }}>
+        <div className="chevron-bg"/>
+        <div style={{ position:'relative',zIndex:2,display:'flex',alignItems:'center',gap:12 }}>
+          <div style={{ flex:1 }}>
+            <div className="eyebrow" style={{ color:'var(--volt)' }}>
+              {comp.status==='past'?`Final · Placed ${comp.placement}/8`:daysOut===0?'COMPETITION DAY':daysOut<0?'Past':`${daysOut} days out`}
+            </div>
+            <div style={{ font:'400 26px/1 Anton',textTransform:'uppercase',marginTop:6,color:'var(--text)' }}>{comp.name}</div>
+            <div style={{ fontSize:12,color:'var(--text-dim)',marginTop:6,display:'flex',gap:12,flexWrap:'wrap' }}>
+              <span style={{ display:'inline-flex',alignItems:'center',gap:4 }}><Icon.Pin/> {comp.venue||comp.city}</span>
+              {comp.mat && <span style={{ display:'inline-flex',alignItems:'center',gap:4 }}><Icon.Bolt s={12}/> {comp.mat}</span>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CompOverview({ comp }) {
+  const t = comp.travel;
+  if (!t) return <div className="section" style={{ paddingTop:0 }}><div className="card empty-mini">Comp details will be released closer to the event.</div></div>;
+  const perfTime  = comp.performance && new Date(comp.performance);
+  const perf2Time = comp.day2Performance && new Date(comp.day2Performance);
+  const awardsTime= comp.awards && new Date(comp.awards);
+  const isTwoDay  = !!comp.endDate && comp.endDate !== comp.date;
+  const fmtTime = (d) => d ? d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) : '—';
+  const fmtDow  = (d) => d ? d.toLocaleDateString('en-US',{weekday:'short'}) : '';
+  return (
+    <>
+      <div className={`kvs ${isTwoDay?'three':''}`}>
+        {isTwoDay ? (
+          <>
+            <div className="kv"><div className="k">Day 1 · {fmtDow(D.parse(comp.date))}</div><div className="v" style={{ color:'var(--volt)' }}>{fmtTime(perfTime)}<small style={{ color:'var(--text-dim)' }}>Prelims · {comp.mat||'Mat A'}</small></div></div>
+            <div className="kv"><div className="k">Day 2 · {fmtDow(D.parse(comp.endDate))}</div><div className="v" style={{ color:'var(--volt)' }}>{fmtTime(perf2Time)}<small style={{ color:'var(--text-dim)' }}>Finals · {comp.mat||'Mat A'}</small></div></div>
+            <div className="kv"><div className="k">Awards · {fmtDow(D.parse(comp.endDate))}</div><div className="v">{awardsTime?fmtTime(awardsTime):'5:00pm'}<small style={{ color:'var(--text-dim)' }}>Main floor</small></div></div>
+          </>
+        ) : (
+          <>
+            <div className="kv"><div className="k">Performance</div><div className="v" style={{ color:'var(--volt)' }}>{fmtTime(perfTime)}<small style={{ color:'var(--text-dim)' }}>{fmtDow(D.parse(comp.date))} · {comp.mat||'Mat A'}</small></div></div>
+            <div className="kv"><div className="k">Awards</div><div className="v">{awardsTime?fmtTime(awardsTime):'5:00pm'}<small style={{ color:'var(--text-dim)' }}>Main floor</small></div></div>
+          </>
+        )}
+      </div>
+      {comp.lucyItinerary && (
+        <div className="section" style={{ paddingTop:18 }}>
+          <h2><span className="title">Lucy's Itinerary</span></h2>
+          {comp.lucyItinerary.flights && (
+            <div className="card" style={{ padding:14 }}>
+              {comp.lucyItinerary.flights.outbound && (
+                <div style={{ display:'flex',gap:12,alignItems:'center' }}>
+                  <div style={{ width:38,height:38,borderRadius:10,background:'rgba(93,175,255,0.13)',border:'1px solid rgba(93,175,255,0.3)',display:'grid',placeItems:'center',flexShrink:0,fontSize:20,lineHeight:1 }}>🛫</div>
+                  <div style={{ flex:1,display:'grid',gridTemplateColumns:'52px 1fr auto',gap:'0 8px',alignItems:'center' }}>
+                    <div>
+                      <div style={{ font:'800 10px/1 "Barlow Condensed"',textTransform:'uppercase',letterSpacing:'.12em',color:'var(--text-faint)' }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[0]}</div>
+                      <div style={{ font:'700 14px/1 "Barlow Condensed"',textTransform:'uppercase',letterSpacing:'.04em',color:'var(--text-dim)',marginTop:4 }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[1]}</div>
+                    </div>
+                    <div style={{ font:'400 26px/1 Anton',textTransform:'uppercase',color:'var(--text)',letterSpacing:'.02em' }}>{comp.lucyItinerary.flights.outbound.from} → {comp.lucyItinerary.flights.outbound.to}</div>
+                    <div style={{ font:'700 16px/1 "Barlow Condensed"',color:'var(--text-dim)',letterSpacing:'.04em',textAlign:'right' }}>{comp.lucyItinerary.flights.outbound.depart}</div>
+                  </div>
+                </div>
+              )}
+              {comp.lucyItinerary.flights.outbound && comp.lucyItinerary.flights.ret && (
+                <div style={{ height:1,background:'var(--line)',margin:'12px 0' }}/>
+              )}
+              {comp.lucyItinerary.flights.ret && (
+                <div style={{ display:'flex',gap:12,alignItems:'center' }}>
+                  <div style={{ width:38,height:38,borderRadius:10,background:'rgba(93,175,255,0.13)',border:'1px solid rgba(93,175,255,0.3)',display:'grid',placeItems:'center',flexShrink:0,fontSize:20,lineHeight:1 }}>🛬</div>
+                  <div style={{ flex:1,display:'grid',gridTemplateColumns:'52px 1fr auto',gap:'0 8px',alignItems:'center' }}>
+                    <div>
+                      <div style={{ font:'800 10px/1 "Barlow Condensed"',textTransform:'uppercase',letterSpacing:'.12em',color:'var(--text-faint)' }}>{comp.lucyItinerary.flights.ret.date.split(' ')[0]}</div>
+                      <div style={{ font:'700 14px/1 "Barlow Condensed"',textTransform:'uppercase',letterSpacing:'.04em',color:'var(--text-dim)',marginTop:4 }}>{comp.lucyItinerary.flights.ret.date.split(' ')[1]}</div>
+                    </div>
+                    <div style={{ font:'400 26px/1 Anton',textTransform:'uppercase',color:'var(--text)',letterSpacing:'.02em' }}>{comp.lucyItinerary.flights.ret.from} → {comp.lucyItinerary.flights.ret.to}</div>
+                    <div style={{ font:'700 16px/1 "Barlow Condensed"',color:'var(--text-dim)',letterSpacing:'.04em',textAlign:'right' }}>{comp.lucyItinerary.flights.ret.depart}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+          {comp.lucyItinerary.hotel && (
+            <div className="card" style={{ padding:14, marginTop:8 }}>
+              <div style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
+                <div style={{ width:38, height:38, borderRadius:10, background:'rgba(212,164,41,0.13)', border:'1px solid rgba(212,164,41,0.3)', display:'grid', placeItems:'center', fontSize:18, flexShrink:0 }}>
+                  🏨
+                </div>
+                <div style={{ flex:1 }}>
+                  <div style={{ font:'700 14px/1.2 "Barlow Condensed"', textTransform:'uppercase', letterSpacing:'.04em' }}>{comp.lucyItinerary.hotel.name}</div>
+                  <div style={{ fontSize:11.5, color:'var(--text-dim)', marginTop:4 }}>Check-in {comp.lucyItinerary.hotel.checkIn} · Check-out {comp.lucyItinerary.hotel.checkOut}</div>
+                  {comp.lucyItinerary.hotel.distToVenue && <div style={{ fontSize:11.5, color:'var(--text-dim)', marginTop:4 }}>{comp.lucyItinerary.hotel.distToVenue} from venue</div>}
+                </div>
+              </div>
+              {comp.lucyItinerary.hotel.mapUrl && <a className="btn ghost block" href={comp.lucyItinerary.hotel.mapUrl} target="_blank" rel="noopener" style={{ marginTop:10, textDecoration:'none' }}><Icon.Drive/> Open in Maps</a>}
+            </div>
+          )}
+        </div>
+      )}
+      {t.ttsUrl && (
+        <div className="section" style={{ paddingTop:12 }}>
+          <h2><span className="title">Hotel Block</span></h2>
+          <div className="card" style={{ padding:14 }}>
+            <a href={t.ttsUrl} target="_blank" rel="noopener" className="btn ghost block" style={{ textDecoration:'none' }}>
+              🏨 Book through TTS
+            </a>
+          </div>
+        </div>
+      )}
+      <div className="section" style={{ paddingTop:12 }}>
+        <h2><span className="title">Venue</span></h2>
+        <div className="card" style={{ padding:14 }}>
+          <div style={{ display:'flex',gap:12,alignItems:'flex-start' }}>
+            <div style={{ width:38,height:38,borderRadius:10,background:'rgba(214,244,61,0.13)',border:'1px solid rgba(214,244,61,0.3)',display:'grid',placeItems:'center',fontSize:18,flexShrink:0 }}>🏢</div>
+            <div style={{ flex:1 }}>
+              <div style={{ font:'700 14px/1.2 "Barlow Condensed"',textTransform:'uppercase',letterSpacing:'.04em' }}>{comp.venue}</div>
+              <div style={{ fontSize:11.5,color:'var(--text-dim)',marginTop:3 }}>{t.drive} from airport</div>
+              <div style={{ fontSize:11.5,color:'var(--text-dim)',marginTop:8 }}><b style={{ color:'var(--text)' }}>Parking:</b> {t.parking}</div>
+            </div>
+          </div>
+          <button className="btn ghost block" style={{ marginTop:12 }}><Icon.Drive/> Open in Maps</button>
+        </div>
+        {t.spectators && (
+          <div className="card" style={{ padding:14, marginTop:8 }}>
+            <div style={{ display:'flex',gap:12,alignItems:'flex-start' }}>
+              <div style={{ width:38,height:38,borderRadius:10,background:'rgba(255,170,50,0.13)',border:'1px solid rgba(255,170,50,0.3)',display:'grid',placeItems:'center',fontSize:18,flexShrink:0 }}>🎟️</div>
+              <div style={{ flex:1 }}>
+                <div style={{ font:'700 14px/1.2 "Barlow Condensed"',textTransform:'uppercase',letterSpacing:'.04em',marginBottom:5 }}>Spectator Pass</div>
+                <div style={{ fontSize:12,color:'var(--text-dim)' }}>{t.spectators.dayPrice} per day · {t.spectators.weekendPrice} per weekend</div>
+              </div>
+            </div>
+            {t.spectators.ticketUrl && <a className="btn ghost block" href={t.spectators.ticketUrl} target="_blank" rel="noopener" style={{ marginTop:10, textDecoration:'none' }}><Icon.External/> Buy Tickets</a>}
+          </div>
+        )}
+      </div>
+      {comp.varsityUrl && (
+        <div className="section" style={{ paddingTop:12 }}>
+          <h2><span className="title">Learn More</span></h2>
+          <div className="card" style={{ padding:14 }}>
+            <a className="btn ghost block" href={comp.varsityUrl} target="_blank" rel="noopener" style={{ textDecoration:'none' }}>
+              <Icon.External/> View on Varsity.com
+            </a>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function CompSchedule({ comp }) {
+  if (!comp.schedule) return <div className="section" style={{ paddingTop:0 }}><div className="card empty-mini">Day-of schedules will be released closer to the event.</div></div>;
+  const isTwoDay = !Array.isArray(comp.schedule) && (comp.schedule.day1||comp.schedule.day2);
+  if (isTwoDay) {
+    const startD = D.parse(comp.date); const endD = D.parse(comp.endDate||comp.date);
+    return <><ScheduleDay label={`Day 1 · ${D.dow(startD)} ${D.mon(startD)} ${D.dom(startD)}`} rows={comp.schedule.day1||[]}/><div style={{ height:24 }}/><ScheduleDay label={`Day 2 · ${D.dow(endD)} ${D.mon(endD)} ${D.dom(endD)}`} rows={comp.schedule.day2||[]}/></>;
+  }
+  return <ScheduleDay rows={comp.schedule}/>;
+}
+
+function ScheduleDay({ label, rows }) {
+  return (
+    <div className="section" style={{ paddingTop:label?4:0 }}>
+      {label && <h2 style={{ marginBottom:8 }}><span className="title">{label}</span><span className="more" style={{ color:'var(--gold-soft)' }}>{rows.length} items</span></h2>}
+      <div className="card" style={{ padding:'4px 12px' }}>
+        {rows.map((s, i) => {
+          const highlight = s.what.startsWith('PERFORMANCE')||s.what.startsWith('AWARDS');
+          const isCall = s.what.toLowerCase().includes('team call');
+          const accent = highlight?'var(--volt)':isCall?'var(--gold-soft)':'var(--text)';
+          return (
+            <div key={i} style={{ display:'grid',gridTemplateColumns:'54px 1fr',gap:10,alignItems:'center',padding:'12px 0',borderTop:i===0?0:'1px solid var(--line)' }}>
+              <div className="mono" style={{ fontSize:13,color:highlight?'var(--volt)':isCall?'var(--gold-soft)':'var(--text-dim)',fontWeight:700 }}>{s.t}</div>
+              <div style={{ minWidth:0 }}>
+                <div style={{ font:'700 13px/1.2 "Barlow Condensed"',letterSpacing:'.03em',textTransform:'uppercase',color:accent }}>{s.what}</div>
+                <div style={{ fontSize:11,color:'var(--text-dim)',marginTop:3 }}>{s.who}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function CompDocs({ comp }) {
+  if (!comp.docs||comp.docs.length===0) return <div className="section" style={{ paddingTop:0 }}><div className="card empty-mini">Documents will be added as they become available.</div></div>;
+  return (
+    <div className="section" style={{ paddingTop:0 }}>
+      <div className="eyebrow" style={{ marginBottom:10 }}>From the Gym · {comp.docs.length} files</div>
+      {comp.docs.map((d, i) => (
+        <div key={i} className="doc-row">
+          <div className="pdf-icon"/>
+          <div className="info"><div className="nm">{d.name}</div><div className="mt">{d.size} · Updated {d.updated}</div></div>
+          <div style={{ color:'var(--volt)' }}><Icon.Dl/></div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CompDivision({ comp }) {
+  if (!comp.division) return <div className="section" style={{ paddingTop:0 }}><div className="card empty-mini">Division roster becomes available ~3 days before event.</div></div>;
+  const hasTwoDay = comp.division.some(t => t.slot2);
+  const [day, setDay] = React.useState('day1');
+  const parseMin = (s) => {
+    if (!s) return 9999;
+    const m = s.match(/^(\d+):(\d+)(am|pm)$/i);
+    if (!m) return 9999;
+    let h = parseInt(m[1]), min = parseInt(m[2]), p = m[3].toLowerCase();
+    if (p === 'pm' && h !== 12) h += 12;
+    if (p === 'am' && h === 12) h = 0;
+    return h * 60 + min;
+  };
+  const sorted = [...comp.division].sort((a, b) => {
+    const ta = day === 'day2' ? parseMin(a.slot2 || a.slot) : parseMin(a.slot);
+    const tb = day === 'day2' ? parseMin(b.slot2 || b.slot) : parseMin(b.slot);
+    return ta - tb;
+  });
+  return (
+    <div className="section" style={{ paddingTop:0 }}>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:10 }}>
+        <div>
+          <div style={{ font:'800 16px/1 "Barlow Condensed"', textTransform:'uppercase', letterSpacing:'.08em', color:'var(--text)' }}>{TEAM.division}</div>
+          <div style={{ font:'700 12px/1 "Barlow Condensed"', textTransform:'uppercase', letterSpacing:'.16em', color:'var(--text-faint)', marginTop:5 }}>{comp.division.length} Teams</div>
+        </div>
+        {hasTwoDay && (
+          <div style={{ display:'flex', background:'rgba(255,255,255,0.07)', border:'1px solid var(--line)', borderRadius:10, padding:2 }}>
+            {['day1','day2'].map(d => (
+              <button key={d} onClick={() => setDay(d)} style={{ appearance:'none', border:'none', cursor:'pointer', height:36, paddingInline:16, borderRadius:8, background:day===d?'rgba(255,255,255,0.14)':'transparent', color:day===d?'var(--text)':'var(--text-faint)', font:'800 13px/1 "Barlow Condensed"', letterSpacing:'.12em', textTransform:'uppercase' }}>
+                {d === 'day1' ? 'Day 1' : 'Day 2'}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="card" style={{ padding:0 }}>
+        {sorted.map((t, i) => (
+          <div key={t.id||i} className={`team-row ${t.us?'us':''}`}>
+            <div className="badge">{i+1}</div>
+            <div className="info"><div className="nm">{t.name}</div><div className="gm">{t.gym}</div></div>
+            <div className="time">{day === 'day2' ? (t.slot2 || t.slot) : t.slot}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { CompDetail });
+  </script>
+  <script type="text/babel">
+/* results.jsx */
+
+function ResultsScreen({ tweaks, onOpenScoresheet }) {
+  const past = getCompetitions(tweaks).filter(c=>c.status==='past').sort((a,b)=>a.date.localeCompare(b.date));
+  if (past.length === 0) {
+    const next = nextComp(tweaks);
+    return (
+      <div className="scr">
+        <ScreenHeader title="Season Results" sub={`Electra · ${TEAM.season}`}/>
+        <div className="empty-state">
+          <div className="empty-icon"><Icon.Trophy s={56}/></div>
+          <div className="empty-ttl">No results yet</div>
+          <div className="empty-sub">Scores and placements will appear after the first competition.</div>
+          {next && <div className="empty-meta">First comp: <b style={{ color:'var(--volt)' }}>{next.name}</b><span style={{ color:'var(--text-faint)' }}> · {next.daysOut} {next.daysOut===1?'day':'days'} away</span></div>}
+        </div>
+      </div>
+    );
+  }
+  const avg = (past.reduce((s,c)=>s+c.score,0)/past.length).toFixed(2);
+  const wins = past.filter(c=>c.placement===1).length;
+  const podium = past.filter(c=>c.placement<=3).length;
+  const pastDesc = [...past].sort((a,b)=>b.date.localeCompare(a.date));
+  return (
+    <div className="scr">
+      <ScreenHeader title="Season Results" sub={`Electra · ${TEAM.season}`}/>
+      <div className="statrow">
+        <div className="stat"><div className="l">Season Avg</div><div className="v"><b>{avg}</b></div></div>
+        <div className="stat"><div className="l">1st Place</div><div className="v"><b>{wins}</b><span style={{ fontSize:14,color:'var(--text-dim)' }}> wins</span></div></div>
+        <div className="stat"><div className="l">Podium</div><div className="v"><b>{podium}</b><span style={{ fontSize:14,color:'var(--text-dim)' }}>/{past.length}</span></div></div>
+      </div>
+      <div className="section">
+        <h2><span className="title">Score Trajectory</span><span className="more">By comp</span></h2>
+        <div className="card" style={{ padding:14 }}><ScoreSpark data={past.map(c=>({x:c.short,y:c.score}))}/></div>
+      </div>
+      <div className="section">
+        <h2><span className="title">Comp Results</span><span className="more">{past.length} events</span></h2>
+        {pastDesc.map(c => <ResultRow key={c.id} comp={c} onOpen={() => c.hasScoresheet && onOpenScoresheet(c.id)}/>)}
+      </div>
+    </div>
+  );
+}
+
+function ResultRow({ comp, onOpen }) {
+  const d1=D.parse(comp.date); const d2=comp.endDate?D.parse(comp.endDate):d1;
+  const sameDay=comp.date===comp.endDate||!comp.endDate; const sameMonth=d1.getMonth()===d2.getMonth();
+  const dateRange=sameDay?`${D.mon(d1)} ${D.dom(d1)}`:sameMonth?`${D.mon(d1)} ${D.dom(d1)}–${D.dom(d2)}`:`${D.mon(d1)} ${D.dom(d1)} – ${D.mon(d2)} ${D.dom(d2)}`;
+  const place=comp.placement; const suf=place===1?'st':place===2?'nd':place===3?'rd':'th';
+  return (
+    <div className="comp-card result-card" onClick={onOpen}>
+      <div className="date-block" style={{ background:'var(--bg)',borderColor:'var(--line)',padding:'6px 4px' }}>
+        <div style={{ font:'400 30px/1 Anton',color:'var(--volt)' }}>{place}<sup style={{ fontSize:13 }}>{suf}</sup></div>
+        {comp.of && <div className="eyebrow" style={{ marginTop:4,fontSize:9 }}>of {comp.of}</div>}
+      </div>
+      <div className="info">
+        <div className="rr-name">{comp.name}</div>
+        <div className="rr-row2">{dateRange}</div>
+        <div className="rr-row3"><Icon.Pin s={11}/> {comp.city}</div>
+      </div>
+      <div className="rr-score mono">{comp.score.toFixed(2)}</div>
+      <div className="chev"><Icon.Chev/></div>
+    </div>
+  );
+}
+
+function ScoreSpark({ data }) {
+  const W=320,H=96,P=18;
+  const min=Math.floor(Math.min(...data.map(d=>d.y))-1);
+  const max=Math.ceil(Math.max(...data.map(d=>d.y))+1);
+  const x=i=>P+(i*(W-2*P))/Math.max(1,data.length-1);
+  const y=v=>H-P-((v-min)/(max-min))*(H-2*P);
+  const path=data.map((d,i)=>`${i===0?'M':'L'} ${x(i)} ${y(d.y)}`).join(' ');
+  const area=`${path} L ${x(data.length-1)} ${H-P} L ${x(0)} ${H-P} Z`;
+  return (
+    <svg width="100%" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" style={{ display:'block' }}>
+      <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="var(--volt)" stopOpacity="0.55"/><stop offset="100%" stopColor="var(--volt)" stopOpacity="0.0"/></linearGradient></defs>
+      {[0,0.5,1].map(t=><line key={t} x1={P} x2={W-P} y1={P+t*(H-2*P)} y2={P+t*(H-2*P)} stroke="rgba(255,255,255,0.06)" strokeDasharray="2 3"/>)}
+      <path d={area} fill="url(#sg)"/>
+      <path d={path} fill="none" stroke="var(--volt)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      {data.map((d,i)=>(
+        <g key={i}>
+          <circle cx={x(i)} cy={y(d.y)} r="3.5" fill="var(--bg)" stroke="var(--volt)" strokeWidth="1.6"/>
+          <text x={x(i)} y={H-4} fontSize="8.5" fill="rgba(245,240,227,0.55)" textAnchor="middle" fontFamily="Barlow Condensed" fontWeight="700" letterSpacing="0.08em">{d.x.toUpperCase()}</text>
+          <text x={x(i)} y={y(d.y)-8} fontSize="9" fill="var(--volt)" textAnchor="middle" fontFamily="JetBrains Mono" fontWeight="700">{d.y.toFixed(1)}</text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function ScoresheetScreen({ compId, onBack }) {
+  const s = (typeof SCORESHEETS !== 'undefined' && SCORESHEETS[compId]) || SCORESHEET;
+  const hasTwoDay = !!s.categories1;
+  const pendingDay2 = !!s.pendingDay2;
+  const activeTotals = pendingDay2 ? s.totals1 : s.totals;
+  const [view, setView] = React.useState('breakdown');
+  const comp = COMPETITIONS.find(c=>c.id===compId)||COMPETITIONS.find(c=>c.id===s.compId);
+  const tabs = [{ id:'breakdown',label:'Breakdown' },{ id:'leaderboard',label:'Leaderboard' },{ id:'compare',label:'Compare' }];
+  return (
+    <div className="scr">
+      <ScreenHeader title={comp.name+' · Scoresheet'} sub={`${comp.city} · ${D.mon(D.parse(comp.date))} ${D.dom(D.parse(comp.date))} · L2 Senior Small`} onBack={onBack}/>
+      <div style={{ margin:'0 var(--pad-x) 14px' }}>
+        <div className="card tint-volt grunge" style={{ padding:16,position:'relative',overflow:'hidden' }}>
+          <div className="chevron-bg"/>
+          <div style={{ position:'relative',zIndex:2,display:'grid',gridTemplateColumns:'auto 1fr',gap:14,alignItems:'center' }}>
+            <div style={{ textAlign:'center' }}>
+              <div style={{ font:'400 56px/1 Anton',color:'var(--volt)' }}>{activeTotals.placement}<sup style={{ fontSize:22 }}>{activeTotals.placement===1?'st':activeTotals.placement===2?'nd':activeTotals.placement===3?'rd':'th'}</sup></div>
+              <div className="eyebrow" style={{ marginTop:4 }}>of {activeTotals.of}</div>
+            </div>
+            <div style={{ borderLeft:'1px solid var(--line)',paddingLeft:14 }}>
+              <div className="eyebrow" style={{ color:'var(--gold-soft)' }}>{pendingDay2?'Day 1 Score':'Event Score'}</div>
+              <div className="mono" style={{ fontSize:38,fontWeight:700,color:'var(--text)',marginTop:2,lineHeight:1 }}>{activeTotals.final.toFixed(2)}</div>
+              {hasTwoDay && !pendingDay2 && (
+                <div style={{ display:'flex',gap:16,marginTop:8 }}>
+                  <div>
+                    <div style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.16em',textTransform:'uppercase',color:'var(--text-faint)' }}>Day 1</div>
+                    <div className="mono" style={{ fontSize:15,color:'var(--text-dim)',marginTop:2 }}>{s.totals1.final.toFixed(2)}</div>
+                  </div>
+                  <div>
+                    <div style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.16em',textTransform:'uppercase',color:'var(--text-faint)' }}>Day 2</div>
+                    <div className="mono" style={{ fontSize:15,color:'var(--text-dim)',marginTop:2 }}>{s.totals.final.toFixed(2)}</div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="tabs">{tabs.map(t=><button key={t.id} className={view===t.id?'on':''} onClick={()=>setView(t.id)}>{t.label}</button>)}</div>
+      {view==='breakdown'   && <ScoreBreakdown sheet={s}/>}
+      {view==='leaderboard' && <DivisionLeaderboard sheet={s}/>}
+      {view==='compare'     && <CompareView sheet={s}/>}
+    </div>
+  );
+}
+
+function ScoreBreakdown({ sheet }) {
+  const hasTwoDay = !!sheet.categories1;
+  const pendingDay2 = !!sheet.pendingDay2;
+  const [day, setDay] = React.useState(hasTwoDay ? 'day1' : 'day2');
+  const cats = (hasTwoDay && day === 'day1') ? sheet.categories1 : (sheet.categories || sheet.categories1);
+  const dedCards = hasTwoDay && day === 'day1' ? (sheet.deductionCards1 || []) : (sheet.deductionCards || []);
+  const switchDay = (d) => setDay(d);
+  return (
+    <>
+      <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 var(--pad-x) 10px' }}>
+        <div className="eyebrow">Category Breakdown</div>
+        {hasTwoDay && !pendingDay2 && (
+          <div style={{ display:'flex',background:'rgba(255,255,255,0.07)',border:'1px solid var(--line)',borderRadius:10,padding:2 }}>
+            {['day1','day2'].map(d=>(
+              <button key={d} onClick={()=>switchDay(d)} style={{ appearance:'none',border:'none',cursor:'pointer',height:36,paddingInline:14,borderRadius:8,background:day===d?'rgba(255,255,255,0.14)':'transparent',color:day===d?'var(--text)':'var(--text-faint)',font:'800 13px/1 "Barlow Condensed"',letterSpacing:'.12em',textTransform:'uppercase' }}>
+                {d==='day1'?'Day 1':'Day 2'}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      {[
+        { label:'Building',        ids:['stunts','pyramid','tosses'], sectionQuote: sheet.sectionNotes?.building },
+        { label:'Tumbling',        ids:['st','rt','jumps'],          sectionQuote: sheet.sectionNotes?.tumbling },
+        { label:'Overall Routine', ids:['rc','ft','dance','show'] },
+      ].map((group, gi) => {
+        const groupCats = cats.filter(c => group.ids.includes(c.id));
+        if (groupCats.length === 0) return null;
+        return (
+          <div key={group.label} style={{ marginTop: gi > 0 ? 20 : 0 }}>
+            <div style={{ display:'flex',alignItems:'center',gap:10,padding:'14px var(--pad-x) 10px' }}>
+              <div style={{ width:3,alignSelf:'stretch',background:'var(--volt)',borderRadius:2,flexShrink:0 }}/>
+              <div style={{ font:'400 24px/1 Anton',letterSpacing:'.02em',textTransform:'uppercase',color:'var(--text)' }}>{group.label}</div>
+            </div>
+            <div className="score-grid">
+              {groupCats.map(c => {
+                const score=c.d+(c.e||0)+(c.dod?.score||0)+(c.max?.score||0); const pct=(score/c.of)*100;
+                const subScores=[
+                  { name:'Difficulty',          score:c.d,         of:c.d_of    },
+                  c.e   ?{ name:'Execution',            score:c.e,         of:c.e_of    }:null,
+                  c.dod ?{ name:'Degree of Difficulty', score:c.dod.score, of:c.dod.of  }:null,
+                  c.max ?{ name:'Maximum Difficulty',   score:c.max.score, of:c.max.of  }:null,
+                ].filter(Boolean);
+                const showSubs = subScores.length > 1;
+                return (
+                  <div key={c.id} className="cat-row">
+                    <div>
+                      <div className="cat-name">{c.name}</div>
+                    </div>
+                    <div></div>
+                    <div>
+                      <div className="cat-score"><span style={{ color:'var(--volt)' }}>{score.toFixed(2)}</span><span className="cat-of"> /{c.of}</span></div>
+                    </div>
+                    {/* full-width main bar */}
+                    <div style={{ gridColumn:'1 / -1',marginTop:6,marginBottom:showSubs?0:8 }}>
+                      <div className="cat-bar"><i style={{ width:pct+'%' }}/></div>
+                    </div>
+                    {(showSubs || !!c.notes) && (
+                      <div style={{ gridColumn:'1 / -1',marginTop:10,paddingTop:6,borderTop:'1px solid var(--line)' }}>
+                        {showSubs && subScores.map((item,i)=>{
+                          const trackPct = item.of!=null ? (item.of/c.of)*100 : 100;
+                          const fillPct  = item.of!=null ? (item.score/item.of)*100 : 100;
+                          return (
+                            <div key={i} style={{ padding:'7px 0' }}>
+                              <div style={{ display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:5 }}>
+                                <div style={{ font:'800 10px/1 "Barlow Condensed"',letterSpacing:'.14em',color:'var(--text-dim)',textTransform:'uppercase' }}>{item.name}</div>
+                                <div className="mono" style={{ fontSize:12 }}>
+                                  <b>{item.score.toFixed(2)}</b>
+                                  {item.of!=null && <span style={{ color:'var(--text-faint)',fontSize:10 }}>/{item.of}</span>}
+                                </div>
+                              </div>
+                              <div style={{ height:4,borderRadius:99 }}>
+                                <div style={{ width:trackPct+'%',height:'100%',background:'rgba(255,255,255,0.06)',borderRadius:99,overflow:'hidden',position:'relative' }}>
+                                  <i style={{ position:'absolute',inset:0,width:fillPct+'%',background:'var(--gold)',borderRadius:99 }}/>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        {c.notes && <div style={{ marginTop:showSubs?8:0,padding:'8px 10px',background:'rgba(255,255,255,0.03)',borderRadius:8,fontSize:11.5,color:'var(--text-dim)',borderLeft:'2px solid var(--gold)',whiteSpace:'pre-line' }}><span style={{ color:'var(--gold)',fontSize:13 }}>"</span>{c.notes}<span style={{ color:'var(--gold)',fontSize:13 }}>"</span></div>}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+              {group.sectionQuote && (
+                <div className="cat-row" style={{ cursor:'default' }}>
+                  <div style={{ gridColumn:'1 / -1' }}>
+                    <div className="cat-name">{group.label} Creativity</div>
+                  </div>
+                  <div style={{ gridColumn:'1 / -1',marginTop:8,paddingTop:8,borderTop:'1px solid var(--line)' }}>
+                    <div style={{ padding:'8px 10px',background:'rgba(255,255,255,0.03)',borderRadius:8,fontSize:11.5,color:'var(--text-dim)',borderLeft:'2px solid var(--gold)',whiteSpace:'pre-line' }}>
+                      <span style={{ color:'var(--gold)',fontSize:13 }}>"</span>{group.sectionQuote}<span style={{ color:'var(--gold)',fontSize:13 }}>"</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
+
+      {dedCards.length > 0 && (
+        <div style={{ marginTop: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '14px var(--pad-x) 10px' }}>
+            <div style={{ width: 3, alignSelf: 'stretch', background: '#ff5555', borderRadius: 2, flexShrink: 0 }}/>
+            <div style={{ font: '400 24px/1 Anton', letterSpacing: '.02em', textTransform: 'uppercase', color: 'var(--text)' }}>Deductions</div>
+          </div>
+          <div style={{ padding: '0 var(--pad-x)', display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {dedCards.map((ded, i) => {
+              const isWarn = ded.type === 'warning';
+              const accent = isWarn ? '#ffb040' : '#ff5555';
+              return (
+                <div key={i} style={{ display:'flex', gap:12, padding:12, background: isWarn ? 'rgba(255,176,64,0.07)' : 'rgba(255,85,85,0.07)', border:`1px solid ${isWarn ? 'rgba(255,176,64,0.22)' : 'rgba(255,85,85,0.22)'}`, borderRadius:10 }}>
+                  <div style={{ width:46, height:46, flexShrink:0, alignSelf:'flex-start', background: isWarn ? 'rgba(255,176,64,0.15)' : 'rgba(255,85,85,0.15)', borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                    {isWarn
+                      ? <span style={{ fontSize:20, lineHeight:1, color:accent }}>⚠</span>
+                      : <span style={{ font:'700 12px/1.1 "JetBrains Mono"', color:accent, textAlign:'center' }}>−{ded.amount.toFixed(2)}</span>
+                    }
+                  </div>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ font:'800 11px/1 "Barlow Condensed"', letterSpacing:'.14em', textTransform:'uppercase', color:accent, marginBottom:7 }}>{ded.name}</div>
+                    <div style={{ padding:'7px 10px', background:'rgba(255,255,255,0.03)', borderRadius:7, fontSize:11.5, color:'var(--text-dim)', borderLeft:`2px solid ${accent}`, whiteSpace:'pre-line' }}>
+                      <span style={{ color:accent, fontSize:13 }}>"</span>{ded.note}<span style={{ color:accent, fontSize:13 }}>"</span>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      <div style={{ height: 24 }}/>
+    </>
+  );
+}
+
+function DivisionLeaderboard({ sheet }) {
+  const hasTwoDay = !!sheet.categories1;
+  const pendingDay2 = !!sheet.pendingDay2;
+  const dashCell = (
+    <td style={{ textAlign:'center',verticalAlign:'middle' }}>
+      <div style={{ color:'var(--text-faint)',fontFamily:'"JetBrains Mono"',fontSize:13 }}>—</div>
+      <div style={{ height:12 }}/>
+    </td>
+  );
+  return (
+    <div style={{ padding:'0 var(--pad-x) 8px' }}>
+      <div className="eyebrow" style={{ marginBottom:8 }}>L2 Senior Small · {sheet.leaderboard.length} teams</div>
+      <div className="card" style={{ padding:'4px 0' }}>
+        <table className="lb" style={{ fontSize:12 }}>
+          <thead>
+            <tr>
+              <th style={{ paddingLeft:10 }}>#</th>
+              <th>Team</th>
+              {hasTwoDay && <th style={{ textAlign:'center' }}>D1</th>}
+              {hasTwoDay && <th style={{ textAlign:'center' }}>D2</th>}
+              <th className="r" style={{ paddingRight:10 }}>{hasTwoDay ? 'Final' : 'Score'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sheet.leaderboard.map(t=>{
+              const d2Raw = (hasTwoDay && !pendingDay2) ? (t.score+t.deductions).toFixed(2) : null;
+              return (
+                <tr key={t.rank} className={t.us?'us':''}>
+                  <td style={{ paddingLeft:10 }}><span className={`rank r${t.rank}`}>{t.rank}</span></td>
+                  <td><div className="tname">{t.name}</div><div className="tgym">{t.gym}</div></td>
+                  {hasTwoDay && (
+                    <td style={{ textAlign:'center',verticalAlign:'middle' }}>
+                      <div className="mono" style={{ fontSize:12,color:t.us?'var(--volt)':'var(--text-dim)' }}>{t.score1.toFixed(2)}</div>
+                      <div style={{ height:12,display:'flex',alignItems:'center',justifyContent:'center' }}>
+                        {t.deductions1 > 0 && <span className="mono" style={{ fontSize:9.5,color:'#ff8484' }}>−{t.deductions1.toFixed(2)}</span>}
+                      </div>
+                    </td>
+                  )}
+                  {hasTwoDay && (pendingDay2 ? dashCell :
+                    <td style={{ textAlign:'center',verticalAlign:'middle' }}>
+                      <div className="mono" style={{ fontSize:12,color:t.us?'var(--volt)':'var(--text-dim)' }}>{d2Raw}</div>
+                      <div style={{ height:12,display:'flex',alignItems:'center',justifyContent:'center' }}>
+                        {t.deductions > 0 && <span className="mono" style={{ fontSize:9.5,color:'#ff8484' }}>−{t.deductions.toFixed(2)}</span>}
+                      </div>
+                    </td>
+                  )}
+                  {pendingDay2 ? dashCell :
+                    <td className="r" style={{ paddingRight:10,verticalAlign:'middle' }}>
+                      <div className="score" style={{ color:t.us?'var(--volt)':'var(--text)' }}>{t.score.toFixed(2)}</div>
+                      {hasTwoDay
+                        ? <div style={{ height:12 }}/>
+                        : t.deductions > 0 && <div className="mono" style={{ fontSize:9.5,color:'#ff8484' }}>−{t.deductions.toFixed(2)}</div>
+                      }
+                    </td>
+                  }
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+function CompareView({ sheet }) {
+  const us=sheet.leaderboard.find(t=>t.us); const others=sheet.leaderboard.filter(t=>!t.us);
+  const [pickId,setPick]=React.useState(others[0].name); const them=others.find(t=>t.name===pickId)||others[0];
+  const [day,setDay]=React.useState('day2');
+  const hasTwoDay=!!sheet.categories1;
+  const pendingDay2=!!sheet.pendingDay2;
+  const activeDay=pendingDay2?'day1':day;
+  const cats=(hasTwoDay&&activeDay==='day1')?sheet.categories1:(sheet.categories||sheet.categories1);
+  const usScoreForDay=(hasTwoDay&&activeDay==='day1')?us.score1:us.score;
+  const themScoreForDay=(hasTwoDay&&activeDay==='day1')?them.score1:them.score;
+  const dayTotals=(hasTwoDay&&activeDay==='day1')?sheet.totals1:(sheet.totals||sheet.totals1);
+  const theirDayDed=(hasTwoDay&&activeDay==='day1')?them.deductions1:them.deductions;
+  const theirDayPS=(hasTwoDay&&activeDay==='day1')?them.score1:them.score;
+  const theirDayRS=(theirDayPS+theirDayDed);
+  return (
+    <>
+      <div style={{ padding:'0 var(--pad-x) 10px' }}>
+        <div className="eyebrow" style={{ marginBottom:8 }}>Compare vs</div>
+        <div style={{ display:'flex',gap:6,flexWrap:'wrap' }}>
+          {others.map(t=><button key={t.name} onClick={()=>setPick(t.name)} className="chip" style={{ cursor:'pointer',appearance:'none',padding:'11px 14px',background:pickId===t.name?'rgba(255,255,255,0.18)':'rgba(255,255,255,0.06)',color:pickId===t.name?'var(--text)':'var(--text-dim)',borderColor:pickId===t.name?'rgba(255,255,255,0.35)':'var(--line)' }}>{t.name}</button>)}
+        </div>
+      </div>
+      <div className="cmp-grid">
+        <div className="cmp us"><div className="label">{pendingDay2?'Day 1 ':''}Rank #{us.rank}</div><div className="nm">Electra</div><div className="sc mono">{us.score.toFixed(2)}</div></div>
+        <div className="cmp"><div className="label">{pendingDay2?'Day 1 ':''}Rank #{them.rank}</div><div className="nm">{them.name}</div><div className="sc mono" style={{ color:'var(--text-dim)' }}>{them.score.toFixed(2)}</div></div>
+      </div>
+      <div className="section" style={{ paddingTop:18 }}>
+        <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:12 }}>
+          <div style={{ font:'800 18px/1 "Barlow Condensed"',letterSpacing:'.08em',textTransform:'uppercase',color:'var(--text)' }}>
+            By Category<span style={{ font:'700 10px/1 "Barlow Condensed"',letterSpacing:'.2em',textTransform:'uppercase',color:'var(--volt)',marginLeft:8 }}>vs {them.name}</span>
+          </div>
+          {hasTwoDay && !pendingDay2 && (
+            <div style={{ display:'flex',background:'rgba(255,255,255,0.07)',border:'1px solid var(--line)',borderRadius:10,padding:2,flexShrink:0 }}>
+              {['day1','day2'].map(d=>(
+                <button key={d} onClick={()=>setDay(d)} style={{ appearance:'none',border:'none',cursor:'pointer',height:32,paddingInline:12,borderRadius:8,background:activeDay===d?'rgba(255,255,255,0.14)':'transparent',color:activeDay===d?'var(--text)':'var(--text-faint)',font:'800 11px/1 "Barlow Condensed"',letterSpacing:'.12em',textTransform:'uppercase' }}>
+                  {d==='day1'?'D1':'D2'}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        {/* Day summary row — two teams */}
+        <div style={{ padding:'10px 12px',background:'var(--bg-card)',border:'1px solid var(--line)',borderRadius:10,marginBottom:2 }}>
+          <div style={{ display:'grid',gridTemplateColumns:'1fr 1px 1fr',gap:0 }}>
+            <div style={{ paddingRight:12 }}>
+              <div style={{ font:'700 10px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--volt)',marginBottom:7 }}>Electra</div>
+              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:4 }}>
+                {[['RS',dayTotals.raw.toFixed(2)],['DED',dayTotals.deductions===0?'0':'−'+dayTotals.deductions.toFixed(2)],['PS',dayTotals.final.toFixed(2)]].map(([lbl,val])=>(
+                  <div key={lbl}>
+                    <div style={{ font:'700 8px/1 "Barlow Condensed"',letterSpacing:'.14em',textTransform:'uppercase',color:'var(--volt)',opacity:0.6 }}>{lbl}</div>
+                    <div className="mono" style={{ fontSize:13,fontWeight:700,color:'var(--volt)',marginTop:2 }}>{val}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ background:'var(--line)',margin:'0 0' }}/>
+            <div style={{ paddingLeft:12 }}>
+              <div style={{ font:'700 10px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--text-dim)',marginBottom:7 }}>{them.name}</div>
+              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:4 }}>
+                {[['RS',theirDayRS.toFixed(2)],['DED',theirDayDed===0?'0':'−'+theirDayDed.toFixed(2)],['PS',theirDayPS.toFixed(2)]].map(([lbl,val])=>(
+                  <div key={lbl}>
+                    <div style={{ font:'700 8px/1 "Barlow Condensed"',letterSpacing:'.14em',textTransform:'uppercase',color:'var(--text-dim)',opacity:0.6 }}>{lbl}</div>
+                    <div className="mono" style={{ fontSize:13,fontWeight:700,color:'var(--text-dim)',marginTop:2 }}>{val}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display:'flex',flexDirection:'column',gap:9,marginTop:9 }}>
+          {cats.map(c=>{
+            const ours=c.judges.reduce((s,j)=>s+j.s,0)/c.judges.length;
+            const factor=themScoreForDay/usScoreForDay;
+            const theirs=Math.min(c.of,ours*factor*(0.94+(c.id.charCodeAt(0)%12)/100));
+            const oursPct=(ours/c.of)*100; const theirPct=(theirs/c.of)*100; const better=ours>=theirs;
+            const theirSub=(hasTwoDay&&activeDay==='day1')?them.catSub1?.[c.id]:them.catSub?.[c.id];
+            const theirDod=theirSub?.dod!=null?theirSub.dod:(c.dod?theirs*(c.dod.score/ours):0);
+            const theirMax=theirSub?.max!=null?theirSub.max:(c.max?theirs*(c.max.score/ours):0);
+            const theirDe=Math.max(0,theirs-theirDod-theirMax);
+            const deRatio=c.d/(c.d+(c.e||0));
+            const theirD=theirDe*deRatio; const theirE=c.e?theirDe*(1-deRatio):0;
+            return (
+              <div key={c.id} style={{ padding:'10px 12px',background:'var(--bg-card)',border:'1px solid var(--line)',borderRadius:10 }}>
+                <div style={{ display:'flex',justifyContent:'space-between',alignItems:'baseline' }}>
+                  <div style={{ font:'700 12px/1 "Barlow Condensed"',textTransform:'uppercase',letterSpacing:'.04em' }}>{c.name}</div>
+                  <div className="mono" style={{ fontSize:11,color:better?'var(--volt)':'#ff8484' }}>{better?'+':''}{(ours-theirs).toFixed(2)}</div>
+                </div>
+                {/* Electra bar */}
+                <div style={{ display:'grid',gridTemplateColumns:'36px 1fr 36px',gap:6,alignItems:'center',marginTop:6 }}>
+                  <div className="mono" style={{ fontSize:11,color:'var(--volt)',fontWeight:700 }}>{ours.toFixed(2)}</div>
+                  <div style={{ height:5,background:'rgba(255,255,255,0.06)',borderRadius:99,overflow:'hidden' }}>
+                    <div style={{ height:'100%',width:oursPct+'%',background:'var(--volt)',borderRadius:99 }}/>
+                  </div>
+                  <div className="mono" style={{ fontSize:10.5,color:'var(--text-faint)',textAlign:'right' }}>/{c.of}</div>
+                </div>
+                {/* Electra legend */}
+                {(c.e||c.dod) && (
+                  <div style={{ display:'flex',gap:8,marginTop:3,paddingLeft:42,alignItems:'center' }}>
+                    <span style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--volt)' }}>
+                      D <b style={{ fontFamily:'"JetBrains Mono"',fontSize:9.5,color:'var(--volt)',fontWeight:700 }}>{c.d.toFixed(2)}</b>
+                    </span>
+                    {c.e && <span style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--volt)' }}>
+                      E <b style={{ fontFamily:'"JetBrains Mono"',fontSize:9.5,color:'var(--volt)',fontWeight:700 }}>{c.e.toFixed(2)}</b>
+                    </span>}
+                    {c.dod && <span style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--volt)' }}>
+                      DOD <b style={{ fontFamily:'"JetBrains Mono"',fontSize:9.5,color:'var(--volt)',fontWeight:700 }}>{c.dod.score.toFixed(2)}</b>
+                    </span>}
+                    {c.max && <span style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--volt)' }}>
+                      MAX <b style={{ fontFamily:'"JetBrains Mono"',fontSize:9.5,color:'var(--volt)',fontWeight:700 }}>{c.max.score.toFixed(2)}</b>
+                    </span>}
+                  </div>
+                )}
+                {/* Competitor bar */}
+                <div style={{ display:'grid',gridTemplateColumns:'36px 1fr 36px',gap:6,alignItems:'center',marginTop:4 }}>
+                  <div className="mono" style={{ fontSize:11,color:'var(--text-dim)',fontWeight:700 }}>{theirs.toFixed(2)}</div>
+                  <div style={{ height:5,background:'rgba(255,255,255,0.06)',borderRadius:99,overflow:'hidden' }}>
+                    <div style={{ height:'100%',width:theirPct+'%',background:'rgba(255,255,255,0.28)',borderRadius:99 }}/>
+                  </div>
+                  <div className="mono" style={{ fontSize:10.5,color:'var(--text-faint)',textAlign:'right' }}>/{c.of}</div>
+                </div>
+                {/* Competitor legend */}
+                {(c.e||c.dod) && (
+                  <div style={{ display:'flex',gap:8,marginTop:3,paddingLeft:42,alignItems:'center' }}>
+                    <span style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--text-dim)' }}>
+                      D <b style={{ fontFamily:'"JetBrains Mono"',fontSize:9.5,color:'var(--text-dim)',fontWeight:700 }}>{theirD.toFixed(2)}</b>
+                    </span>
+                    {c.e && <span style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--text-dim)' }}>
+                      E <b style={{ fontFamily:'"JetBrains Mono"',fontSize:9.5,color:'var(--text-dim)',fontWeight:700 }}>{theirE.toFixed(2)}</b>
+                    </span>}
+                    {theirDod>0 && <span style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--text-dim)' }}>
+                      DOD <b style={{ fontFamily:'"JetBrains Mono"',fontSize:9.5,color:'var(--text-dim)',fontWeight:700 }}>{theirDod.toFixed(2)}</b>
+                    </span>}
+                    {theirMax>0 && <span style={{ font:'700 9px/1 "Barlow Condensed"',letterSpacing:'.1em',textTransform:'uppercase',color:'var(--text-dim)' }}>
+                      MAX <b style={{ fontFamily:'"JetBrains Mono"',fontSize:9.5,color:'var(--text-dim)',fontWeight:700 }}>{theirMax.toFixed(2)}</b>
+                    </span>}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}
+
+Object.assign(window, { ResultsScreen, ScoresheetScreen });
+  </script>
+  <script type="text/babel">
+/* app.jsx */
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "palette": "split",
+  "density": "comfortable",
+  "preSeason": false
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [route, setRoute] = React.useState({ tab: 'home' });
+  const [scale, setScale] = React.useState(1);
+
+  React.useEffect(() => {
+    const recalc = () => {
+      const padV = 32, padH = 24;
+      const sH = (window.innerHeight - padV) / 874;
+      const sW = (window.innerWidth - padH) / 402;
+      setScale(Math.min(1, sH, sW));
+    };
+    recalc();
+    window.addEventListener('resize', recalc);
+    return () => window.removeEventListener('resize', recalc);
+  }, []);
+
+  React.useEffect(() => {
+    document.body.dataset.palette = t.palette;
+    document.body.dataset.density = t.density;
+  }, [t.palette, t.density]);
+
+  const goTab    = (tab) => setRoute({ tab });
+  const openComp = (id)  => setRoute(r => ({ ...r, screen: 'compDetail', id }));
+  const openScore = (id) => setRoute(r => ({ ...r, screen: 'scoresheet', id }));
+  const back      = ()   => setRoute(r => ({ tab: r.tab }));
+
+  let body;
+  if (route.screen === 'compDetail') {
+    body = <CompDetail compId={route.id} onBack={back}/>;
+  } else if (route.screen === 'scoresheet') {
+    body = <ScoresheetScreen compId={route.id} onBack={back}/>;
+  } else if (route.tab === 'home') {
+    body = <HomeScreen tweaks={t} onOpenComp={openComp} onTab={goTab}/>;
+  } else if (route.tab === 'calendar') {
+    body = <CalendarScreen onOpenComp={openComp}/>;
+  } else if (route.tab === 'comps') {
+    body = <CompsScreen tweaks={t} onOpenComp={openComp}/>;
+  } else if (route.tab === 'results') {
+    body = <ResultsScreen tweaks={t} onOpenScoresheet={openScore}/>;
+  }
+
+  return (
+    <>
+      <div className="ios-host" style={{ '--ios-scale': scale }}>
+        <IOSDevice dark width={402} height={874}>
+          <div className="app">
+            <div className="scroll" key={route.tab + (route.screen || '')}>
+              {body}
+            </div>
+            <BottomNav tab={route.tab} setTab={(tab) => setRoute({ tab })}/>
+          </div>
+        </IOSDevice>
+      </div>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Palette">
+          <TweakSelect
+            label="Mode"
+            value={t.palette}
+            onChange={v => setTweak('palette', v)}
+            options={[
+              { value: 'split', label: 'Split (Gold + Volt accent)' },
+              { value: 'volt',  label: 'Volt-heavy (Electra dom.)' },
+              { value: 'gold',  label: 'Gold-heavy (NorCal dom.)' },
+            ]}
+          />
+        </TweakSection>
+        <TweakSection label="Density">
+          <TweakRadio
+            label="Layout"
+            value={t.density}
+            onChange={v => setTweak('density', v)}
+            options={[
+              { value: 'comfortable', label: 'Comfortable' },
+              { value: 'compact',     label: 'Compact' },
+            ]}
+          />
+        </TweakSection>
+        <TweakSection label="Preview">
+          <TweakToggle
+            label="Pre-season (no results yet)"
+            value={t.preSeason}
+            onChange={v => setTweak('preSeason', v)}
+          />
+        </TweakSection>
+        <TweakSection label="Quick jump">
+          <TweakButton label="→ Battle by the Bay" onClick={() => setRoute({ tab:'comps', screen:'compDetail', id:'bbb-2026' })}/>
+          <TweakButton label="→ Volt Open scoresheet" onClick={() => setRoute({ tab:'results', screen:'scoresheet', id:'volt-2026' })}/>
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  </script>
+</body>
+</html>
