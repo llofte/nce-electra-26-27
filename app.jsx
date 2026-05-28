@@ -12,14 +12,22 @@ function App() {
   // Route: { tab: 'home'|'calendar'|'comps'|'results', screen?: 'compDetail'|'scoresheet', id? }
   const [route, setRoute] = React.useState({ tab: 'home' });
 
-  // Scale the iOS device frame to fit the viewport so the bottom nav stays visible
+  // On a real phone, render native full-screen. On desktop, render the phone frame.
+  const [isMobile, setIsMobile] = React.useState(() => window.innerWidth <= 480);
+
+  // Scale the iOS device frame to fit the viewport (desktop only)
   const [scale, setScale] = React.useState(1);
   React.useEffect(() => {
     const recalc = () => {
-      const padV = 32, padH = 24;
-      const sH = (window.innerHeight - padV) / 874;
-      const sW = (window.innerWidth - padH) / 402;
-      setScale(Math.min(1, sH, sW));
+      const mobile = window.innerWidth <= 480;
+      setIsMobile(mobile);
+      document.body.dataset.mobile = mobile ? '1' : '';
+      if (!mobile) {
+        const padV = 32, padH = 24;
+        const sH = (window.innerHeight - padV) / 874;
+        const sW = (window.innerWidth - padH) / 402;
+        setScale(Math.min(1, sH, sW));
+      }
     };
     recalc();
     window.addEventListener('resize', recalc);
@@ -53,16 +61,24 @@ function App() {
     body = <ResultsScreen tweaks={t} onOpenScoresheet={openScore}/>;
   }
 
+  const appInner = (
+    <div className="app">
+      <div className="scroll" key={route.tab + (route.screen || '')}>
+        {body}
+      </div>
+      <BottomNav tab={route.tab} setTab={(tab) => setRoute({ tab })}/>
+    </div>
+  );
+
+  if (isMobile) {
+    return appInner;
+  }
+
   return (
     <>
       <div className="ios-host" style={{ '--ios-scale': scale }}>
         <IOSDevice dark width={402} height={874}>
-          <div className="app">
-            <div className="scroll" key={route.tab + (route.screen || '')}>
-              {body}
-            </div>
-            <BottomNav tab={route.tab} setTab={(tab) => setRoute({ tab })}/>
-          </div>
+          {appInner}
         </IOSDevice>
       </div>
 
