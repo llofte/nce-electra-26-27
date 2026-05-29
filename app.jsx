@@ -79,6 +79,10 @@ function App() {
   // On a real phone, render native full-screen. On desktop, render the phone frame.
   const [isMobile, setIsMobile] = React.useState(() => window.innerWidth <= 480);
 
+  // Pull-to-refresh
+  const pullVal = React.useRef(0);
+  const [pullProgress, setPullProgress] = React.useState(0); // 0–1.4 pulling, 1.5+ = loading
+
   // Scale the iOS device frame to fit the viewport (desktop only)
   const [scale, setScale] = React.useState(1);
   React.useEffect(() => {
@@ -103,6 +107,50 @@ function App() {
     document.body.dataset.palette = t.palette;
     document.body.dataset.density = t.density;
   }, [t.palette, t.density]);
+
+  // Pull-to-refresh gesture (document-level, works on any tab)
+  React.useEffect(() => {
+    if (!isMobile) return;
+    let startY = null;
+    let active = false;
+    const THRESHOLD = 68;
+
+    const onStart = (e) => {
+      const el = e.target.closest('.scroll');
+      if (!el || el.scrollTop > 2) return;
+      startY = e.touches[0].clientY;
+      active = false;
+    };
+    const onMove = (e) => {
+      if (startY === null) return;
+      const dy = e.touches[0].clientY - startY;
+      if (dy <= 0) { startY = null; pullVal.current = 0; setPullProgress(0); return; }
+      active = true;
+      pullVal.current = Math.min(dy / THRESHOLD, 1.4);
+      setPullProgress(pullVal.current);
+    };
+    const onEnd = () => {
+      if (active && pullVal.current >= 1) {
+        pullVal.current = 1.5;
+        setPullProgress(1.5);
+        setTimeout(() => window.location.reload(), 400);
+      } else {
+        pullVal.current = 0;
+        setPullProgress(0);
+      }
+      startY = null;
+      active = false;
+    };
+
+    document.addEventListener('touchstart', onStart, { passive: true });
+    document.addEventListener('touchmove', onMove,  { passive: true });
+    document.addEventListener('touchend',   onEnd,  { passive: true });
+    return () => {
+      document.removeEventListener('touchstart', onStart);
+      document.removeEventListener('touchmove',  onMove);
+      document.removeEventListener('touchend',   onEnd);
+    };
+  }, [isMobile]);
 
   const goTab    = (tab) => setRoute({ tab });
   const openComp = (id)  => setRoute(r => ({ ...r, screen: 'compDetail', id }));
@@ -135,10 +183,25 @@ function App() {
   );
 
   if (isMobile) {
+    const p = Math.min(pullProgress, 1);
+    const indicatorTop = `calc(env(safe-area-inset-top, 0px) + ${p * 54 - 38}px)`;
     return (
       <>
         {appInner}
         <IOSInstallPrompt/>
+        {pullProgress > 0 && (
+          <div style={{ position:'fixed', top:indicatorTop, left:0, right:0, zIndex:300, display:'flex', justifyContent:'center', pointerEvents:'none' }}>
+            <div style={{ width:34, height:34, borderRadius:17, background:'var(--bg-card)', border:'1px solid var(--line-strong)', boxShadow:'0 2px 10px rgba(0,0,0,0.5)', display:'grid', placeItems:'center' }}>
+              {pullProgress >= 1.5
+                ? <div className="ptr-spin" style={{ width:16, height:16, borderRadius:8, border:'2px solid var(--volt)', borderTopColor:'transparent' }}/>
+                : <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="var(--volt)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                    style={{ transform:`rotate(${p * 180}deg)`, transition:'transform 0.06s' }}>
+                    <path d="M7 2v10M3 6l4-4 4 4"/>
+                  </svg>
+              }
+            </div>
+          </div>
+        )}
       </>
     );
   }

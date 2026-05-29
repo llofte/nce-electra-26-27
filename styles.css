@@ -58,6 +58,10 @@
   --volt-deep: var(--gold-deep);
 }
 
+/* ===== pull-to-refresh spinner ===== */
+@keyframes ptr-spin { to { transform: rotate(360deg); } }
+.ptr-spin { animation: ptr-spin 0.7s linear infinite; }
+
 /* ===== reset / app shell ===== */
 * { box-sizing: border-box; }
 html, body, #root { margin: 0; padding: 0; }
