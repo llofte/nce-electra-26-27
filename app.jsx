@@ -74,7 +74,13 @@ function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
 
   // Route: { tab: 'home'|'calendar'|'comps'|'results', screen?: 'compDetail'|'scoresheet', id? }
-  const [route, setRoute] = React.useState({ tab: 'home' });
+  const [route, setRoute] = React.useState(() => {
+    const saved = sessionStorage.getItem('ptr-tab');
+    if (saved) { sessionStorage.removeItem('ptr-tab'); return { tab: saved }; }
+    return { tab: 'home' };
+  });
+  const routeRef = React.useRef(route);
+  React.useEffect(() => { routeRef.current = route; }, [route]);
 
   // On a real phone, render native full-screen. On desktop, render the phone frame.
   const [isMobile, setIsMobile] = React.useState(() => window.innerWidth <= 480);
@@ -133,6 +139,7 @@ function App() {
       if (active && pullVal.current >= 1) {
         pullVal.current = 1.5;
         setPullProgress(1.5);
+        sessionStorage.setItem('ptr-tab', routeRef.current.tab);
         setTimeout(() => window.location.reload(), 400);
       } else {
         pullVal.current = 0;
