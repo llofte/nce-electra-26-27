@@ -65,7 +65,7 @@ function CompHero({ comp, daysOut }) {
             <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', marginTop: 6, color: 'var(--text)' }}>
               {comp.name}
             </div>
-            <div style={{ fontSize: 12, color: 'var(--text-dim)', marginTop: 6, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <div style={{ fontSize: 14, color: 'var(--text-dim)', marginTop: 6, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                 <Icon.Pin/> {comp.venue || comp.city}
               </span>
@@ -156,11 +156,11 @@ function CompOverview({ comp }) {
                   <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(93,175,255,0.13)', border: '1px solid rgba(93,175,255,0.3)', display: 'grid', placeItems: 'center', flexShrink: 0, fontSize: 20, lineHeight: 1 }}>🛫</div>
                   <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '52px 1fr auto', gap: '0 8px', alignItems: 'center' }}>
                     <div>
-                      <div style={{ font: '800 10px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[0]}</div>
-                      <div style={{ font: '700 14px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[1]}</div>
+                      <div style={{ font: '800 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[0]}</div>
+                      <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[1]}</div>
                     </div>
                     <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', color: 'var(--text)', letterSpacing: '.02em' }}>{comp.lucyItinerary.flights.outbound.from} → {comp.lucyItinerary.flights.outbound.to}</div>
-                    <div style={{ font: '700 16px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.outbound.depart}</div>
+                    <div style={{ font: '700 18px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.outbound.depart}</div>
                   </div>
                 </div>
               )}
@@ -172,11 +172,11 @@ function CompOverview({ comp }) {
                   <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(93,175,255,0.13)', border: '1px solid rgba(93,175,255,0.3)', display: 'grid', placeItems: 'center', flexShrink: 0, fontSize: 20, lineHeight: 1 }}>🛬</div>
                   <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '52px 1fr auto', gap: '0 8px', alignItems: 'center' }}>
                     <div>
-                      <div style={{ font: '800 10px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.ret.date.split(' ')[0]}</div>
-                      <div style={{ font: '700 14px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.ret.date.split(' ')[1]}</div>
+                      <div style={{ font: '800 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.ret.date.split(' ')[0]}</div>
+                      <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.ret.date.split(' ')[1]}</div>
                     </div>
                     <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', color: 'var(--text)', letterSpacing: '.02em' }}>{comp.lucyItinerary.flights.ret.from} → {comp.lucyItinerary.flights.ret.to}</div>
-                    <div style={{ font: '700 16px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.ret.depart}</div>
+                    <div style={{ font: '700 18px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.ret.depart}</div>
                   </div>
                 </div>
               )}
@@ -190,9 +190,9 @@ function CompOverview({ comp }) {
                   🏨
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ font: '700 14px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.lucyItinerary.hotel.name}</div>
-                  <div style={{ fontSize: 11.5, color: 'var(--text-dim)', marginTop: 4 }}>Check-in {comp.lucyItinerary.hotel.checkIn} · Check-out {comp.lucyItinerary.hotel.checkOut}</div>
-                  {comp.lucyItinerary.hotel.distToVenue && <div style={{ fontSize: 11.5, color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.hotel.distToVenue} from venue</div>}
+                  <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.lucyItinerary.hotel.name}</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>Check-in {comp.lucyItinerary.hotel.checkIn} · Check-out {comp.lucyItinerary.hotel.checkOut}</div>
+                  {comp.lucyItinerary.hotel.distToVenue && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.hotel.distToVenue} from venue</div>}
                 </div>
               </div>
               {comp.lucyItinerary.hotel.mapUrl && (
@@ -226,9 +226,9 @@ function CompOverview({ comp }) {
               🏢
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ font: '700 14px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.venue}</div>
-              <div style={{ fontSize: 11.5, color: 'var(--text-dim)', marginTop: 3 }}>{t.drive} from airport</div>
-              <div style={{ fontSize: 11.5, color: 'var(--text-dim)', marginTop: 8 }}>
+              <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.venue}</div>
+              <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{t.drive} from airport</div>
+              <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 8 }}>
                 <b style={{ color: 'var(--text)' }}>Parking:</b> {t.parking}
               </div>
             </div>
@@ -242,8 +242,8 @@ function CompOverview({ comp }) {
             <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
               <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(255,170,50,0.13)', border: '1px solid rgba(255,170,50,0.3)', display: 'grid', placeItems: 'center', fontSize: 18, flexShrink: 0 }}>🎟️</div>
               <div style={{ flex: 1 }}>
-                <div style={{ font: '700 14px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: 5 }}>Spectator Pass</div>
-                <div style={{ fontSize: 12, color: 'var(--text-dim)' }}>{t.spectators.dayPrice} per day · {t.spectators.weekendPrice} per weekend</div>
+                <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', marginBottom: 5 }}>Spectator Pass</div>
+                <div style={{ fontSize: 14, color: 'var(--text-dim)' }}>{t.spectators.dayPrice} per day · {t.spectators.weekendPrice} per weekend</div>
               </div>
             </div>
             {t.spectators.ticketUrl && (
@@ -325,10 +325,10 @@ function ScheduleDay({ label, rows }) {
               display: 'grid', gridTemplateColumns: '54px 1fr', gap: 10, alignItems: 'center',
               padding: '12px 0', borderTop: i === 0 ? 0 : '1px solid var(--line)',
             }}>
-              <div className="mono" style={{ fontSize: 13, color: highlight ? 'var(--volt)' : isCall ? 'var(--gold-soft)' : 'var(--text-dim)', fontWeight: 700 }}>{s.t}</div>
+              <div className="mono" style={{ fontSize: 15, color: highlight ? 'var(--volt)' : isCall ? 'var(--gold-soft)' : 'var(--text-dim)', fontWeight: 700 }}>{s.t}</div>
               <div style={{ minWidth: 0 }}>
-                <div style={{ font: '700 13px/1.2 "Barlow Condensed"', letterSpacing: '.03em', textTransform: 'uppercase', color: accent }}>{s.what}</div>
-                <div style={{ fontSize: 11, color: 'var(--text-dim)', marginTop: 3 }}>{s.who}</div>
+                <div style={{ font: '700 15px/1.2 "Barlow Condensed"', letterSpacing: '.03em', textTransform: 'uppercase', color: accent }}>{s.what}</div>
+                <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{s.who}</div>
               </div>
             </div>
           );
@@ -399,8 +399,8 @@ function CompDivision({ comp }) {
     <div className="section" style={{ paddingTop: 0 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
         <div>
-          <div style={{ font: '800 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--text)' }}>{TEAM.division}</div>
-          <div style={{ font: '700 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.16em', color: 'var(--text-faint)', marginTop: 5 }}>{comp.division.length} Teams</div>
+          <div style={{ font: '800 18px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--text)' }}>{TEAM.division}</div>
+          <div style={{ font: '700 14px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.16em', color: 'var(--text-faint)', marginTop: 5 }}>{comp.division.length} Teams</div>
         </div>
         {hasTwoDay && (
           <div style={{ display: 'flex', background: 'rgba(255,255,255,0.07)', border: '1px solid var(--line)', borderRadius: 10, padding: 2 }}>
@@ -410,7 +410,7 @@ function CompDivision({ comp }) {
                 height: 36, paddingInline: 16, borderRadius: 8,
                 background: day === d ? 'rgba(255,255,255,0.14)' : 'transparent',
                 color: day === d ? 'var(--text)' : 'var(--text-faint)',
-                font: '800 13px/1 "Barlow Condensed"', letterSpacing: '.12em', textTransform: 'uppercase',
+                font: '800 15px/1 "Barlow Condensed"', letterSpacing: '.12em', textTransform: 'uppercase',
               }}>
                 {d === 'day1' ? 'Day 1' : 'Day 2'}
               </button>
@@ -451,7 +451,7 @@ function CompLive({ comp }) {
       <div className="section" style={{ paddingTop: 0 }}>
         <div className="card tint-volt" style={{ padding: 14, display: 'flex', alignItems: 'center', gap: 12 }}>
           <span className="chip live"><span className="pulse"/> Day-Of Feed</span>
-          <div style={{ flex: 1, fontSize: 12, color: 'var(--text-dim)' }}>
+          <div style={{ flex: 1, fontSize: 14, color: 'var(--text-dim)' }}>
             Auto-refresh every 60s · {comp.division ? `${comp.division.length} teams in division` : ''}
           </div>
         </div>

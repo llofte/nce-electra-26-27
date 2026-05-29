@@ -96,10 +96,10 @@ function ResultRow({ comp, onOpen }) {
     <div className="comp-card result-card" onClick={onOpen}>
       <div className="date-block" style={{ background: 'var(--bg)', borderColor: 'var(--line)', padding: '6px 4px' }}>
         <div style={{ font: '400 30px/1 Anton', color: 'var(--volt)' }}>
-          {place}<sup style={{ fontSize: 13 }}>{suf}</sup>
+          {place}<sup style={{ fontSize: 15 }}>{suf}</sup>
         </div>
         {comp.of && (
-          <div className="eyebrow" style={{ marginTop: 4, fontSize: 9 }}>of {comp.of}</div>
+          <div className="eyebrow" style={{ marginTop: 4, fontSize: 11 }}>of {comp.of}</div>
         )}
       </div>
       <div className="info">
@@ -143,8 +143,8 @@ function ScoreSpark({ data }) {
       {data.map((d, i) => (
         <g key={i}>
           <circle cx={x(i)} cy={y(d.y)} r="3.5" fill="var(--bg)" stroke="var(--volt)" strokeWidth="1.6"/>
-          <text x={x(i)} y={H - 4} fontSize="8.5" fill="rgba(245,240,227,0.55)" textAnchor="middle" fontFamily="Barlow Condensed" fontWeight="700" letterSpacing="0.08em">{d.x.toUpperCase()}</text>
-          <text x={x(i)} y={y(d.y) - 8} fontSize="9" fill="var(--volt)" textAnchor="middle" fontFamily="JetBrains Mono" fontWeight="700">{d.y.toFixed(1)}</text>
+          <text x={x(i)} y={H - 4} fontSize="10.5" fill="rgba(245,240,227,0.55)" textAnchor="middle" fontFamily="Barlow Condensed" fontWeight="700" letterSpacing="0.08em">{d.x.toUpperCase()}</text>
+          <text x={x(i)} y={y(d.y) - 8} fontSize="11" fill="var(--volt)" textAnchor="middle" fontFamily="JetBrains Mono" fontWeight="700">{d.y.toFixed(1)}</text>
         </g>
       ))}
     </svg>
@@ -191,12 +191,12 @@ function ScoresheetScreen({ compId, onBack }) {
               {hasTwoDay && !pendingDay2 && (
                 <div style={{ display: 'flex', gap: 16, marginTop: 8 }}>
                   <div>
-                    <div style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.16em', textTransform: 'uppercase', color: 'var(--text-faint)' }}>Day 1</div>
-                    <div className="mono" style={{ fontSize: 15, color: 'var(--text-dim)', marginTop: 2 }}>{s.totals1.final.toFixed(2)}</div>
+                    <div style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.16em', textTransform: 'uppercase', color: 'var(--text-faint)' }}>Day 1</div>
+                    <div className="mono" style={{ fontSize: 17, color: 'var(--text-dim)', marginTop: 2 }}>{s.totals1.final.toFixed(2)}</div>
                   </div>
                   <div>
-                    <div style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.16em', textTransform: 'uppercase', color: 'var(--text-faint)' }}>Day 2</div>
-                    <div className="mono" style={{ fontSize: 15, color: 'var(--text-dim)', marginTop: 2 }}>{s.totals.final.toFixed(2)}</div>
+                    <div style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.16em', textTransform: 'uppercase', color: 'var(--text-faint)' }}>Day 2</div>
+                    <div className="mono" style={{ fontSize: 17, color: 'var(--text-dim)', marginTop: 2 }}>{s.totals.final.toFixed(2)}</div>
                   </div>
                 </div>
               )}
@@ -235,7 +235,7 @@ function ScoreBreakdown({ sheet }) {
         {hasTwoDay && !pendingDay2 && (
           <div style={{ display: 'flex', background: 'rgba(255,255,255,0.07)', border: '1px solid var(--line)', borderRadius: 10, padding: 2 }}>
             {['day1', 'day2'].map(d => (
-              <button key={d} onClick={() => switchDay(d)} style={{ appearance: 'none', border: 'none', cursor: 'pointer', height: 36, paddingInline: 14, borderRadius: 8, background: day === d ? 'rgba(255,255,255,0.14)' : 'transparent', color: day === d ? 'var(--text)' : 'var(--text-faint)', font: '800 13px/1 "Barlow Condensed"', letterSpacing: '.12em', textTransform: 'uppercase' }}>
+              <button key={d} onClick={() => switchDay(d)} style={{ appearance: 'none', border: 'none', cursor: 'pointer', height: 36, paddingInline: 14, borderRadius: 8, background: day === d ? 'rgba(255,255,255,0.14)' : 'transparent', color: day === d ? 'var(--text)' : 'var(--text-faint)', font: '800 15px/1 "Barlow Condensed"', letterSpacing: '.12em', textTransform: 'uppercase' }}>
                 {d === 'day1' ? 'Day 1' : 'Day 2'}
               </button>
             ))}
@@ -296,10 +296,10 @@ function ScoreBreakdown({ sheet }) {
                           return (
                             <div key={i} style={{ padding: '7px 0' }}>
                               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 5 }}>
-                                <div style={{ font: '800 10px/1 "Barlow Condensed"', letterSpacing: '.14em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>{item.name}</div>
-                                <div className="mono" style={{ fontSize: 12 }}>
+                                <div style={{ font: '800 12px/1 "Barlow Condensed"', letterSpacing: '.14em', color: 'var(--text-dim)', textTransform: 'uppercase' }}>{item.name}</div>
+                                <div className="mono" style={{ fontSize: 14 }}>
                                   <b>{item.score.toFixed(2)}</b>
-                                  {item.of != null && <span style={{ color: 'var(--text-faint)', fontSize: 10 }}>/{item.of}</span>}
+                                  {item.of != null && <span style={{ color: 'var(--text-faint)', fontSize: 12 }}>/{item.of}</span>}
                                 </div>
                               </div>
                               <div style={{ height: 4, borderRadius: 99 }}>
@@ -311,8 +311,8 @@ function ScoreBreakdown({ sheet }) {
                           );
                         })}
                         {c.notes && (
-                          <div style={{ marginTop: showSubs ? 8 : 0, padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: 8, fontSize: 11.5, color: 'var(--text-dim)', borderLeft: '2px solid var(--gold)', whiteSpace: 'pre-line' }}>
-                            <span style={{ color: 'var(--gold)', fontSize: 13 }}>“</span>{c.notes}<span style={{ color: 'var(--gold)', fontSize: 13 }}>”</span>
+                          <div style={{ marginTop: showSubs ? 8 : 0, padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: 8, fontSize: 13, color: 'var(--text-dim)', borderLeft: '2px solid var(--gold)', whiteSpace: 'pre-line' }}>
+                            <span style={{ color: 'var(--gold)', fontSize: 15 }}>”</span>{c.notes}<span style={{ color: 'var(--gold)', fontSize: 15 }}>”</span>
                           </div>
                         )}
                       </div>
@@ -326,8 +326,8 @@ function ScoreBreakdown({ sheet }) {
                     <div className="cat-name">{group.label} Creativity</div>
                   </div>
                   <div style={{ gridColumn: '1 / -1', marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--line)' }}>
-                    <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: 8, fontSize: 11.5, color: 'var(--text-dim)', borderLeft: '2px solid var(--gold)', whiteSpace: 'pre-line' }}>
-                      <span style={{ color: 'var(--gold)', fontSize: 13 }}>"</span>{group.sectionQuote}<span style={{ color: 'var(--gold)', fontSize: 13 }}>"</span>
+                    <div style={{ padding: '8px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: 8, fontSize: 13, color: 'var(--text-dim)', borderLeft: '2px solid var(--gold)', whiteSpace: 'pre-line' }}>
+                      <span style={{ color: 'var(--gold)', fontSize: 15 }}>"</span>{group.sectionQuote}<span style={{ color: 'var(--gold)', fontSize: 15 }}>"</span>
                     </div>
                   </div>
                 </div>
@@ -352,13 +352,13 @@ function ScoreBreakdown({ sheet }) {
                   <div style={{ width: 46, height: 46, flexShrink: 0, alignSelf: 'flex-start', background: isWarn ? 'rgba(255,176,64,0.15)' : 'rgba(255,85,85,0.15)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     {isWarn
                       ? <span style={{ fontSize: 20, lineHeight: 1, color: accent }}>⚠</span>
-                      : <span style={{ font: '700 12px/1.1 "JetBrains Mono"', color: accent, textAlign: 'center' }}>−{ded.amount.toFixed(2)}</span>
+                      : <span style={{ font: '700 14px/1.1 "JetBrains Mono"', color: accent, textAlign: 'center' }}>−{ded.amount.toFixed(2)}</span>
                     }
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ font: '800 11px/1 "Barlow Condensed"', letterSpacing: '.14em', textTransform: 'uppercase', color: accent, marginBottom: 7 }}>{ded.name}</div>
-                    <div style={{ padding: '7px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: 7, fontSize: 11.5, color: 'var(--text-dim)', borderLeft: `2px solid ${accent}`, whiteSpace: 'pre-line' }}>
-                      <span style={{ color: accent, fontSize: 13 }}>"</span>{ded.note}<span style={{ color: accent, fontSize: 13 }}>"</span>
+                    <div style={{ font: '800 13px/1 "Barlow Condensed"', letterSpacing: '.14em', textTransform: 'uppercase', color: accent, marginBottom: 7 }}>{ded.name}</div>
+                    <div style={{ padding: '7px 10px', background: 'rgba(255,255,255,0.03)', borderRadius: 7, fontSize: 13, color: 'var(--text-dim)', borderLeft: `2px solid ${accent}`, whiteSpace: 'pre-line' }}>
+                      <span style={{ color: accent, fontSize: 15 }}>"</span>{ded.note}<span style={{ color: accent, fontSize: 15 }}>"</span>
                     </div>
                   </div>
                 </div>
@@ -388,7 +388,7 @@ function DivisionLeaderboard({ sheet }) {
     <div style={{ padding: '0 var(--pad-x) 8px' }}>
       <div className="eyebrow" style={{ marginBottom: 8 }}>L2 Senior Small · {sheet.leaderboard.length} teams</div>
       <div className="card" style={{ padding: '4px 0' }}>
-        <table className="lb" style={{ fontSize: 12 }}>
+        <table className="lb" style={{ fontSize: 14 }}>
           <thead>
             <tr>
               <th style={{ paddingLeft: 10 }}>#</th>
@@ -412,17 +412,17 @@ function DivisionLeaderboard({ sheet }) {
                   </td>
                   {hasTwoDay && (
                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                      <div className="mono" style={{ fontSize: 12, color: t.us ? 'var(--volt)' : 'var(--text-dim)' }}>{t.score1.toFixed(2)}</div>
+                      <div className="mono" style={{ fontSize: 14, color: t.us ? 'var(--volt)' : 'var(--text-dim)' }}>{t.score1.toFixed(2)}</div>
                       <div style={{ height: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {t.deductions1 > 0 && <span className="mono" style={{ fontSize: 9.5, color: '#ff8484' }}>−{t.deductions1.toFixed(2)}</span>}
+                        {t.deductions1 > 0 && <span className="mono" style={{ fontSize: 11.5, color: '#ff8484' }}>−{t.deductions1.toFixed(2)}</span>}
                       </div>
                     </td>
                   )}
                   {hasTwoDay && (pendingDay2 ? dashCell :
                     <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>
-                      <div className="mono" style={{ fontSize: 12, color: t.us ? 'var(--volt)' : 'var(--text-dim)' }}>{d2Raw}</div>
+                      <div className="mono" style={{ fontSize: 14, color: t.us ? 'var(--volt)' : 'var(--text-dim)' }}>{d2Raw}</div>
                       <div style={{ height: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        {t.deductions > 0 && <span className="mono" style={{ fontSize: 9.5, color: '#ff8484' }}>−{t.deductions.toFixed(2)}</span>}
+                        {t.deductions > 0 && <span className="mono" style={{ fontSize: 11.5, color: '#ff8484' }}>−{t.deductions.toFixed(2)}</span>}
                       </div>
                     </td>
                   )}
@@ -431,7 +431,7 @@ function DivisionLeaderboard({ sheet }) {
                       <div className="score" style={{ color: t.us ? 'var(--volt)' : 'var(--text)' }}>{t.score.toFixed(2)}</div>
                       {hasTwoDay
                         ? <div style={{ height: 12 }}/>
-                        : t.deductions > 0 && <div className="mono" style={{ fontSize: 9.5, color: '#ff8484' }}>−{t.deductions.toFixed(2)}</div>
+                        : t.deductions > 0 && <div className="mono" style={{ fontSize: 11.5, color: '#ff8484' }}>−{t.deductions.toFixed(2)}</div>
                       }
                     </td>
                   }
@@ -497,14 +497,14 @@ function CompareView({ sheet }) {
       {/* per-category bar compare */}
       <div className="section" style={{ paddingTop: 18 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-          <div style={{ font: '800 18px/1 "Barlow Condensed"', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text)' }}>
+          <div style={{ font: '800 20px/1 "Barlow Condensed"', letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--text)' }}>
             By Category
-            <span style={{ font: '700 10px/1 "Barlow Condensed"', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--volt)', marginLeft: 8 }}>vs {them.name}</span>
+            <span style={{ font: '700 12px/1 "Barlow Condensed"', letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--volt)', marginLeft: 8 }}>vs {them.name}</span>
           </div>
           {hasTwoDay && !pendingDay2 && (
             <div style={{ display: 'flex', background: 'rgba(255,255,255,0.07)', border: '1px solid var(--line)', borderRadius: 10, padding: 2, flexShrink: 0 }}>
               {['day1', 'day2'].map(d => (
-                <button key={d} onClick={() => setDay(d)} style={{ appearance: 'none', border: 'none', cursor: 'pointer', height: 32, paddingInline: 12, borderRadius: 8, background: activeDay === d ? 'rgba(255,255,255,0.14)' : 'transparent', color: activeDay === d ? 'var(--text)' : 'var(--text-faint)', font: '800 11px/1 "Barlow Condensed"', letterSpacing: '.12em', textTransform: 'uppercase' }}>
+                <button key={d} onClick={() => setDay(d)} style={{ appearance: 'none', border: 'none', cursor: 'pointer', height: 32, paddingInline: 12, borderRadius: 8, background: activeDay === d ? 'rgba(255,255,255,0.14)' : 'transparent', color: activeDay === d ? 'var(--text)' : 'var(--text-faint)', font: '800 13px/1 "Barlow Condensed"', letterSpacing: '.12em', textTransform: 'uppercase' }}>
                   {d === 'day1' ? 'D1' : 'D2'}
                 </button>
               ))}
@@ -516,12 +516,12 @@ function CompareView({ sheet }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1px 1fr', gap: 0 }}>
             {/* Electra side */}
             <div style={{ paddingRight: 12 }}>
-              <div style={{ font: '700 10px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)', marginBottom: 7 }}>Electra</div>
+              <div style={{ font: '700 12px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)', marginBottom: 7 }}>Electra</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 4 }}>
                 {[['RS', dayTotals.raw.toFixed(2)], ['DED', dayTotals.deductions === 0 ? '0' : '−' + dayTotals.deductions.toFixed(2)], ['PS', dayTotals.final.toFixed(2)]].map(([lbl, val]) => (
                   <div key={lbl}>
-                    <div style={{ font: '700 8px/1 "Barlow Condensed"', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--volt)', opacity: 0.6 }}>{lbl}</div>
-                    <div className="mono" style={{ fontSize: 13, fontWeight: 700, color: 'var(--volt)', marginTop: 2 }}>{val}</div>
+                    <div style={{ font: '700 10px/1 "Barlow Condensed"', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--volt)', opacity: 0.6 }}>{lbl}</div>
+                    <div className="mono" style={{ fontSize: 15, fontWeight: 700, color: 'var(--volt)', marginTop: 2 }}>{val}</div>
                   </div>
                 ))}
               </div>
@@ -530,12 +530,12 @@ function CompareView({ sheet }) {
             <div style={{ background: 'var(--line)', margin: '0 0' }}/>
             {/* Competitor side */}
             <div style={{ paddingLeft: 12 }}>
-              <div style={{ font: '700 10px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 7 }}>{them.name}</div>
+              <div style={{ font: '700 12px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)', marginBottom: 7 }}>{them.name}</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 4 }}>
                 {[['RS', theirDayRS.toFixed(2)], ['DED', theirDayDed === 0 ? '0' : '−' + theirDayDed.toFixed(2)], ['PS', theirDayPS.toFixed(2)]].map(([lbl, val]) => (
                   <div key={lbl}>
-                    <div style={{ font: '700 8px/1 "Barlow Condensed"', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-dim)', opacity: 0.6 }}>{lbl}</div>
-                    <div className="mono" style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-dim)', marginTop: 2 }}>{val}</div>
+                    <div style={{ font: '700 10px/1 "Barlow Condensed"', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--text-dim)', opacity: 0.6 }}>{lbl}</div>
+                    <div className="mono" style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-dim)', marginTop: 2 }}>{val}</div>
                   </div>
                 ))}
               </div>
@@ -562,69 +562,69 @@ function CompareView({ sheet }) {
             return (
               <div key={c.id} style={{ padding: '10px 12px', background: 'var(--bg-card)', border: '1px solid var(--line)', borderRadius: 10 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                  <div style={{ font: '700 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{c.name}</div>
-                  <div className="mono" style={{ fontSize: 11, color: better ? 'var(--volt)' : '#ff8484' }}>
+                  <div style={{ font: '700 14px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{c.name}</div>
+                  <div className="mono" style={{ fontSize: 13, color: better ? 'var(--volt)' : '#ff8484' }}>
                     {better ? '+' : ''}{(ours - theirs).toFixed(2)}
                   </div>
                 </div>
                 {/* Electra bar — single solid */}
                 <div style={{ display: 'grid', gridTemplateColumns: '36px 1fr 36px', gap: 6, alignItems: 'center', marginTop: 6 }}>
-                  <div className="mono" style={{ fontSize: 11, color: 'var(--volt)', fontWeight: 700 }}>{ours.toFixed(2)}</div>
+                  <div className="mono" style={{ fontSize: 13, color: 'var(--volt)', fontWeight: 700 }}>{ours.toFixed(2)}</div>
                   <div style={{ height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: 99, overflow: 'hidden' }}>
                     <div style={{ height: '100%', width: oursPct + '%', background: 'var(--volt)', borderRadius: 99 }}/>
                   </div>
-                  <div className="mono" style={{ fontSize: 10.5, color: 'var(--text-faint)', textAlign: 'right' }}>/{c.of}</div>
+                  <div className="mono" style={{ fontSize: 12.5, color: 'var(--text-faint)', textAlign: 'right' }}>/{c.of}</div>
                 </div>
                 {/* Electra legend */}
                 {(c.e || c.dod) && (
                   <div style={{ display: 'flex', gap: 8, marginTop: 3, paddingLeft: 42, alignItems: 'center' }}>
-                    <span style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)' }}>
-                      D <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 9.5, color: 'var(--volt)', fontWeight: 700 }}>{c.d.toFixed(2)}</b>
+                    <span style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)' }}>
+                      D <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 11.5, color: 'var(--volt)', fontWeight: 700 }}>{c.d.toFixed(2)}</b>
                     </span>
                     {c.e && (
-                      <span style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)' }}>
-                        E <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 9.5, color: 'var(--volt)', fontWeight: 700 }}>{c.e.toFixed(2)}</b>
+                      <span style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)' }}>
+                        E <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 11.5, color: 'var(--volt)', fontWeight: 700 }}>{c.e.toFixed(2)}</b>
                       </span>
                     )}
                     {c.dod && (
-                      <span style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)' }}>
-                        DOD <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 9.5, color: 'var(--volt)', fontWeight: 700 }}>{c.dod.score.toFixed(2)}</b>
+                      <span style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)' }}>
+                        DOD <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 11.5, color: 'var(--volt)', fontWeight: 700 }}>{c.dod.score.toFixed(2)}</b>
                       </span>
                     )}
                     {c.max && (
-                      <span style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)' }}>
-                        MAX <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 9.5, color: 'var(--volt)', fontWeight: 700 }}>{c.max.score.toFixed(2)}</b>
+                      <span style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--volt)' }}>
+                        MAX <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 11.5, color: 'var(--volt)', fontWeight: 700 }}>{c.max.score.toFixed(2)}</b>
                       </span>
                     )}
                   </div>
                 )}
                 {/* Competitor bar — single solid */}
                 <div style={{ display: 'grid', gridTemplateColumns: '36px 1fr 36px', gap: 6, alignItems: 'center', marginTop: 4 }}>
-                  <div className="mono" style={{ fontSize: 11, color: 'var(--text-dim)', fontWeight: 700 }}>{theirs.toFixed(2)}</div>
+                  <div className="mono" style={{ fontSize: 13, color: 'var(--text-dim)', fontWeight: 700 }}>{theirs.toFixed(2)}</div>
                   <div style={{ height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: 99, overflow: 'hidden' }}>
                     <div style={{ height: '100%', width: theirPct + '%', background: 'rgba(255,255,255,0.28)', borderRadius: 99 }}/>
                   </div>
-                  <div className="mono" style={{ fontSize: 10.5, color: 'var(--text-faint)', textAlign: 'right' }}>/{c.of}</div>
+                  <div className="mono" style={{ fontSize: 12.5, color: 'var(--text-faint)', textAlign: 'right' }}>/{c.of}</div>
                 </div>
                 {/* Competitor legend */}
                 {(c.e || c.dod) && (
                   <div style={{ display: 'flex', gap: 8, marginTop: 3, paddingLeft: 42, alignItems: 'center' }}>
-                    <span style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
-                      D <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 9.5, color: 'var(--text-dim)', fontWeight: 700 }}>{theirD.toFixed(2)}</b>
+                    <span style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+                      D <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 11.5, color: 'var(--text-dim)', fontWeight: 700 }}>{theirD.toFixed(2)}</b>
                     </span>
                     {c.e && (
-                      <span style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
-                        E <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 9.5, color: 'var(--text-dim)', fontWeight: 700 }}>{theirE.toFixed(2)}</b>
+                      <span style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+                        E <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 11.5, color: 'var(--text-dim)', fontWeight: 700 }}>{theirE.toFixed(2)}</b>
                       </span>
                     )}
                     {theirDod > 0 && (
-                      <span style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
-                        DOD <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 9.5, color: 'var(--text-dim)', fontWeight: 700 }}>{theirDod.toFixed(2)}</b>
+                      <span style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+                        DOD <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 11.5, color: 'var(--text-dim)', fontWeight: 700 }}>{theirDod.toFixed(2)}</b>
                       </span>
                     )}
                     {theirMax > 0 && (
-                      <span style={{ font: '700 9px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
-                        MAX <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 9.5, color: 'var(--text-dim)', fontWeight: 700 }}>{theirMax.toFixed(2)}</b>
+                      <span style={{ font: '700 11px/1 "Barlow Condensed"', letterSpacing: '.1em', textTransform: 'uppercase', color: 'var(--text-dim)' }}>
+                        MAX <b style={{ fontFamily: '"JetBrains Mono"', fontSize: 11.5, color: 'var(--text-dim)', fontWeight: 700 }}>{theirMax.toFixed(2)}</b>
                       </span>
                     )}
                   </div>

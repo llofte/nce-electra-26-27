@@ -94,8 +94,8 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
       <div style={{ position: 'relative' }}>
         <BrandMark/>
         <div style={{ position: 'absolute', top: 10, right: 'var(--pad-x)', textAlign: 'right' }}>
-          <div style={{ font: '800 11px/1 "Barlow Condensed"', letterSpacing: '.18em', color: 'var(--text-faint)', textTransform: 'uppercase' }}>{todayDow}</div>
-          <div style={{ font: '800 19px/1 "Barlow Condensed"', letterSpacing: '.06em', color: 'var(--text-dim)', textTransform: 'uppercase', marginTop: 4 }}>{todayDate}</div>
+          <div style={{ font: '800 13px/1 "Barlow Condensed"', letterSpacing: '.18em', color: 'var(--text-faint)', textTransform: 'uppercase' }}>{todayDow}</div>
+          <div style={{ font: '800 21px/1 "Barlow Condensed"', letterSpacing: '.06em', color: 'var(--text-dim)', textTransform: 'uppercase', marginTop: 4 }}>{todayDate}</div>
         </div>
       </div>
 
@@ -106,7 +106,7 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
         <div className="statrow">
           <div className="stat">
             <div className="l">Last Result</div>
-            <div className="v"><b>{lastPlace.ordShort}</b><span style={{ fontSize: 14, color: 'var(--text-dim)' }}> / {lastPlace.of}</span></div>
+            <div className="v"><b>{lastPlace.ordShort}</b><span style={{ fontSize: 16, color: 'var(--text-dim)' }}> / {lastPlace.of}</span></div>
           </div>
           <div className="stat">
             <div className="l">Season Avg</div>
@@ -224,11 +224,11 @@ function ResultCard() {
       </div>
       <div style={{ flex: 1, borderLeft: '1px solid var(--line)', paddingLeft: 16 }}>
         <div className="eyebrow" style={{ color: 'var(--gold-soft)' }}>{c.name} · {D.mon(d)} {D.dom(d)}</div>
-        <div style={{ font: '700 14px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text)', marginTop: 6 }}>
+        <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text)', marginTop: 6 }}>
           Final score <span className="mono" style={{ color: 'var(--volt)' }}>{c.score.toFixed(2)}</span>
         </div>
         {behind && (
-          <div style={{ fontSize: 11.5, color: 'var(--text-dim)', marginTop: 4 }}>
+          <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>
             {behind.gap} behind 1st · {behind.name}, {behind.score.toFixed(2)}
           </div>
         )}
