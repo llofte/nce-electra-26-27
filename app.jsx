@@ -1,5 +1,69 @@
 /* app.jsx — root, navigation, tweaks */
 
+function IOSInstallPrompt() {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const isSafari = !/(CriOS|FxiOS|OPiOS|mercury|EdgiOS)/.test(navigator.userAgent);
+  const isStandalone = window.navigator.standalone === true;
+  const [visible, setVisible] = React.useState(
+    () => isIOS && isSafari && !isStandalone && !localStorage.getItem('pwa-dismissed')
+  );
+
+  const dismiss = () => {
+    localStorage.setItem('pwa-dismissed', '1');
+    setVisible(false);
+  };
+
+  if (!visible) return null;
+
+  const ShareIcon = () => (
+    <svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="#5ac8fa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display:'inline',verticalAlign:'middle',margin:'0 2px 2px' }}>
+      <path d="M8 1v10M4 5l4-4 4 4"/>
+      <path d="M1 10v6a1 1 0 001 1h12a1 1 0 001-1v-6"/>
+    </svg>
+  );
+
+  const steps = [
+    <span>Tap the <b style={{color:'var(--text)'}}>Share</b> button <ShareIcon/> in your browser toolbar</span>,
+    <span>Scroll and tap <b style={{color:'var(--text)'}}>Add to Home Screen</b></span>,
+    <span>Tap <b style={{color:'var(--text)'}}>Add</b> in the top right corner</span>,
+  ];
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div onClick={dismiss} style={{ position:'fixed',inset:0,zIndex:9998,background:'rgba(0,0,0,0.55)' }}/>
+      {/* Sheet */}
+      <div style={{ position:'fixed',bottom:0,left:0,right:0,zIndex:9999,background:'#1c180f',borderTop:'1px solid rgba(255,235,180,0.15)',borderRadius:'20px 20px 0 0',padding:'16px 22px calc(32px + env(safe-area-inset-bottom))',boxShadow:'0 -12px 40px rgba(0,0,0,0.6)' }}>
+        {/* Handle */}
+        <div style={{ width:36,height:4,borderRadius:2,background:'rgba(255,255,255,0.18)',margin:'0 auto 20px' }}/>
+        {/* Header */}
+        <div style={{ display:'flex',alignItems:'center',gap:14,marginBottom:20 }}>
+          <img src="assets/electra-logo.png" style={{ width:48,height:48,borderRadius:12,flexShrink:0 }}/>
+          <div>
+            <div style={{ font:'700 17px/1.2 Manrope',color:'var(--text)' }}>Add to Home Screen</div>
+            <div style={{ font:'400 13px/1.4 Manrope',color:'var(--text-dim)',marginTop:3 }}>Install for the best experience</div>
+          </div>
+        </div>
+        {/* Steps */}
+        <div style={{ display:'flex',flexDirection:'column',gap:14,marginBottom:22 }}>
+          {steps.map((text, i) => (
+            <div key={i} style={{ display:'flex',alignItems:'center',gap:14 }}>
+              <div style={{ width:28,height:28,borderRadius:99,background:'var(--volt)',display:'grid',placeItems:'center',flexShrink:0 }}>
+                <span style={{ font:'800 13px/1 "Barlow Condensed"',color:'#0a0907' }}>{i + 1}</span>
+              </div>
+              <div style={{ font:'400 14px/1.45 Manrope',color:'var(--text-dim)' }}>{text}</div>
+            </div>
+          ))}
+        </div>
+        {/* Dismiss */}
+        <button onClick={dismiss} style={{ width:'100%',height:50,border:'1px solid rgba(255,235,180,0.18)',borderRadius:14,background:'transparent',color:'var(--text-dim)',font:'600 15px/1 Manrope',cursor:'pointer' }}>
+          Not Now
+        </button>
+      </div>
+    </>
+  );
+}
+
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "palette": "split",
   "density": "comfortable",
@@ -71,7 +135,12 @@ function App() {
   );
 
   if (isMobile) {
-    return appInner;
+    return (
+      <>
+        {appInner}
+        <IOSInstallPrompt/>
+      </>
+    );
   }
 
   return (
