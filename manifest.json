@@ -4,17 +4,17 @@
   "description": "Electra parent hub — NorCal Elite All-Stars",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0a0907",
+  "background_color": "#000000",
   "theme_color": "#0a0907",
   "icons": [
     {
-      "src": "assets/electra-logo.png",
+      "src": "assets/electra-logo-black.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "assets/electra-logo.png",
+      "src": "assets/electra-logo-black.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
