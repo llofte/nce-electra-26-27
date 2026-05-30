@@ -114,6 +114,35 @@ function App() {
     document.body.dataset.density = t.density;
   }, [t.palette, t.density]);
 
+  // Swipe right from left edge to go back (only when a detail screen is open)
+  React.useEffect(() => {
+    if (!isMobile) return;
+    let startX = null, startY = null;
+    const EDGE = 32;      // px from left edge that activates the gesture
+    const THRESHOLD = 72; // px rightward travel to trigger back
+
+    const onStart = (e) => {
+      if (!routeRef.current.screen) return;
+      if (e.touches[0].clientX > EDGE) return;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    };
+    const onEnd = (e) => {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = Math.abs(e.changedTouches[0].clientY - startY);
+      startX = null; startY = null;
+      if (dx > THRESHOLD && dy < dx) setRoute(r => ({ tab: r.tab }));
+    };
+
+    document.addEventListener('touchstart', onStart, { passive: true });
+    document.addEventListener('touchend',   onEnd,   { passive: true });
+    return () => {
+      document.removeEventListener('touchstart', onStart);
+      document.removeEventListener('touchend',   onEnd);
+    };
+  }, [isMobile]);
+
   // Pull-to-refresh gesture (document-level, works on any tab)
   React.useEffect(() => {
     if (!isMobile) return;
