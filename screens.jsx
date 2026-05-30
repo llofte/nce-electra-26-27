@@ -158,29 +158,22 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
         {upcoming.map(c => <CompCard key={c.id} comp={c} onOpen={() => onOpenComp(c.id)}/>)}
       </div>
 
-      {/* Documents — only shown when at least one comp has docs */}
-      {(() => {
-        const allDocs = allComps
-          .filter(c => c.docs && c.docs.length > 0)
-          .sort((a, b) => a.date.localeCompare(b.date))
-          .flatMap(c => c.docs.map(d => ({ ...d, compName: c.short || c.name, compId: c.id })));
-        if (allDocs.length === 0) return null;
-        return (
-          <div className="section">
-            <h2><span className="title">Documents</span></h2>
-            {allDocs.map((d, i) => (
-              <div key={i} className="doc-row">
-                <div className="pdf-icon"/>
-                <div className="info">
-                  <div className="nm">{d.name}</div>
-                  <div className="mt">{d.compName} · {d.size} · Updated {d.updated}</div>
-                </div>
-                <div style={{ color: 'var(--volt)' }}><Icon.Dl/></div>
+      {/* Documents — from standalone Documents table */}
+      {typeof DOCUMENTS !== 'undefined' && DOCUMENTS.length > 0 && (
+        <div className="section">
+          <h2><span className="title">Documents</span></h2>
+          {DOCUMENTS.map((d, i) => (
+            <a key={i} className="doc-row" href={d.url} target="_blank" rel="noopener" style={{ textDecoration: 'none' }}>
+              <div className="pdf-icon"/>
+              <div className="info">
+                <div className="nm">{d.name}</div>
+                {d.updatedDate && <div className="mt">Updated {d.updatedDate}</div>}
               </div>
-            ))}
-          </div>
-        );
-      })()}
+              <div style={{ color: 'var(--volt)' }}><Icon.External s={16}/></div>
+            </a>
+          ))}
+        </div>
+      )}
 
       <div style={{ height: 24 }}/>
     </div>
