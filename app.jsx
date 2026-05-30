@@ -15,17 +15,28 @@ function IOSInstallPrompt() {
 
   if (!visible) return null;
 
+  const DotsIcon = () => (
+    <svg width="18" height="6" viewBox="0 0 18 6" fill="#5ac8fa" style={{ display:'inline',verticalAlign:'middle',margin:'0 2px 1px' }}>
+      <circle cx="2" cy="3" r="2"/><circle cx="9" cy="3" r="2"/><circle cx="16" cy="3" r="2"/>
+    </svg>
+  );
   const ShareIcon = () => (
     <svg width="16" height="18" viewBox="0 0 16 18" fill="none" stroke="#5ac8fa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display:'inline',verticalAlign:'middle',margin:'0 2px 2px' }}>
       <path d="M8 1v10M4 5l4-4 4 4"/>
       <path d="M1 10v6a1 1 0 001 1h12a1 1 0 001-1v-6"/>
     </svg>
   );
+  const ChevDownIcon = () => (
+    <svg width="14" height="10" viewBox="0 0 14 10" fill="none" stroke="#5ac8fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display:'inline',verticalAlign:'middle',margin:'0 2px 1px' }}>
+      <path d="M1 1l6 7 6-7"/>
+    </svg>
+  );
 
   const steps = [
-    <span>Tap the <b style={{color:'var(--text)'}}>Share</b> button <ShareIcon/> in your browser toolbar</span>,
-    <span>Scroll and tap <b style={{color:'var(--text)'}}>Add to Home Screen</b></span>,
-    <span>Tap <b style={{color:'var(--text)'}}>Add</b> in the top right corner</span>,
+    <span>Tap <DotsIcon/> in the bottom right corner of Safari</span>,
+    <span>Tap <b style={{color:'var(--text)'}}>Share</b> <ShareIcon/></span>,
+    <span>Tap <b style={{color:'var(--text)'}}>View More</b> <ChevDownIcon/></span>,
+    <span>Tap <b style={{color:'var(--text)'}}>Add to Home Screen</b></span>,
   ];
 
   return (
@@ -38,7 +49,7 @@ function IOSInstallPrompt() {
         <div style={{ width:36,height:4,borderRadius:2,background:'rgba(255,255,255,0.18)',margin:'0 auto 20px' }}/>
         {/* Header */}
         <div style={{ display:'flex',alignItems:'center',gap:14,marginBottom:20 }}>
-          <img src="assets/electra-logo.png" style={{ width:48,height:48,borderRadius:12,flexShrink:0 }}/>
+          <img src="assets/electra-logo-black.png" style={{ width:48,height:48,borderRadius:12,flexShrink:0 }}/>
           <div>
             <div style={{ font:'700 17px/1.2 Manrope',color:'var(--text)' }}>Add to Home Screen</div>
             <div style={{ font:'400 13px/1.4 Manrope',color:'var(--text-dim)',marginTop:3 }}>Install for the best experience</div>
