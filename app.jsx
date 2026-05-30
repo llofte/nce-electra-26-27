@@ -75,6 +75,29 @@ function IOSInstallPrompt() {
   );
 }
 
+function TopNav({ tab, setTab }) {
+  const items = [
+    { id: 'home',     label: 'Home',     icon: Icon.Home },
+    { id: 'calendar', label: 'Calendar', icon: Icon.Cal },
+    { id: 'comps',    label: 'Comps',    icon: Icon.Bolt },
+    { id: 'results',  label: 'Results',  icon: Icon.Trophy },
+  ];
+  return (
+    <div style={{ position:'fixed', top:0, left:0, right:0, zIndex:30, height:52, display:'flex', background:'rgba(14,11,7,0.94)', backdropFilter:'blur(16px) saturate(160%)', WebkitBackdropFilter:'blur(16px) saturate(160%)', borderBottom:'1px solid var(--line)' }}>
+      {items.map(it => {
+        const I = it.icon;
+        const active = tab === it.id;
+        return (
+          <button key={it.id} onClick={() => setTab(it.id)} style={{ flex:1, appearance:'none', border:'none', borderBottom:`2px solid ${active ? 'var(--volt)' : 'transparent'}`, background: active ? 'rgba(214,244,61,0.05)' : 'transparent', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:3, color: active ? 'var(--volt)' : 'var(--text-dim)', cursor:'pointer', font:'800 11px/1 "Barlow Condensed"', letterSpacing:'.14em', textTransform:'uppercase', transition:'color .15s, background .15s', paddingBottom:2 }}>
+            <I s={20}/>
+            <span>{it.label}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "palette": "split",
   "density": "comfortable",
@@ -95,6 +118,12 @@ function App() {
 
   // On a real phone, render native full-screen. On desktop, render the phone frame.
   const [isMobile, setIsMobile] = React.useState(() => window.innerWidth <= 480);
+
+  // True when running as an installed PWA (home screen), false when opened in a browser tab
+  const isInstalled = React.useMemo(() =>
+    window.navigator.standalone === true ||
+    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
+  , []);
 
   // Pull-to-refresh
   const pullVal = React.useRef(0);
@@ -220,21 +249,37 @@ function App() {
     body = <ResultsScreen tweaks={t} onOpenScoresheet={openScore}/>;
   }
 
+  const scrollKey = route.tab + (route.screen || '');
+
+  // Installed PWA + desktop frame: bottom nav
   const appInner = (
     <div className="app">
-      <div className="scroll" key={route.tab + (route.screen || '')}>
+      <div className="scroll" key={scrollKey}>
         {body}
       </div>
       <BottomNav tab={route.tab} setTab={(tab) => setRoute({ tab })}/>
     </div>
   );
 
+  // Browser (not installed): top nav, no bottom nav
+  const webAppInner = (
+    <div className="app">
+      <TopNav tab={route.tab} setTab={(tab) => setRoute({ tab })}/>
+      <div className="scroll" style={{ paddingTop: 52, paddingBottom: 20 }} key={scrollKey}>
+        {body}
+      </div>
+    </div>
+  );
+
   if (isMobile) {
+    const isWebMode = !isInstalled;
     const p = Math.min(pullProgress, 1);
-    const indicatorTop = `calc(env(safe-area-inset-top, 0px) + ${p * 54 - 38}px)`;
+    const indicatorTop = isWebMode
+      ? `calc(52px + ${p * 54 - 38}px)`
+      : `calc(env(safe-area-inset-top, 0px) + ${p * 54 - 38}px)`;
     return (
       <>
-        {appInner}
+        {isWebMode ? webAppInner : appInner}
         <IOSInstallPrompt/>
         {pullProgress > 0 && (
           <div style={{ position:'fixed', top:indicatorTop, left:0, right:0, zIndex:300, display:'flex', justifyContent:'center', pointerEvents:'none' }}>
