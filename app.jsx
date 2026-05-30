@@ -36,7 +36,7 @@ function IOSInstallPrompt() {
     <span>Tap <DotsIcon/> in the bottom right corner of Safari</span>,
     <span>Tap <b style={{color:'var(--text)'}}>Share</b> <ShareIcon/></span>,
     <span>Tap <b style={{color:'var(--text)'}}>View More</b> <ChevDownIcon/></span>,
-    <span>Tap <b style={{color:'var(--text)'}}>Add to Home Screen</b></span>,
+    <span>Tap <b style={{color:'var(--text)'}}>Add to Home Screen</b> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#5ac8fa" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display:'inline',verticalAlign:'middle',margin:'0 2px 1px' }}><rect x="1" y="1" width="14" height="14" rx="3"/><path d="M8 5v6M5 8h6"/></svg></span>,
   ];
 
   return (
