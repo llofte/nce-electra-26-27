@@ -173,9 +173,9 @@ const COMPETITIONS = [
     date: '2026-12-12',
     endDate: '2026-12-13',
     status: 'past',
-    placement: 5,
+    placement: 1,
     of: 9,
-    score: 95.60,
+    score: 98.75,
     hasScoresheet: true,
   },
 
@@ -323,12 +323,12 @@ const SCORESHEET = {
   city: 'San Jose, CA',
   date: '2026-12-13',
   division: 'L2 Senior Small',
-  // ── Day 1 (Prelims) — RS 47.50 · DED 0 · PS 95.00 · 6th/9 ─
+  // ── Day 1 (Prelims) — RS 49.10 · DED 0 · PS 98.20 · 1st/9 ─
   totals1: {
-    raw: 95.00,
+    raw: 98.20,
     deductions: 0,
-    final: 95.00,
-    placement: 6,
+    final: 98.20,
+    placement: 1,
     of: 9,
   },
   categories1: [
@@ -344,12 +344,12 @@ const SCORESHEET = {
     { id: 'show',    name: 'Showmanship',              of:  2.0, d: 1.88, d_of: 2.0, judges: [{ n: 'Judge 1', s: 1.87 }, { n: 'Judge 2', s: 1.88 }, { n: 'Judge 3', s: 1.89 }], notes: 'Engaging routine filled with confidence. Eye contact fades at times along with those facials. Energy starts off nicely then it fades and appears at the end of dance. Consistency is the key.' },
   ],
   deductions1: [],
-  // ── Day 2 (Finals) — RS 47.80 · DED 0 · PS 95.60 · 5th/9 ──
+  // ── Day 2 (Finals) — RS 49.38 · DED 0 · PS 98.75 · 1st/9 ──
   totals: {
-    raw: 95.60,
+    raw: 98.75,
     deductions: 0,
-    final: 95.60,
-    placement: 5,
+    final: 98.75,
+    placement: 1,
     of: 9,
   },
   categories: [
@@ -379,19 +379,19 @@ const SCORESHEET = {
   // Day 1 = Prelims, Day 2 = Finals. All teams hit full DOD/MAX bonuses
   // except California Storm Day 2 (dropped stunt DOD skill, 0.20/0.80).
   leaderboard: [
-    { rank: 1, name: 'Royal Heirs',   gym: 'Fierce Cheer Elite',       score: 97.82, deductions: 0.25, score1: 97.80, deductions1: 0,
+    { rank: 1, name: 'Electra',       gym: 'NorCal Elite · S.J.',      score: 98.75, deductions: 0,    score1: 98.20, deductions1: 0, us: true },
+    { rank: 2, name: 'Royal Heirs',   gym: 'Fierce Cheer Elite',       score: 97.82, deductions: 0.25, score1: 97.80, deductions1: 0,
       catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
       catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
-    { rank: 2, name: 'VICIOUS',       gym: 'WC Fame Allstars',         score: 97.73, deductions: 0,    score1: 96.38, deductions1: 0.75,
+    { rank: 3, name: 'VICIOUS',       gym: 'WC Fame Allstars',         score: 97.73, deductions: 0,    score1: 96.38, deductions1: 0.75,
       catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
       catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
-    { rank: 3, name: 'Turquoise',     gym: 'Almaden Spirit',           score: 96.33, deductions: 1.00, score1: 97.00, deductions1: 0,
+    { rank: 4, name: 'Turquoise',     gym: 'Almaden Spirit',           score: 96.33, deductions: 1.00, score1: 97.00, deductions1: 0,
       catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
       catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
-    { rank: 4, name: 'Heat',          gym: 'Champion Cheer Athletics', score: 96.13, deductions: 0,    score1: 95.87, deductions1: 0,
+    { rank: 5, name: 'Heat',          gym: 'Champion Cheer Athletics', score: 96.13, deductions: 0,    score1: 95.87, deductions1: 0,
       catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
       catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
-    { rank: 5, name: 'Electra',       gym: 'NorCal Elite · S.J.',      score: 95.60, deductions: 0,    score1: 95.00, deductions1: 0, us: true },
     { rank: 6, name: 'Pink Diamonds', gym: 'West Coast Icons',         score: 96.00, deductions: 0,    score1: 93.07, deductions1: 2.00,
       catSub:  { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } },
       catSub1: { stunts: { dod: 0.80, max: 0.70 }, st: { dod: 1.00 }, rt: { dod: 0.50, max: 0.50 } } },
