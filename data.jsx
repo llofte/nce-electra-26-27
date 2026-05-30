@@ -104,26 +104,26 @@ function _buildSchedule() {
 
   // Comp days + travel day before each
   const comps = [
-    { d1: '2026-10-17', d2: '2026-10-18', name: 'Battle by the Bay',     city: 'Oakland, CA' },
-    { d1: '2026-11-14', d2: '2026-11-15', name: 'Bay City Brawl',        city: 'Daly City, CA' },
-    { d1: '2026-12-12', d2: '2026-12-13', name: 'Volt Open',             city: 'San Jose, CA' },
-    { d1: '2027-01-16', d2: '2027-01-17', name: 'Cali Classic Showcase', city: 'Anaheim, CA' },
-    { d1: '2027-02-13', d2: '2027-02-14', name: 'Spirit Showdown West',  city: 'San Diego, CA' },
-    { d1: '2027-03-13', d2: '2027-03-14', name: 'California Classic',    city: 'Anaheim, CA' },
-    { d1: '2027-04-17', d2: '2027-04-18', name: 'Western Nationals',     city: 'Las Vegas, NV' },
-    { d1: '2027-05-01', d2: '2027-05-02', name: 'Worlds Bid Comp',       city: 'Orlando, FL' },
+    { id: 'bbb-2026',    d1: '2026-10-17', d2: '2026-10-18', name: 'Battle by the Bay',     city: 'Oakland, CA' },
+    { id: 'bcb-2026',    d1: '2026-11-14', d2: '2026-11-15', name: 'Bay City Brawl',        city: 'Daly City, CA' },
+    { id: 'volt-2026',   d1: '2026-12-12', d2: '2026-12-13', name: 'Volt Open',             city: 'San Jose, CA' },
+    { id: 'ccs-2027',    d1: '2027-01-16', d2: '2027-01-17', name: 'Cali Classic Showcase', city: 'Anaheim, CA' },
+    { id: 'ssw-2027',    d1: '2027-02-13', d2: '2027-02-14', name: 'Spirit Showdown West',  city: 'San Diego, CA' },
+    { id: 'ccc-2027',    d1: '2027-03-13', d2: '2027-03-14', name: 'California Classic',    city: 'Anaheim, CA' },
+    { id: 'wn-2027',     d1: '2027-04-17', d2: '2027-04-18', name: 'Western Nationals',     city: 'Las Vegas, NV' },
+    { id: 'worlds-2027', d1: '2027-05-01', d2: '2027-05-02', name: 'Worlds Bid Comp',       city: 'Orlando, FL' },
   ];
   comps.forEach(c => {
     // Travel day (day before)
     const d1 = new Date(c.d1 + 'T00:00:00');
     const travel = new Date(d1.getTime() - 86400000);
     events.push({
-      date: _iso(travel), kind: 'travel',
+      date: _iso(travel), kind: 'travel', compId: c.id,
       title: `Travel → ${c.city.split(',')[0]}`,
-      meta: 'See comp page for details', time: '',
+      meta: '', time: '',
     });
-    events.push({ date: c.d1, kind: 'comp', title: `${c.name} · Day 1`, meta: 'Prelims', time: 'See comp page' });
-    events.push({ date: c.d2, kind: 'comp', title: `${c.name} · Day 2`, meta: 'Finals + Awards', time: 'See comp page' });
+    events.push({ date: c.d1, kind: 'comp', compId: c.id, title: `${c.name} · Day 1`, meta: 'Prelims', time: '' });
+    events.push({ date: c.d2, kind: 'comp', compId: c.id, title: `${c.name} · Day 2`, meta: 'Finals + Awards', time: '' });
   });
 
   return events.sort((a, b) => a.date.localeCompare(b.date));

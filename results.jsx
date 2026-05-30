@@ -76,6 +76,7 @@ function ResultsScreen({ tweaks, onOpenScoresheet }) {
           <ResultRow key={c.id} comp={c} onOpen={() => c.hasScoresheet && onOpenScoresheet(c.id)}/>
         ))}
       </div>
+      <div style={{ height: 24 }}/>
     </div>
   );
 }
@@ -441,6 +442,7 @@ function DivisionLeaderboard({ sheet }) {
           </tbody>
         </table>
       </div>
+      <div style={{ height: 24 }}/>
     </div>
   );
 }
@@ -472,7 +474,8 @@ function CompareView({ sheet }) {
           {others.map(t => (
             <button key={t.name} onClick={() => setPick(t.name)} className="chip" style={{
               cursor: 'pointer', appearance: 'none',
-              padding: '11px 14px',
+              padding: '13px 18px',
+              font: '800 14px/1 "Barlow Condensed"',
               background: pickId === t.name ? 'rgba(255,255,255,0.18)' : 'rgba(255,255,255,0.06)',
               color: pickId === t.name ? 'var(--text)' : 'var(--text-dim)',
               borderColor: pickId === t.name ? 'rgba(255,255,255,0.35)' : 'var(--line)',
@@ -504,7 +507,7 @@ function CompareView({ sheet }) {
           {hasTwoDay && !pendingDay2 && (
             <div style={{ display: 'flex', background: 'rgba(255,255,255,0.07)', border: '1px solid var(--line)', borderRadius: 10, padding: 2, flexShrink: 0 }}>
               {['day1', 'day2'].map(d => (
-                <button key={d} onClick={() => setDay(d)} style={{ appearance: 'none', border: 'none', cursor: 'pointer', height: 32, paddingInline: 12, borderRadius: 8, background: activeDay === d ? 'rgba(255,255,255,0.14)' : 'transparent', color: activeDay === d ? 'var(--text)' : 'var(--text-faint)', font: '800 13px/1 "Barlow Condensed"', letterSpacing: '.12em', textTransform: 'uppercase' }}>
+                <button key={d} onClick={() => setDay(d)} style={{ appearance: 'none', border: 'none', cursor: 'pointer', height: 40, paddingInline: 18, borderRadius: 8, background: activeDay === d ? 'rgba(255,255,255,0.14)' : 'transparent', color: activeDay === d ? 'var(--text)' : 'var(--text-faint)', font: '800 15px/1 "Barlow Condensed"', letterSpacing: '.12em', textTransform: 'uppercase' }}>
                   {d === 'day1' ? 'D1' : 'D2'}
                 </button>
               ))}
@@ -634,6 +637,7 @@ function CompareView({ sheet }) {
           })}
         </div>
       </div>
+      <div style={{ height: 24 }}/>
     </>
   );
 }

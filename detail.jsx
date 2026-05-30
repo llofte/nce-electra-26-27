@@ -12,8 +12,7 @@ function CompDetail({ compId, onBack }) {
 
   const tabs = [
     { id: 'overview', label: 'Info' },
-    { id: 'sched',    label: 'Sched' },
-    { id: 'docs',     label: 'Docs' },
+    { id: 'sched',    label: 'Schedule' },
     { id: 'div',      label: 'Teams' },
   ];
 
@@ -40,7 +39,6 @@ function CompDetail({ compId, onBack }) {
       {/* Tab content */}
       {tab === 'overview' && <CompOverview comp={comp}/>}
       {tab === 'sched'    && <CompSchedule comp={comp}/>}
-      {tab === 'docs'     && <CompDocs comp={comp}/>}
       {tab === 'div'      && <CompDivision comp={comp}/>}
     </div>
   );
@@ -266,6 +264,7 @@ function CompOverview({ comp }) {
           </div>
         </div>
       )}
+      <div style={{ height: 24 }}/>
     </>
   );
 }
@@ -334,6 +333,7 @@ function ScheduleDay({ label, rows }) {
           );
         })}
       </div>
+      <div style={{ height: 24 }}/>
     </div>
   );
 }
@@ -430,6 +430,7 @@ function CompDivision({ comp }) {
           </div>
         ))}
       </div>
+      <div style={{ height: 24 }}/>
     </div>
   );
 }

@@ -157,6 +157,32 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
         </h2>
         {upcoming.map(c => <CompCard key={c.id} comp={c} onOpen={() => onOpenComp(c.id)}/>)}
       </div>
+
+      {/* Documents — only shown when at least one comp has docs */}
+      {(() => {
+        const allDocs = allComps
+          .filter(c => c.docs && c.docs.length > 0)
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .flatMap(c => c.docs.map(d => ({ ...d, compName: c.short || c.name, compId: c.id })));
+        if (allDocs.length === 0) return null;
+        return (
+          <div className="section">
+            <h2><span className="title">Documents</span></h2>
+            {allDocs.map((d, i) => (
+              <div key={i} className="doc-row">
+                <div className="pdf-icon"/>
+                <div className="info">
+                  <div className="nm">{d.name}</div>
+                  <div className="mt">{d.compName} · {d.size} · Updated {d.updated}</div>
+                </div>
+                <div style={{ color: 'var(--volt)' }}><Icon.Dl/></div>
+              </div>
+            ))}
+          </div>
+        );
+      })()}
+
+      <div style={{ height: 24 }}/>
     </div>
   );
 }
@@ -285,9 +311,9 @@ function CalendarScreen({ onOpenComp }) {
   const canNext = activeIdx < SEASON_MONTHS.length - 1;
   const onCurrentMonth = activeIdx === todayIdx;
 
-  // Handler for tapping a comp day in the grid or agenda
-  const tapCompDate = (iso) => {
-    const cid = COMP_BY_DATE[iso];
+  // Handler for tapping a comp/travel event — accepts direct compId or falls back to date lookup
+  const tapComp = (iso, compId) => {
+    const cid = compId || COMP_BY_DATE[iso];
     if (cid) onOpenComp(cid);
   };
 
@@ -351,8 +377,9 @@ function CalendarScreen({ onOpenComp }) {
         month={activeMonth}
         byDate={byDate}
         isCurrentMonth={onCurrentMonth}
-        onTapComp={tapCompDate}
+        onTapComp={tapComp}
       />
+      <div style={{ height: 24 }}/>
     </div>
   );
 }
@@ -489,11 +516,11 @@ function MonthAgenda({ month, byDate, isCurrentMonth, onTapComp }) {
                       {events.length === 0
                         ? <span>— rest day —</span>
                         : events.map((e, i) => {
-                            const isComp = e.kind === 'comp';
+                            const isLinked = e.kind === 'comp' || !!e.compId;
                             return (
                               <div key={i} className={`ev ${e.kind}`}
-                                   onClick={isComp ? () => onTapComp(_iso(d)) : undefined}
-                                   style={{ cursor: isComp ? 'pointer' : 'default' }}>
+                                   onClick={isLinked ? () => onTapComp(_iso(d), e.compId) : undefined}
+                                   style={{ cursor: isLinked ? 'pointer' : 'default' }}>
                                 <div className="what">
                                   <div className="ttl">{e.title}</div>
                                   {e.meta && <div className="meta">{e.meta}</div>}
@@ -558,6 +585,7 @@ function CompsScreen({ tweaks, onOpenComp }) {
           ))}
         </div>
       )}
+      <div style={{ height: 24 }}/>
     </div>
   );
 }
