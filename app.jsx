@@ -75,8 +75,8 @@ function App() {
 
   // Route: { tab: 'home'|'calendar'|'comps'|'results', screen?: 'compDetail'|'scoresheet', id? }
   const [route, setRoute] = React.useState(() => {
-    const saved = sessionStorage.getItem('ptr-tab');
-    if (saved) { sessionStorage.removeItem('ptr-tab'); return { tab: saved }; }
+    const saved = sessionStorage.getItem('ptr-route');
+    if (saved) { sessionStorage.removeItem('ptr-route'); try { return JSON.parse(saved); } catch(e) {} }
     return { tab: 'home' };
   });
   const routeRef = React.useRef(route);
@@ -139,7 +139,7 @@ function App() {
       if (active && pullVal.current >= 1) {
         pullVal.current = 1.5;
         setPullProgress(1.5);
-        sessionStorage.setItem('ptr-tab', routeRef.current.tab);
+        sessionStorage.setItem('ptr-route', JSON.stringify(routeRef.current));
         setTimeout(() => window.location.reload(), 400);
       } else {
         pullVal.current = 0;
