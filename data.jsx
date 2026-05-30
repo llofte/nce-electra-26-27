@@ -370,7 +370,7 @@ const SCORESHEET = {
     tumbling: 'Good use of variety in patterns to highlight tumbling skills performed. Some skills lacked clarity which took away from visual effect.',
   },
   deductionCards: [
-    { type: 'deduction', name: 'Athlete Fall', amount: 0.15, note: 'center athlete fell during BHS during pyramid' },
+    { type: 'deduction', name: 'Athlete Fall', amount: 0.15, note: 'MBF top person dismount' },
     { type: 'warning', name: 'Building Out of Level', note: 'VT 1:32 – Lacks required spotter' },
     { type: 'warning', name: 'Building Out of Level', note: 'VT 1:42 – Lacked required spotter' },
     { type: 'warning', name: 'Building Out of Level', note: 'VT 2:17 – Lacks required spotter' },
