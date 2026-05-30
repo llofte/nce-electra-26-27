@@ -176,8 +176,27 @@ function countdownTo(targetISO, fromToday) {
   return { days, hours };
 }
 
+// Persists state in sessionStorage so pull-to-refresh restores sub-tab position.
+// Key should be unique per screen instance (e.g. include compId).
+function usePersistentState(key, defaultValue) {
+  const [state, setState] = React.useState(() => {
+    const saved = sessionStorage.getItem(key);
+    if (saved != null) { try { return JSON.parse(saved); } catch(e) {} }
+    return defaultValue;
+  });
+  const set = React.useCallback((val) => {
+    setState(prev => {
+      const next = typeof val === 'function' ? val(prev) : val;
+      sessionStorage.setItem(key, JSON.stringify(next));
+      return next;
+    });
+  }, [key]);
+  return [state, set];
+}
+
 Object.assign(window, {
   Icon, LightningBolt, AppHeader, BrandMark, ScreenHeader, BottomNav,
   D, nextComp, countdownTo,
   getCompetitions, getEffectiveToday,
+  usePersistentState,
 });

@@ -2,7 +2,7 @@
 
 function CompDetail({ compId, onBack }) {
   const comp = COMPETITIONS.find(c => c.id === compId);
-  const [tab, setTab] = React.useState('overview');
+  const [tab, setTab] = usePersistentState(`ptr-detail-${compId}`, 'overview');
 
   if (!comp) return null;
 

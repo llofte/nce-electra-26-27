@@ -160,7 +160,7 @@ function ScoresheetScreen({ compId, onBack }) {
   const hasTwoDay = !!s.categories1;
   const pendingDay2 = !!s.pendingDay2;
   const activeTotals = pendingDay2 ? s.totals1 : s.totals;
-  const [view, setView] = React.useState('breakdown'); // breakdown | leaderboard | compare
+  const [view, setView] = usePersistentState(`ptr-scoresheet-${compId}`, 'breakdown');
   const comp = COMPETITIONS.find(c => c.id === compId) || COMPETITIONS.find(c => c.id === s.compId);
 
   const tabs = [
