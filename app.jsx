@@ -104,7 +104,23 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "preSeason": false
 }/*EDITMODE-END*/;
 
+function LoadingScreen() {
+  return (
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', height:'100%', gap:16 }}>
+      <img src="assets/electra-logo.png" style={{ width:64, height:64, borderRadius:16, opacity:0.85 }}/>
+      <div style={{ font:'600 13px/1 Manrope', color:'var(--text-dim)', letterSpacing:'.06em' }}>Loading…</div>
+    </div>
+  );
+}
+
 function App() {
+  const [dataReady, setDataReady] = React.useState(false);
+  React.useEffect(() => {
+    window.DATA_READY
+      .then(() => setDataReady(true))
+      .catch(err => { console.error('Data load failed:', err); setDataReady(true); });
+  }, []);
+
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
 
   // Route: { tab: 'home'|'calendar'|'comps'|'results', screen?: 'compDetail'|'scoresheet', id? }
@@ -235,7 +251,9 @@ function App() {
 
   // What screen to render
   let body;
-  if (route.screen === 'compDetail') {
+  if (!dataReady) {
+    body = <LoadingScreen/>;
+  } else if (route.screen === 'compDetail') {
     body = <CompDetail compId={route.id} onBack={back}/>;
   } else if (route.screen === 'scoresheet') {
     body = <ScoresheetScreen compId={route.id} onBack={back}/>;
