@@ -265,7 +265,7 @@ function App() {
   const webAppInner = (
     <div className="app">
       <TopNav tab={route.tab} setTab={(tab) => setRoute({ tab })}/>
-      <div className="scroll" style={{ paddingTop: 52, paddingBottom: 20 }} key={scrollKey}>
+      <div className="scroll" style={{ paddingTop: 66, paddingBottom: 20 }} key={scrollKey}>
         {body}
       </div>
     </div>
