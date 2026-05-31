@@ -98,6 +98,9 @@ function CompOverview({ comp }) {
                   <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{comp.city}</div>
                 </div>
               </div>
+              <a className="btn ghost block" href={`https://maps.apple.com/?q=${encodeURIComponent(comp.venue + ', ' + comp.city)}`} target="_blank" rel="noopener" style={{ marginTop: 12, textDecoration: 'none' }}>
+                <Icon.Drive/> Open in Maps
+              </a>
             </div>
           </div>
         )}
