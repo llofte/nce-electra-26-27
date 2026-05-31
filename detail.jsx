@@ -104,6 +104,26 @@ function CompOverview({ comp }) {
             </div>
           </div>
         )}
+        {comp.lucyItinerary?.hotel && (
+          <div className="section" style={{ paddingTop: 12 }}>
+            <h2><span className="title">Lucy's Hotel</span></h2>
+            <div className="card" style={{ padding: 14 }}>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(212,164,41,0.13)', border: '1px solid rgba(212,164,41,0.3)', display: 'grid', placeItems: 'center', fontSize: 18, flexShrink: 0 }}>🏨</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.lucyItinerary.hotel.name}</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>Check-in {comp.lucyItinerary.hotel.checkIn} · Check-out {comp.lucyItinerary.hotel.checkOut}</div>
+                  {comp.lucyItinerary.hotel.distToVenue && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.hotel.distToVenue} from venue</div>}
+                </div>
+              </div>
+              {comp.lucyItinerary.hotel.mapUrl && (
+                <a className="btn ghost block" href={comp.lucyItinerary.hotel.mapUrl} target="_blank" rel="noopener" style={{ marginTop: 10, textDecoration: 'none' }}>
+                  <Icon.Drive/> Open in Maps
+                </a>
+              )}
+            </div>
+          </div>
+        )}
         {comp.varsityUrl && (
           <div className="section" style={{ paddingTop: 12 }}>
             <h2><span className="title">Learn More</span></h2>
