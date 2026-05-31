@@ -94,7 +94,7 @@ function CompOverview({ comp }) {
           </div>
         )}
         {comp.lucyItinerary && (
-          <div className="section" style={{ paddingTop: 12 }}>
+          <div className="section" style={{ paddingTop: 0 }}>
             <h2><span className="title">Lucy's Itinerary</span></h2>
             {comp.lucyItinerary.flights && (
               <div className="card" style={{ padding: 14 }}>
@@ -149,7 +149,7 @@ function CompOverview({ comp }) {
           </div>
         )}
         {comp.venue && (
-          <div className="section" style={{ paddingTop: 12 }}>
+          <div className="section" style={{ paddingTop: hasItinerary ? 12 : 0 }}>
             <h2><span className="title">Venue</span></h2>
             <div className="card" style={{ padding: 14 }}>
               <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
