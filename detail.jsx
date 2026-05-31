@@ -87,6 +87,20 @@ function CompOverview({ comp }) {
             Comp details will be released closer to the event.
           </div>
         </div>
+        {comp.venue && (
+          <div className="section" style={{ paddingTop: 12 }}>
+            <h2><span className="title">Venue</span></h2>
+            <div className="card" style={{ padding: 14 }}>
+              <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(214,244,61,0.08)', border: '1px solid rgba(214,244,61,0.2)', display: 'grid', placeItems: 'center', fontSize: 18, flexShrink: 0 }}>🏢</div>
+                <div>
+                  <div style={{ font: '700 15px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.venue}</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{comp.city}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         {comp.varsityUrl && (
           <div className="section" style={{ paddingTop: 12 }}>
             <h2><span className="title">Learn More</span></h2>
