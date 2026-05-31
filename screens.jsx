@@ -359,7 +359,7 @@ function CalendarScreen({ onOpenComp }) {
         <span><i className="dot comp"/> Comp</span>
         <span><i className="dot practice"/> Practice</span>
         <span><i className="dot travel"/> Travel</span>
-        <span><i className="dot opengym"/> Open Gym</span>
+        <span><i className="dot opengym"/> Gym</span>
         <span><i className="dot lucy"/> Lucy</span>
         <span><i className="dot other"/> Other</span>
       </div>
