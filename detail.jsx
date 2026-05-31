@@ -80,13 +80,13 @@ function CompHero({ comp, daysOut }) {
 function CompOverview({ comp }) {
   const t = comp.travel;
   if (!t) {
-    const hasVenue   = !!comp.venue;
-    const hasHotel   = !!comp.lucyItinerary?.hotel;
-    const hasVarsity = !!comp.varsityUrl;
-    const varsityOnly = hasVarsity && !hasVenue && !hasHotel;
+    const hasVenue     = !!comp.venue;
+    const hasItinerary = !!comp.lucyItinerary;
+    const hasVarsity   = !!comp.varsityUrl;
+    const varsityOnly  = hasVarsity && !hasVenue && !hasItinerary;
     return (
       <>
-        {!hasVenue && !hasHotel && !hasVarsity && (
+        {!hasVenue && !hasItinerary && !hasVarsity && (
           <div className="section" style={{ paddingTop: 0 }}>
             <div className="card empty-mini">
               Comp details will be released closer to the event.
@@ -110,24 +110,59 @@ function CompOverview({ comp }) {
             </div>
           </div>
         )}
-        {comp.lucyItinerary?.hotel && (
+        {comp.lucyItinerary && (
           <div className="section" style={{ paddingTop: 12 }}>
-            <h2><span className="title">Lucy's Hotel</span></h2>
-            <div className="card" style={{ padding: 14 }}>
-              <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(212,164,41,0.13)', border: '1px solid rgba(212,164,41,0.3)', display: 'grid', placeItems: 'center', fontSize: 18, flexShrink: 0 }}>🏨</div>
-                <div style={{ flex: 1 }}>
-                  <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.lucyItinerary.hotel.name}</div>
-                  <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>Check-in {comp.lucyItinerary.hotel.checkIn} · Check-out {comp.lucyItinerary.hotel.checkOut}</div>
-                  {comp.lucyItinerary.hotel.distToVenue && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.hotel.distToVenue} from venue</div>}
-                </div>
+            <h2><span className="title">Lucy's Itinerary</span></h2>
+            {comp.lucyItinerary.flights && (
+              <div className="card" style={{ padding: 14 }}>
+                {comp.lucyItinerary.flights.outbound && (
+                  <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                    <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(93,175,255,0.13)', border: '1px solid rgba(93,175,255,0.3)', display: 'grid', placeItems: 'center', flexShrink: 0, fontSize: 20, lineHeight: 1 }}>🛫</div>
+                    <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '52px 1fr auto', gap: '0 8px', alignItems: 'center' }}>
+                      <div>
+                        <div style={{ font: '800 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[0]}</div>
+                        <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[1]}</div>
+                      </div>
+                      <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', color: 'var(--text)', letterSpacing: '.02em' }}>{comp.lucyItinerary.flights.outbound.from} → {comp.lucyItinerary.flights.outbound.to}</div>
+                      <div style={{ font: '700 18px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.outbound.depart}</div>
+                    </div>
+                  </div>
+                )}
+                {comp.lucyItinerary.flights.outbound && comp.lucyItinerary.flights.ret && (
+                  <div style={{ height: 1, background: 'var(--line)', margin: '12px 0' }}/>
+                )}
+                {comp.lucyItinerary.flights.ret && (
+                  <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+                    <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(93,175,255,0.13)', border: '1px solid rgba(93,175,255,0.3)', display: 'grid', placeItems: 'center', flexShrink: 0, fontSize: 20, lineHeight: 1 }}>🛬</div>
+                    <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '52px 1fr auto', gap: '0 8px', alignItems: 'center' }}>
+                      <div>
+                        <div style={{ font: '800 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.ret.date.split(' ')[0]}</div>
+                        <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.ret.date.split(' ')[1]}</div>
+                      </div>
+                      <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', color: 'var(--text)', letterSpacing: '.02em' }}>{comp.lucyItinerary.flights.ret.from} → {comp.lucyItinerary.flights.ret.to}</div>
+                      <div style={{ font: '700 18px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.ret.depart}</div>
+                    </div>
+                  </div>
+                )}
               </div>
-              {comp.lucyItinerary.hotel.mapUrl && (
-                <a className="btn ghost block" href={comp.lucyItinerary.hotel.mapUrl} target="_blank" rel="noopener" style={{ marginTop: 10, textDecoration: 'none' }}>
-                  <Icon.Drive/> Open in Maps
-                </a>
-              )}
-            </div>
+            )}
+            {comp.lucyItinerary.hotel && (
+              <div className="card" style={{ padding: 14, marginTop: 8 }}>
+                <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <div style={{ width: 38, height: 38, borderRadius: 10, background: 'rgba(212,164,41,0.13)', border: '1px solid rgba(212,164,41,0.3)', display: 'grid', placeItems: 'center', fontSize: 18, flexShrink: 0 }}>🏨</div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.lucyItinerary.hotel.name}</div>
+                    <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>Check-in {comp.lucyItinerary.hotel.checkIn} · Check-out {comp.lucyItinerary.hotel.checkOut}</div>
+                    {comp.lucyItinerary.hotel.distToVenue && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.hotel.distToVenue} from venue</div>}
+                  </div>
+                </div>
+                {comp.lucyItinerary.hotel.mapUrl && (
+                  <a className="btn ghost block" href={comp.lucyItinerary.hotel.mapUrl} target="_blank" rel="noopener" style={{ marginTop: 10, textDecoration: 'none' }}>
+                    <Icon.Drive/> Open in Maps
+                  </a>
+                )}
+              </div>
+            )}
           </div>
         )}
         {comp.varsityUrl && (
