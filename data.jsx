@@ -34,9 +34,8 @@ function _json(str) {
 }
 
 // ============================================================
-// SCHEDULE — Mon/Wed practices are generated client-side;
-// everything else (open gyms, privates, special events,
-// cancellations) comes from Airtable Schedule Events table.
+// SCHEDULE — All events (practices, open gyms, privates, closures,
+// cancellations) come from Airtable Schedule Events table.
 // ============================================================
 const _iso = (d) => {
   const y = d.getFullYear();
@@ -47,16 +46,6 @@ const _iso = (d) => {
 
 function _buildSchedule(competitions, airtableEvents) {
   const events = [];
-
-  // Regular Mon & Wed practices for the full season
-  const seasonStart = new Date(2026, 4, 1);
-  const seasonEnd   = new Date(2027, 4, 31);
-  for (let d = new Date(seasonStart); d <= seasonEnd; d = new Date(d.getTime() + 86400000)) {
-    const dow = d.getDay();
-    if (dow === 1 || dow === 3) {
-      events.push({ date: _iso(d), kind: 'practice', title: 'Practice', meta: '', time: '7 – 9pm' });
-    }
-  }
 
   // Airtable events: merge non-cancellations; track cancelled dates
   const cancelledDates = new Set();
