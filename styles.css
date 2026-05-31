@@ -488,7 +488,7 @@ h1, h2, h3, h4 { margin: 0; }
 }
 .doc-row .pdf-icon::after { content: "PDF"; }
 .doc-row .info { flex: 1; min-width: 0; }
-.doc-row .nm   { font: 700 15px/1.2 'Manrope'; color: var(--text); }
+.doc-row .nm   { font: 700 17px/1.2 'Manrope'; color: var(--text); }
 .doc-row .mt   { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
 
 /* roster row */

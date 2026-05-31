@@ -71,12 +71,11 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
   // Total performances: most comps = 2 days = 2 performances
   const totalPerfs = past.reduce((n, c) => n + (c.endDate && c.endDate !== c.date ? 2 : 1), 0);
 
-  // this week's remaining events
-  const startWeek = D.startOfWeek(today);
+  // next 7 days
   const weekEvents = SCHEDULE
     .filter(e => {
       const d = D.parse(e.date);
-      return d >= today && d < D.addDays(startWeek, 7);
+      return d >= today && d < D.addDays(today, 7);
     })
     .slice(0, 4);
 
@@ -122,7 +121,7 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
       {/* This week glance */}
       <div className="section">
         <h2>
-          <span className="title">This Week</span>
+          <span className="title">Next 7 Days</span>
           <span className="more" onClick={() => onTab('calendar')} style={{ cursor: 'pointer' }}>Full Calendar →</span>
         </h2>
         <div>
@@ -164,12 +163,10 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
           <h2><span className="title">Documents</span></h2>
           {DOCUMENTS.map((d, i) => (
             <a key={i} className="doc-row" href={d.url} target="_blank" rel="noopener" style={{ textDecoration: 'none' }}>
-              <div className="pdf-icon"/>
               <div className="info">
                 <div className="nm">{d.name}</div>
-                {d.updatedDate && <div className="mt">Updated {d.updatedDate}</div>}
               </div>
-              <div style={{ color: 'var(--volt)' }}><Icon.External s={16}/></div>
+              <div style={{ color: 'var(--volt)', flexShrink: 0 }}><Icon.External s={18}/></div>
             </a>
           ))}
         </div>
@@ -511,9 +508,11 @@ function MonthAgenda({ month, byDate, isCurrentMonth, onTapComp }) {
                         : events.map((e, i) => {
                             if (e.kind === 'opengym' && e.title === 'Gym Closed') {
                               return (
-                                <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '4px 0', minHeight: 48, justifyContent: 'center' }}>
-                                  <span style={{ fontStyle: 'italic', color: '#5dafff', fontSize: 14 }}>— gym closed —</span>
-                                  {e.meta && <span style={{ fontSize: 13, color: 'var(--text-faint)' }}>{e.meta.toLowerCase()}</span>}
+                                <div key={i} style={{ display: 'flex', alignItems: 'center', padding: '4px 0', minHeight: 48 }}>
+                                  <span style={{ fontStyle: 'italic', fontSize: 14 }}>
+                                    <span style={{ color: '#5dafff' }}>— gym closed —</span>
+                                    {e.meta && <span style={{ color: 'var(--text-faint)' }}> {e.meta.toLowerCase()}</span>}
+                                  </span>
                                 </div>
                               );
                             }
