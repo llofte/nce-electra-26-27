@@ -381,7 +381,7 @@ function CalendarScreen({ onOpenComp }) {
 function MonthGrid({ month, byDate }) {
   const firstOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
   const gridStart = new Date(firstOfMonth);
-  gridStart.setDate(1 - firstOfMonth.getDay()); // Sunday on or before
+  gridStart.setDate(1 - ((firstOfMonth.getDay() + 6) % 7)); // Monday on or before
 
   // Build 6 weeks (42 days) of cells
   const cells = [];
@@ -403,7 +403,7 @@ function MonthGrid({ month, byDate }) {
 
   return (
     <div className="month-grid">
-      {['S','M','T','W','T','F','S'].map((d, i) => (
+      {['M','T','W','T','F','S','S'].map((d, i) => (
         <div key={'h'+i} className="mg-dow">{d}</div>
       ))}
       {cells.map((d, i) => {
@@ -434,7 +434,7 @@ function MonthAgenda({ month, byDate, isCurrentMonth, onTapComp }) {
   // Walk week starts (Sun) overlapping this month
   const weeks = [];
   let cur = new Date(firstOfMonth);
-  cur.setDate(1 - firstOfMonth.getDay()); // first Sunday on/before first of month
+  cur.setDate(1 - ((firstOfMonth.getDay() + 6) % 7)); // first Monday on/before first of month
   while (cur <= lastOfMonth) {
     weeks.push(new Date(cur));
     cur = new Date(cur.getTime() + 7 * 86400000);

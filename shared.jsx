@@ -44,26 +44,7 @@ const LightningBolt = ({ size = 60, color = 'var(--volt)', glow = true, style })
   </svg>
 );
 
-// ─── App header (sticky top, under status bar) ──────────────
-function AppHeader({ unread = 3 }) {
-  return (
-    <div className="app-hdr">
-      <div className="who">
-        <img src="assets/electra-logo.png" alt="Electra"/>
-        <div>
-          <div className="tag">NorCal Elite · San Jose</div>
-          <div className="name">Welcome back, <b>{ATHLETE.parent}</b></div>
-        </div>
-      </div>
-      <button className="bell" aria-label="Notifications">
-        <Icon.Bell/>
-        {unread > 0 && <span className="dot"/>}
-      </button>
-    </div>
-  );
-}
-
-// ─── Brand mark (replaces header on home — no login, no bell) ─
+// ─── Brand mark ─────────────────────────────────────────────
 function BrandMark() {
   return (
     <div className="brand-mark">
@@ -134,7 +115,7 @@ const D = {
   startOfWeek: (d) => {
     const day = d.getDay(); // 0=Sun
     const x = new Date(d);
-    x.setDate(d.getDate() - day);
+    x.setDate(d.getDate() - ((day + 6) % 7)); // Monday-first
     return x;
   },
   addDays: (d, n) => {
