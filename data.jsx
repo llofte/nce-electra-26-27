@@ -82,9 +82,12 @@ function _buildSchedule(competitions, airtableEvents) {
   competitions.forEach(c => {
     const d1 = new Date(c.date + 'T00:00:00');
     const travel = new Date(d1.getTime() - 86400000);
+    const outbound = c.lucyItinerary?.flights?.outbound;
     filtered.push({
       date: _iso(travel), kind: 'travel', compId: c.id,
-      title: `Travel → ${c.city.split(',')[0]}`, meta: '', time: '',
+      title: `Travel → ${c.city.split(',')[0]}`,
+      meta:  outbound ? `${outbound.from} → ${outbound.to}` : '',
+      time:  outbound ? outbound.depart : '',
     });
     filtered.push({ date: c.date,    kind: 'comp', compId: c.id, title: `${c.name} · Day 1`, meta: 'Prelims',          time: '' });
     if (c.endDate) {
