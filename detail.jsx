@@ -188,51 +188,53 @@ function CompOverview({ comp }) {
   const fmtDow  = (d) => d ? d.toLocaleDateString('en-US', { weekday: 'short' }) : '';
   return (
     <>
-      {/* 3-up KV row: Day 1 / Day 2 / Awards (or Perf / Awards for 1-day) */}
-      <div className={`kvs ${isTwoDay ? 'three' : ''}`}>
-        {isTwoDay ? (
-          <>
-            <div className="kv">
-              <div className="k">Day 1 · {fmtDow(D.parse(comp.date))}</div>
-              <div className="v" style={{ color: 'var(--volt)' }}>
-                {fmtTime(perfTime)}
-                <small style={{ color: 'var(--text-dim)' }}>Prelims · {comp.mat || 'Mat A'}</small>
+      {/* 3-up KV row — only shown when at least one time is available */}
+      {(perfTime || perf2Time || awardsTime) && (
+        <div className={`kvs ${isTwoDay ? 'three' : ''}`}>
+          {isTwoDay ? (
+            <>
+              <div className="kv">
+                <div className="k">Day 1 · {fmtDow(D.parse(comp.date))}</div>
+                <div className="v" style={{ color: 'var(--volt)' }}>
+                  {fmtTime(perfTime)}
+                  <small style={{ color: 'var(--text-dim)' }}>Prelims · {comp.mat || 'Mat A'}</small>
+                </div>
               </div>
-            </div>
-            <div className="kv">
-              <div className="k">Day 2 · {fmtDow(D.parse(comp.endDate))}</div>
-              <div className="v" style={{ color: 'var(--volt)' }}>
-                {fmtTime(perf2Time)}
-                <small style={{ color: 'var(--text-dim)' }}>Finals · {comp.mat || 'Mat A'}</small>
+              <div className="kv">
+                <div className="k">Day 2 · {fmtDow(D.parse(comp.endDate))}</div>
+                <div className="v" style={{ color: 'var(--volt)' }}>
+                  {fmtTime(perf2Time)}
+                  <small style={{ color: 'var(--text-dim)' }}>Finals · {comp.mat || 'Mat A'}</small>
+                </div>
               </div>
-            </div>
-            <div className="kv">
-              <div className="k">Awards · {fmtDow(D.parse(comp.endDate))}</div>
-              <div className="v">
-                {awardsTime ? fmtTime(awardsTime) : '5:00pm'}
-                <small style={{ color: 'var(--text-dim)' }}>Main floor</small>
+              <div className="kv">
+                <div className="k">Awards · {fmtDow(D.parse(comp.endDate))}</div>
+                <div className="v">
+                  {fmtTime(awardsTime)}
+                  <small style={{ color: 'var(--text-dim)' }}>Main floor</small>
+                </div>
               </div>
-            </div>
-          </>
-        ) : (
-          <>
-            <div className="kv">
-              <div className="k">Performance</div>
-              <div className="v" style={{ color: 'var(--volt)' }}>
-                {fmtTime(perfTime)}
-                <small style={{ color: 'var(--text-dim)' }}>{fmtDow(D.parse(comp.date))} · {comp.mat || 'Mat A'}</small>
+            </>
+          ) : (
+            <>
+              <div className="kv">
+                <div className="k">Performance</div>
+                <div className="v" style={{ color: 'var(--volt)' }}>
+                  {fmtTime(perfTime)}
+                  <small style={{ color: 'var(--text-dim)' }}>{fmtDow(D.parse(comp.date))} · {comp.mat || 'Mat A'}</small>
+                </div>
               </div>
-            </div>
-            <div className="kv">
-              <div className="k">Awards</div>
-              <div className="v">
-                {awardsTime ? fmtTime(awardsTime) : '5:00pm'}
-                <small style={{ color: 'var(--text-dim)' }}>Main floor</small>
+              <div className="kv">
+                <div className="k">Awards</div>
+                <div className="v">
+                  {fmtTime(awardsTime)}
+                  <small style={{ color: 'var(--text-dim)' }}>Main floor</small>
+                </div>
               </div>
-            </div>
-          </>
-        )}
-      </div>
+            </>
+          )}
+        </div>
+      )}
 
       {/* Lucy's Itinerary */}
       {comp.lucyItinerary && (
@@ -317,10 +319,8 @@ function CompOverview({ comp }) {
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.venue}</div>
-              <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{t.drive} from airport</div>
-              <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 8 }}>
-                <b style={{ color: 'var(--text)' }}>Parking:</b> {t.parking}
-              </div>
+              {t.drive && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{t.drive} from airport</div>}
+              {t.parking && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 8 }}><b style={{ color: 'var(--text)' }}>Parking:</b> {t.parking}</div>}
             </div>
           </div>
           <button className="btn ghost block" style={{ marginTop: 12 }}>
