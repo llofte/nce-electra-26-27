@@ -80,13 +80,19 @@ function CompHero({ comp, daysOut }) {
 function CompOverview({ comp }) {
   const t = comp.travel;
   if (!t) {
+    const hasVenue   = !!comp.venue;
+    const hasHotel   = !!comp.lucyItinerary?.hotel;
+    const hasVarsity = !!comp.varsityUrl;
+    const varsityOnly = hasVarsity && !hasVenue && !hasHotel;
     return (
       <>
-        <div className="section" style={{ paddingTop: 0 }}>
-          <div className="card empty-mini">
-            Comp details will be released closer to the event.
+        {!hasVenue && !hasHotel && !hasVarsity && (
+          <div className="section" style={{ paddingTop: 0 }}>
+            <div className="card empty-mini">
+              Comp details will be released closer to the event.
+            </div>
           </div>
-        </div>
+        )}
         {comp.venue && (
           <div className="section" style={{ paddingTop: 12 }}>
             <h2><span className="title">Venue</span></h2>
@@ -126,7 +132,7 @@ function CompOverview({ comp }) {
         )}
         {comp.varsityUrl && (
           <div className="section" style={{ paddingTop: 12 }}>
-            <h2><span className="title">Learn More</span></h2>
+            {!varsityOnly && <h2><span className="title">Learn More</span></h2>}
             <div className="card" style={{ padding: 14 }}>
               <a className="btn ghost block" href={comp.varsityUrl} target="_blank" rel="noopener" style={{ textDecoration: 'none' }}>
                 <Icon.External/> View on Varsity.com
