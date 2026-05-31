@@ -104,7 +104,7 @@ function CompOverview({ comp }) {
                     <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '52px 1fr auto', gap: '0 8px', alignItems: 'center' }}>
                       <div>
                         <div style={{ font: '800 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[0]}</div>
-                        <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[1]}</div>
+                        <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.outbound.date.split(' ').slice(1).join(' ')}</div>
                       </div>
                       <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', color: 'var(--text)', letterSpacing: '.02em' }}>{comp.lucyItinerary.flights.outbound.from} → {comp.lucyItinerary.flights.outbound.to}</div>
                       <div style={{ font: '700 18px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.outbound.depart}</div>
@@ -120,7 +120,7 @@ function CompOverview({ comp }) {
                     <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '52px 1fr auto', gap: '0 8px', alignItems: 'center' }}>
                       <div>
                         <div style={{ font: '800 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.ret.date.split(' ')[0]}</div>
-                        <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.ret.date.split(' ')[1]}</div>
+                        <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.ret.date.split(' ').slice(1).join(' ')}</div>
                       </div>
                       <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', color: 'var(--text)', letterSpacing: '.02em' }}>{comp.lucyItinerary.flights.ret.from} → {comp.lucyItinerary.flights.ret.to}</div>
                       <div style={{ font: '700 18px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.ret.depart}</div>
@@ -246,7 +246,7 @@ function CompOverview({ comp }) {
                   <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '52px 1fr auto', gap: '0 8px', alignItems: 'center' }}>
                     <div>
                       <div style={{ font: '800 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[0]}</div>
-                      <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.outbound.date.split(' ')[1]}</div>
+                      <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.outbound.date.split(' ').slice(1).join(' ')}</div>
                     </div>
                     <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', color: 'var(--text)', letterSpacing: '.02em' }}>{comp.lucyItinerary.flights.outbound.from} → {comp.lucyItinerary.flights.outbound.to}</div>
                     <div style={{ font: '700 18px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.outbound.depart}</div>
@@ -262,7 +262,7 @@ function CompOverview({ comp }) {
                   <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '52px 1fr auto', gap: '0 8px', alignItems: 'center' }}>
                     <div>
                       <div style={{ font: '800 12px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--text-faint)' }}>{comp.lucyItinerary.flights.ret.date.split(' ')[0]}</div>
-                      <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.ret.date.split(' ')[1]}</div>
+                      <div style={{ font: '700 16px/1 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.flights.ret.date.split(' ').slice(1).join(' ')}</div>
                     </div>
                     <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', color: 'var(--text)', letterSpacing: '.02em' }}>{comp.lucyItinerary.flights.ret.from} → {comp.lucyItinerary.flights.ret.to}</div>
                     <div style={{ font: '700 18px/1 "Barlow Condensed"', color: 'var(--text-dim)', letterSpacing: '.04em', textAlign: 'right' }}>{comp.lucyItinerary.flights.ret.depart}</div>
