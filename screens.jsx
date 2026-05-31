@@ -507,8 +507,16 @@ function MonthAgenda({ month, byDate, isCurrentMonth, onTapComp }) {
                     </div>
                     <div className="events">
                       {events.length === 0
-                        ? <span>— rest day —</span>
+                        ? null
                         : events.map((e, i) => {
+                            if (e.kind === 'opengym' && e.title === 'Gym Closed') {
+                              return (
+                                <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '4px 0', minHeight: 48, justifyContent: 'center' }}>
+                                  <span style={{ fontStyle: 'italic', color: '#5dafff', fontSize: 14 }}>— gym closed —</span>
+                                  {e.meta && <span style={{ fontSize: 13, color: 'var(--text-faint)' }}>{e.meta.toLowerCase()}</span>}
+                                </div>
+                              );
+                            }
                             const isLinked = e.kind === 'comp' || !!e.compId;
                             return (
                               <div key={i} className={`ev ${e.kind}`}
