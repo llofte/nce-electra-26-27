@@ -92,7 +92,12 @@ function _buildSchedule(competitions, airtableEvents) {
     }
   });
 
-  return filtered.sort((a, b) => a.date.localeCompare(b.date));
+  const kindOrder = { comp: 0, practice: 1, lucy: 2, opengym: 3, other: 4, travel: 5 };
+  return filtered.sort((a, b) => {
+    const dateDiff = a.date.localeCompare(b.date);
+    if (dateDiff !== 0) return dateDiff;
+    return (kindOrder[a.kind] ?? 99) - (kindOrder[b.kind] ?? 99);
+  });
 }
 
 // ============================================================
