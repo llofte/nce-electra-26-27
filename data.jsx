@@ -54,7 +54,7 @@ function _buildSchedule(competitions, airtableEvents) {
   for (let d = new Date(seasonStart); d <= seasonEnd; d = new Date(d.getTime() + 86400000)) {
     const dow = d.getDay();
     if (dow === 1 || dow === 3) {
-      events.push({ date: _iso(d), kind: 'practice', title: 'Practice', meta: '', time: '5:30 – 8:30pm' });
+      events.push({ date: _iso(d), kind: 'practice', title: 'Practice', meta: '', time: '7 – 9pm' });
     }
   }
 
