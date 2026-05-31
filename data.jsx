@@ -112,7 +112,6 @@ function _transformCompetitions(fields) {
         endDate:      f.endDate || null,
         status:       f.status,
         hasScoresheet: f.hasScoresheet || false,
-        crown:        f.crown || false,
       };
       if (f.placement)       comp.placement       = f.placement;
       if (f.of)              comp.of              = f.of;
