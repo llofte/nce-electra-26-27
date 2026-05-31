@@ -166,7 +166,7 @@ function CompOverview({ comp }) {
           </div>
         )}
         {comp.varsityUrl && (
-          <div className="section" style={{ paddingTop: 12 }}>
+          <div className="section" style={{ paddingTop: varsityOnly ? 0 : 12 }}>
             {!varsityOnly && <h2><span className="title">Learn More</span></h2>}
             <div className="card" style={{ padding: 14 }}>
               <a className="btn ghost block" href={comp.varsityUrl} target="_blank" rel="noopener" style={{ textDecoration: 'none' }}>
@@ -175,6 +175,7 @@ function CompOverview({ comp }) {
             </div>
           </div>
         )}
+        <div style={{ height: 24 }}/>
       </>
     );
   }
