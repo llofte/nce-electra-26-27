@@ -186,7 +186,7 @@ function CompCard({ comp, onOpen }) {
   const near = days >= 0 && days <= 7;
   return (
     <div className={`comp-card ${near ? 'near' : ''}`} onClick={onOpen}
-         style={comp.isShowcase ? { boxShadow: 'inset 0 0 0 1.5px rgba(212,164,41,0.45)' } : undefined}>
+         style={comp.isShowcase ? { outline: '1.5px dotted rgba(212,164,41,0.55)', outlineOffset: '-1px' } : undefined}>
       <div className="date-block">
         <div className="mo">{D.mon(d)}</div>
         <div className="day">{D.dom(d)}</div>
