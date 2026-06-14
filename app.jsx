@@ -126,6 +126,11 @@ function App() {
   // Calendar month — persisted here so it survives tab switches (CalendarScreen unmounts)
   const [calMonthIdx, setCalMonthIdx] = React.useState(null);
 
+  // Calendar scroll restoration — save scrollTop before drilling into a comp, restore on back
+  const scrollRef      = React.useRef(null);
+  const calScrollRef   = React.useRef(0);
+  const prevScrollKeyRef = React.useRef(null);
+
   // Route: { tab: 'home'|'calendar'|'comps'|'results', screen?: 'compDetail'|'scoresheet', id? }
   const [route, setRoute] = React.useState(() => {
     const saved = sessionStorage.getItem('ptr-route');
@@ -248,7 +253,12 @@ function App() {
   }, [isMobile]);
 
   const goTab    = (tab) => setRoute({ tab });
-  const openComp = (id)  => setRoute(r => ({ ...r, screen: 'compDetail', id }));
+  const openComp = (id)  => {
+    if (route.tab === 'calendar' && !route.screen && scrollRef.current) {
+      calScrollRef.current = scrollRef.current.scrollTop;
+    }
+    setRoute(r => ({ ...r, screen: 'compDetail', id }));
+  };
   const openScore = (id) => setRoute(r => ({ ...r, screen: 'scoresheet', id }));
   const back      = ()   => setRoute(r => ({ tab: r.tab }));
 
@@ -272,10 +282,19 @@ function App() {
 
   const scrollKey = route.tab + (route.screen || '');
 
+  // Restore calendar scroll position when returning from a comp detail (before first paint)
+  React.useLayoutEffect(() => {
+    const prev = prevScrollKeyRef.current;
+    prevScrollKeyRef.current = scrollKey;
+    if (scrollKey === 'calendar' && prev === 'calendarcompDetail' && scrollRef.current) {
+      scrollRef.current.scrollTop = calScrollRef.current;
+    }
+  }, [scrollKey]);
+
   // Installed PWA + desktop frame: bottom nav
   const appInner = (
     <div className="app">
-      <div className="scroll" key={scrollKey}>
+      <div className="scroll" key={scrollKey} ref={scrollRef}>
         {body}
       </div>
       <BottomNav tab={route.tab} setTab={(tab) => setRoute({ tab })}/>
@@ -286,7 +305,7 @@ function App() {
   const webAppInner = (
     <div className="app">
       <TopNav tab={route.tab} setTab={(tab) => setRoute({ tab })}/>
-      <div className="scroll" style={{ paddingTop: 66, paddingBottom: 20 }} key={scrollKey}>
+      <div className="scroll" style={{ paddingTop: 66, paddingBottom: 20 }} key={scrollKey} ref={scrollRef}>
         {body}
       </div>
     </div>
