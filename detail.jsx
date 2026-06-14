@@ -157,7 +157,7 @@ function CompOverview({ comp }) {
                 <div>
                   <div style={{ font: '700 15px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.venue}</div>
                   <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{comp.city}</div>
-                  {comp.travel?.drive && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{comp.travel.drive} from airport</div>}
+                  {comp.travel?.drive && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{comp.travel.drive}</div>}
                 </div>
               </div>
               <a className="btn ghost block" href={`https://maps.apple.com/?q=${encodeURIComponent(comp.venue + ', ' + comp.city)}`} target="_blank" rel="noopener" style={{ marginTop: 12, textDecoration: 'none' }}>
@@ -319,7 +319,7 @@ function CompOverview({ comp }) {
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ font: '700 16px/1.2 "Barlow Condensed"', textTransform: 'uppercase', letterSpacing: '.04em' }}>{comp.venue}</div>
-              {t.drive && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{t.drive} from airport</div>}
+              {t.drive && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 3 }}>{t.drive}</div>}
               {t.parking && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 8 }}><b style={{ color: 'var(--text)' }}>Parking:</b> {t.parking}</div>}
             </div>
           </div>

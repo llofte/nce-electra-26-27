@@ -266,7 +266,7 @@ function CalendarScreen({ onOpenComp }) {
     return 0;
   }, []);
 
-  const [activeIdx, setActiveIdx] = React.useState(todayIdx);
+  const [activeIdx, setActiveIdx] = usePersistentState('cal-month-idx', todayIdx);
   const trackRef = React.useRef(null);
   const syncing = React.useRef(false);
 
