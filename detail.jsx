@@ -323,9 +323,9 @@ function CompOverview({ comp }) {
               {t.parking && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 8 }}><b style={{ color: 'var(--text)' }}>Parking:</b> {t.parking}</div>}
             </div>
           </div>
-          <button className="btn ghost block" style={{ marginTop: 12 }}>
+          <a className="btn ghost block" href={`https://maps.apple.com/?q=${encodeURIComponent(comp.venue + ', ' + comp.city)}`} target="_blank" rel="noopener" style={{ marginTop: 12, textDecoration: 'none' }}>
             <Icon.Drive/> Open in Maps
-          </button>
+          </a>
         </div>
         {t.spectators && (
           <div className="card" style={{ padding: 14, marginTop: 8 }}>
