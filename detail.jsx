@@ -1,5 +1,10 @@
 /* detail.jsx — Competition detail screen with tabbed inner views */
 
+function _linkHost(url) {
+  try { const h = new URL(url).hostname.replace('www.', ''); return h.charAt(0).toUpperCase() + h.slice(1); }
+  catch { return 'Varsity.com'; }
+}
+
 function CompDetail({ compId, onBack }) {
   const comp = COMPETITIONS.find(c => c.id === compId);
   const [tab, setTab] = usePersistentState(`ptr-detail-${compId}`, 'overview');
@@ -169,7 +174,7 @@ function CompOverview({ comp }) {
             {!varsityOnly && <h2><span className="title">Learn More</span></h2>}
             <div className="card" style={{ padding: 14 }}>
               <a className="btn ghost block" href={comp.varsityUrl} target="_blank" rel="noopener" style={{ textDecoration: 'none' }}>
-                <Icon.External/> View on Varsity.com
+                <Icon.External/> View on {_linkHost(comp.varsityUrl)}
               </a>
             </div>
           </div>
