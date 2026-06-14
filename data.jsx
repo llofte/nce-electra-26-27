@@ -69,15 +69,17 @@ function _buildSchedule(competitions, airtableEvents) {
 
   // Add comp days + travel day from the competitions list
   competitions.forEach(c => {
-    const d1 = new Date(c.date + 'T00:00:00');
-    const travel = new Date(d1.getTime() - 86400000);
-    const outbound = c.lucyItinerary?.flights?.outbound;
-    filtered.push({
-      date: _iso(travel), kind: 'travel', compId: c.id,
-      title: `Travel → ${c.city.split(',')[0]}`,
-      meta:  outbound ? `${outbound.from} → ${outbound.to}` : '',
-      time:  outbound ? outbound.depart : '',
-    });
+    if (!c.noTravel) {
+      const d1 = new Date(c.date + 'T00:00:00');
+      const travel = new Date(d1.getTime() - 86400000);
+      const outbound = c.lucyItinerary?.flights?.outbound;
+      filtered.push({
+        date: _iso(travel), kind: 'travel', compId: c.id,
+        title: `Travel → ${c.city.split(',')[0]}`,
+        meta:  outbound ? `${outbound.from} → ${outbound.to}` : '',
+        time:  outbound ? outbound.depart : '',
+      });
+    }
     filtered.push({ date: c.date,    kind: 'comp', compId: c.id, title: `${c.name} · Day 1`, meta: 'Prelims',          time: '' });
     if (c.endDate) {
       filtered.push({ date: c.endDate, kind: 'comp', compId: c.id, title: `${c.name} · Day 2`, meta: 'Finals + Awards', time: '' });
@@ -110,6 +112,7 @@ function _transformCompetitions(fields) {
         status:       f.status,
         hasScoresheet: f.hasScoresheet || false,
         isShowcase:    f.isShowcase    || false,
+        noTravel:      f.noTravel      || false,
       };
       if (f.placement)       comp.placement       = f.placement;
       if (f.of)              comp.of              = f.of;
