@@ -11,7 +11,7 @@ function HeroComp({ comp, daysOut, onOpen }) {
       <div className="chevron-bg"/>
       <div className="hn-content">
         <div className="hn-eyebrow">
-          {daysOut === 0 ? 'COMPETITION DAY' : `${daysOut} ${daysOut === 1 ? 'day' : 'days'} out`}
+          {daysOut === 0 ? (comp.isShowcase ? 'SHOWCASE DAY' : 'COMPETITION DAY') : `${daysOut} ${daysOut === 1 ? 'day' : 'days'} out`}
         </div>
         <div className="hn-ttl">{comp.name}</div>
         <div className="hn-sub">{comp.city}</div>
@@ -193,6 +193,7 @@ function CompCard({ comp, onOpen }) {
       <div className="info">
         <div className="name">
           {comp.name}
+          {comp.isShowcase && <span style={{ font: '700 10px/1 "Barlow Condensed"', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--gold-soft)', marginLeft: 8, background: 'rgba(212,164,41,0.15)', padding: '2px 6px', borderRadius: 4 }}>Showcase</span>}
         </div>
         <div className="loc">
           <Icon.Pin s={11}/> {comp.city}

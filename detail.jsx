@@ -13,7 +13,7 @@ function CompDetail({ compId, onBack }) {
   const tabs = [
     { id: 'overview', label: 'Info' },
     { id: 'sched',    label: 'Schedule' },
-    { id: 'div',      label: 'Teams' },
+    ...(!comp.isShowcase ? [{ id: 'div', label: 'Teams' }] : []),
   ];
 
   return (
@@ -54,11 +54,9 @@ function CompHero({ comp, daysOut }) {
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ flex: 1 }}>
             <div className="eyebrow" style={{ color: 'var(--volt)' }}>
-              {comp.status === 'past'
-                ? `Final · Placed ${comp.placement}/8`
-                : daysOut === 0 ? 'COMPETITION DAY'
-                : daysOut < 0 ? 'Past'
-                : `${daysOut} days out`}
+              {comp.isShowcase
+                ? (comp.status === 'past' ? 'Showcase · Complete' : daysOut === 0 ? 'SHOWCASE DAY' : daysOut < 0 ? 'Past' : `${daysOut} days out`)
+                : (comp.status === 'past' ? `Final · Placed ${comp.placement}/${comp.of || 8}` : daysOut === 0 ? 'COMPETITION DAY' : daysOut < 0 ? 'Past' : `${daysOut} days out`)}
             </div>
             <div style={{ font: '400 26px/1 Anton', textTransform: 'uppercase', marginTop: 6, color: 'var(--text)' }}>
               {comp.name}

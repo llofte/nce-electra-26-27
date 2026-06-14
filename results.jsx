@@ -6,7 +6,7 @@
 function ResultsScreen({ tweaks, onOpenScoresheet }) {
   // Past comps sorted by date
   const past = getCompetitions(tweaks)
-    .filter(c => c.status === 'past')
+    .filter(c => c.status === 'past' && !c.isShowcase)
     .sort((a, b) => a.date.localeCompare(b.date)); // oldest → newest
 
   if (past.length === 0) {
