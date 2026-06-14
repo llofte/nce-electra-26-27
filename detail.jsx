@@ -139,11 +139,9 @@ function CompOverview({ comp }) {
                     {comp.lucyItinerary.hotel.distToVenue && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.hotel.distToVenue} from venue</div>}
                   </div>
                 </div>
-                {comp.lucyItinerary.hotel.mapUrl && (
-                  <a className="btn ghost block" href={comp.lucyItinerary.hotel.mapUrl} target="_blank" rel="noopener" style={{ marginTop: 10, textDecoration: 'none' }}>
-                    <Icon.Drive/> Open in Maps
-                  </a>
-                )}
+                <a className="btn ghost block" href={comp.lucyItinerary.hotel.mapUrl || `https://maps.apple.com/?q=${encodeURIComponent(comp.lucyItinerary.hotel.name)}`} target="_blank" rel="noopener" style={{ marginTop: 10, textDecoration: 'none' }}>
+                  <Icon.Drive/> Open in Maps
+                </a>
               </div>
             )}
           </div>
@@ -287,11 +285,9 @@ function CompOverview({ comp }) {
                   {comp.lucyItinerary.hotel.distToVenue && <div style={{ fontSize: 13, color: 'var(--text-dim)', marginTop: 4 }}>{comp.lucyItinerary.hotel.distToVenue} from venue</div>}
                 </div>
               </div>
-              {comp.lucyItinerary.hotel.mapUrl && (
-                <a className="btn ghost block" href={comp.lucyItinerary.hotel.mapUrl} target="_blank" rel="noopener" style={{ marginTop: 10, textDecoration: 'none' }}>
-                  <Icon.Drive/> Open in Maps
-                </a>
-              )}
+              <a className="btn ghost block" href={comp.lucyItinerary.hotel.mapUrl || `https://maps.apple.com/?q=${encodeURIComponent(comp.lucyItinerary.hotel.name)}`} target="_blank" rel="noopener" style={{ marginTop: 10, textDecoration: 'none' }}>
+                <Icon.Drive/> Open in Maps
+              </a>
             </div>
           )}
         </div>
