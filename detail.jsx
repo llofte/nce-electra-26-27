@@ -49,7 +49,7 @@ function CompHero({ comp, daysOut }) {
   const isComp = daysOut <= 7 && daysOut >= 0;
   return (
     <div style={{ margin: '0 var(--pad-x) 14px' }}>
-      <div className="card grunge" style={{ padding: 14, position: 'relative', overflow: 'hidden' }}>
+      <div className="card grunge" style={{ padding: 14, position: 'relative', overflow: 'hidden', ...(comp.isShowcase ? { outline: '1.5px dotted rgba(212,164,41,0.55)', outlineOffset: '-1px' } : {}) }}>
         <div className="chevron-bg"/>
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ flex: 1 }}>
