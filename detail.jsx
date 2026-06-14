@@ -387,11 +387,15 @@ function CompSchedule({ comp }) {
           label={`Day 1 · ${D.dow(startD)} ${D.mon(startD)} ${D.dom(startD)}`}
           rows={comp.schedule.day1 || []}
         />
-        <div style={{ height: 24 }}/>
-        <ScheduleDay
-          label={`Day 2 · ${D.dow(endD)} ${D.mon(endD)} ${D.dom(endD)}`}
-          rows={comp.schedule.day2 || []}
-        />
+        {comp.schedule.day2 && (
+          <>
+            <div style={{ height: 24 }}/>
+            <ScheduleDay
+              label={`Day 2 · ${D.dow(endD)} ${D.mon(endD)} ${D.dom(endD)}`}
+              rows={comp.schedule.day2}
+            />
+          </>
+        )}
       </>
     );
   }
@@ -406,7 +410,6 @@ function ScheduleDay({ label, rows }) {
       {label && (
         <h2 style={{ marginBottom: 8 }}>
           <span className="title">{label}</span>
-          <span className="more" style={{ color: 'var(--gold-soft)' }}>{rows.length} items</span>
         </h2>
       )}
       <div className="card" style={{ padding: '4px 12px' }}>
