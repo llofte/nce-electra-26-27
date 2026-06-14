@@ -123,6 +123,9 @@ function App() {
 
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
 
+  // Calendar month — persisted here so it survives tab switches (CalendarScreen unmounts)
+  const [calMonthIdx, setCalMonthIdx] = React.useState(null);
+
   // Route: { tab: 'home'|'calendar'|'comps'|'results', screen?: 'compDetail'|'scoresheet', id? }
   const [route, setRoute] = React.useState(() => {
     const saved = sessionStorage.getItem('ptr-route');
@@ -260,7 +263,7 @@ function App() {
   } else if (route.tab === 'home') {
     body = <HomeScreen tweaks={t} onOpenComp={openComp} onTab={goTab}/>;
   } else if (route.tab === 'calendar') {
-    body = <CalendarScreen onOpenComp={openComp}/>;
+    body = <CalendarScreen onOpenComp={openComp} savedMonthIdx={calMonthIdx} onMonthChange={setCalMonthIdx}/>;
   } else if (route.tab === 'comps') {
     body = <CompsScreen tweaks={t} onOpenComp={openComp}/>;
   } else if (route.tab === 'results') {

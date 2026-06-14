@@ -256,7 +256,7 @@ function ResultCard() {
 // ============================================================
 // CALENDAR SCREEN — month pager + week agenda
 // ============================================================
-function CalendarScreen({ onOpenComp }) {
+function CalendarScreen({ onOpenComp, savedMonthIdx, onMonthChange }) {
   // Active month index into SEASON_MONTHS (May 2026 = 0 .. May 2027 = 12)
   const todayIdx = React.useMemo(() => {
     for (let i = 0; i < SEASON_MONTHS.length; i++) {
@@ -266,7 +266,11 @@ function CalendarScreen({ onOpenComp }) {
     return 0;
   }, []);
 
-  const [activeIdx, setActiveIdx] = usePersistentState('cal-month-idx', todayIdx);
+  const [activeIdx, _setActiveIdx] = React.useState(savedMonthIdx != null ? savedMonthIdx : todayIdx);
+  const setActiveIdx = React.useCallback((idx) => {
+    _setActiveIdx(idx);
+    onMonthChange(idx);
+  }, [onMonthChange]);
   const trackRef = React.useRef(null);
   const syncing = React.useRef(false);
 
