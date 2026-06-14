@@ -142,7 +142,7 @@ function getEffectiveToday(tweaks) {
 function nextComp(tweaks) {
   const today = getEffectiveToday(tweaks);
   return getCompetitions(tweaks)
-    .filter(c => c.status === 'upcoming')
+    .filter(c => c.status === 'upcoming' && !c.isShowcase)
     .map(c => ({ ...c, daysOut: Math.max(0, D.days(today, D.parse(c.date))) }))
     .sort((a, b) => a.daysOut - b.daysOut)[0];
 }

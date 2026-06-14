@@ -185,16 +185,14 @@ function CompCard({ comp, onOpen }) {
   const days = D.days(TODAY, d);
   const near = days >= 0 && days <= 7;
   return (
-    <div className={`comp-card ${near ? 'near' : ''}`} onClick={onOpen}>
+    <div className={`comp-card ${near ? 'near' : ''}`} onClick={onOpen}
+         style={comp.isShowcase ? { boxShadow: 'inset 0 0 0 1.5px rgba(212,164,41,0.45)' } : undefined}>
       <div className="date-block">
         <div className="mo">{D.mon(d)}</div>
         <div className="day">{D.dom(d)}</div>
       </div>
       <div className="info">
-        <div className="name">
-          {comp.name}
-          {comp.isShowcase && <span style={{ font: '700 10px/1 "Barlow Condensed"', letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--gold-soft)', marginLeft: 8, background: 'rgba(212,164,41,0.15)', padding: '2px 6px', borderRadius: 4 }}>Showcase</span>}
-        </div>
+        <div className="name">{comp.name}</div>
         <div className="loc">
           <Icon.Pin s={11}/> {comp.city}
           {days >= 0 && days <= 30 && <> · <span style={{ color: 'var(--volt)', fontWeight: 700 }}>{days === 0 ? 'TODAY' : `${days}d`}</span></>}
