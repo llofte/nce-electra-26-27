@@ -267,7 +267,7 @@ function App() {
   if (!dataReady) {
     body = <LoadingScreen/>;
   } else if (route.screen === 'compDetail') {
-    body = <CompDetail compId={route.id} onBack={back}/>;
+    body = <CompDetail compId={route.id} onBack={back} onOpenScoresheet={openScore}/>;
   } else if (route.screen === 'scoresheet') {
     body = <ScoresheetScreen compId={route.id} onBack={back}/>;
   } else if (route.tab === 'home') {

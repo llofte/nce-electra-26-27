@@ -5,7 +5,7 @@ function _linkHost(url) {
   catch { return 'Varsity.com'; }
 }
 
-function CompDetail({ compId, onBack }) {
+function CompDetail({ compId, onBack, onOpenScoresheet }) {
   const comp = COMPETITIONS.find(c => c.id === compId);
   const [tab, setTab] = usePersistentState(`ptr-detail-${compId}`, 'overview');
 
@@ -30,7 +30,7 @@ function CompDetail({ compId, onBack }) {
       />
 
       {/* Hero strip for this comp */}
-      <CompHero comp={comp} daysOut={daysOut}/>
+      <CompHero comp={comp} daysOut={daysOut} onOpenScoresheet={onOpenScoresheet}/>
 
       {/* Tab bar */}
       <div className="tabs">
@@ -50,7 +50,7 @@ function CompDetail({ compId, onBack }) {
 }
 
 // ─── hero strip on detail ────────────────────────────────────
-function CompHero({ comp, daysOut }) {
+function CompHero({ comp, daysOut, onOpenScoresheet }) {
   const isComp = daysOut <= 7 && daysOut >= 0;
   return (
     <div style={{ margin: '0 var(--pad-x) 14px' }}>
@@ -74,6 +74,11 @@ function CompHero({ comp, daysOut }) {
             </div>
           </div>
         </div>
+        {comp.hasScoresheet && onOpenScoresheet && (
+          <button onClick={() => onOpenScoresheet(comp.id)} className="btn ghost block" style={{ marginTop: 10, position: 'relative', zIndex: 2 }}>
+            <Icon.Trophy s={14}/> View Scoresheet
+          </button>
+        )}
       </div>
     </div>
   );
