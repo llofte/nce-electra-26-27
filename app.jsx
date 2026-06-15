@@ -196,7 +196,7 @@ function App() {
       const dx = e.changedTouches[0].clientX - startX;
       const dy = Math.abs(e.changedTouches[0].clientY - startY);
       startX = null; startY = null;
-      if (dx > THRESHOLD && dy < dx) setRoute(r => ({ tab: r.tab }));
+      if (dx > THRESHOLD && dy < dx) setRoute(r => r.prevScreen ? { tab: r.tab, screen: r.prevScreen, id: r.id } : { tab: r.tab });
     };
 
     document.addEventListener('touchstart', onStart, { passive: true });
@@ -259,8 +259,8 @@ function App() {
     }
     setRoute(r => ({ ...r, screen: 'compDetail', id }));
   };
-  const openScore = (id) => setRoute(r => ({ ...r, screen: 'scoresheet', id }));
-  const back      = ()   => setRoute(r => ({ tab: r.tab }));
+  const openScore = (id) => setRoute(r => ({ ...r, prevScreen: r.screen || null, screen: 'scoresheet', id }));
+  const back      = ()   => setRoute(r => r.prevScreen ? { tab: r.tab, screen: r.prevScreen, id: r.id } : { tab: r.tab });
 
   // What screen to render
   let body;
