@@ -89,12 +89,13 @@ function _buildSchedule(competitions, airtableEvents) {
   const kindOrder = { comp: 0, practice: 1, lucy: 2, opengym: 3, other: 4, travel: 5 };
   const parseTime = (t) => {
     if (!t) return -1;
-    const m = t.match(/^(\d+):(\d+)\s*(AM|PM)$/i);
+    const m = t.match(/^(\d+)(?::(\d+))?/);
     if (!m) return -1;
-    let h = parseInt(m[1]), min = parseInt(m[2]);
-    const pm = m[3].toUpperCase() === 'PM';
-    if (pm && h !== 12) h += 12;
-    if (!pm && h === 12) h = 0;
+    let h = parseInt(m[1]), min = parseInt(m[2] || '0');
+    const lower = t.toLowerCase();
+    if (lower.includes('pm') && h !== 12) h += 12;
+    if (!lower.includes('pm') && !lower.includes('am') && h < 7) h += 12;
+    if (!lower.includes('pm') && h === 12) h = 0;
     return h * 60 + min;
   };
   return filtered.sort((a, b) => {
