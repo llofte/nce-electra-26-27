@@ -162,12 +162,12 @@ function ScoresheetScreen({ compId, onBack }) {
   const hasTwoDay = !!s.categories1;
   const pendingDay2 = !!s.pendingDay2;
   const activeTotals = pendingDay2 ? s.totals1 : s.totals;
-  const [view, setView] = usePersistentState(`ptr-scoresheet-${compId}`, 'breakdown');
+  const [view, setView] = usePersistentState(`ptr-scoresheet-${compId}`, 'leaderboard');
   const comp = COMPETITIONS.find(c => c.id === compId) || COMPETITIONS.find(c => c.id === s.compId);
 
   const tabs = [
-    { id: 'breakdown',   label: 'Breakdown' },
     { id: 'leaderboard', label: 'Leaderboard' },
+    { id: 'breakdown',   label: 'Breakdown' },
     { id: 'compare',     label: 'Compare' },
   ];
 
