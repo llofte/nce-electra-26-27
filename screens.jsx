@@ -71,13 +71,15 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
   // Total performances: most comps = 2 days = 2 performances
   const totalPerfs = past.reduce((n, c) => n + (c.endDate && c.endDate !== c.date ? 2 : 1), 0);
 
-  // next 7 days
-  const weekEvents = SCHEDULE
-    .filter(e => {
+  // next 7 days — grouped by date
+  const weekByDate = (() => {
+    const map = {};
+    SCHEDULE.filter(e => {
       const d = D.parse(e.date);
       return d >= today && d < D.addDays(today, 7);
-    })
-    .slice(0, 4);
+    }).forEach(e => { (map[e.date] = map[e.date] || []).push(e); });
+    return Object.keys(map).sort().map(date => ({ date, events: map[date] }));
+  })();
 
   const todayDow = (() => {
     const d = new Date();
@@ -125,22 +127,24 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
           <span className="more" onClick={() => onTab('calendar')} style={{ cursor: 'pointer' }}>Full Calendar →</span>
         </h2>
         <div>
-          {weekEvents.map((e, i) => {
-            const d = D.parse(e.date);
+          {weekByDate.map(({ date, events }) => {
+            const d = D.parse(date);
             return (
-              <div key={i} className="day-row">
+              <div key={date} className="day-row">
                 <div className={`date ${D.same(d, TODAY) ? 'today' : ''}`}>
                   <div className="dow">{D.dow(d)}</div>
                   <div className="dom">{D.dom(d)}</div>
                 </div>
                 <div className="events">
-                  <div className={`ev ${e.kind}`}>
-                    <div className="what">
-                      <div className="ttl">{e.title}</div>
-                      {e.meta && <div className="meta">{e.meta}</div>}
+                  {events.map((e, i) => (
+                    <div key={i} className={`ev ${e.kind}`}>
+                      <div className="what">
+                        <div className="ttl">{e.title}</div>
+                        {e.meta && <div className="meta">{e.meta}</div>}
+                      </div>
+                      <div className="time">{e.time}</div>
                     </div>
-                    <div className="time">{e.time}</div>
-                  </div>
+                  ))}
                 </div>
               </div>
             );
