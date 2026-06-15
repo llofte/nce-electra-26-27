@@ -76,7 +76,7 @@ function CompHero({ comp, daysOut, onOpenScoresheet }) {
         </div>
         {comp.hasScoresheet && onOpenScoresheet && (
           <button onClick={() => onOpenScoresheet(comp.id)} className="btn ghost block" style={{ marginTop: 10, position: 'relative', zIndex: 2 }}>
-            <Icon.Trophy s={14}/> View Scoresheet
+            <Icon.Trophy s={14}/> View Scores
           </button>
         )}
       </div>
