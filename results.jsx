@@ -62,12 +62,14 @@ function ResultsScreen({ tweaks, onOpenScoresheet }) {
       </div>
 
       {/* trajectory mini chart — left=oldest, right=newest */}
-      <div className="section">
-        <h2><span className="title">Score Trajectory</span><span className="more">By comp</span></h2>
-        <div className="card" style={{ padding: 14 }}>
-          <ScoreSpark data={past.map(c => ({ x: c.short, y: c.score }))}/>
+      {past.length >= 3 && (
+        <div className="section">
+          <h2><span className="title">Score Trajectory</span><span className="more">By comp</span></h2>
+          <div className="card" style={{ padding: 14 }}>
+            <ScoreSpark data={past.map(c => ({ x: c.short, y: c.score }))}/>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* result rows */}
       <div className="section">
