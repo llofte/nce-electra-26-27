@@ -23,10 +23,10 @@
   --gold-deep:   #a07b1c;
   --gold-soft:   #e6c365;
 
-  /* Electra volt — neon yellow-green from team logo */
-  --volt:        #d6f43d;
-  --volt-glow:   #c7ff2e;
-  --volt-deep:   #9bbf1a;
+  /* Electra volt — yellow from team logo */
+  --volt:        #fffe65;
+  --volt-glow:   #ffff8f;
+  --volt-deep:   #c8c700;
 
   /* signals */
   --good:        #4ed28a;
