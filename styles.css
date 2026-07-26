@@ -332,7 +332,7 @@ h1, h2, h3, h4 { margin: 0; }
 .day-row .ev .what { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
 .day-row .ev .what .ttl { font: 800 15px/1.2 'Barlow Condensed'; letter-spacing: .04em; text-transform: uppercase; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .day-row .ev .what .meta { font-size: 13px; line-height: 1.35; color: var(--text-dim); }
-.day-row .ev .time { font: 700 13px/1 'JetBrains Mono', monospace; color: var(--text-dim); white-space: nowrap; flex-shrink: 0; align-self: center; }
+.day-row .ev .time { font: 700 13px/1 'JetBrains Mono', monospace; color: var(--text-dim); white-space: nowrap; flex-shrink: 0; align-self: flex-start; }
 
 .day-row.empty .events {
   padding: 0;
