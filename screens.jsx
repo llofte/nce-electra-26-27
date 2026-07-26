@@ -71,12 +71,13 @@ function HomeScreen({ tweaks, onOpenComp, onTab }) {
   // Total performances: most comps = 2 days = 2 performances
   const totalPerfs = past.reduce((n, c) => n + (c.endDate && c.endDate !== c.date ? 2 : 1), 0);
 
-  // next 7 days — grouped by date
+  // next 7 days — grouped by date (normalize to midnight so today's events are included)
   const weekByDate = (() => {
     const map = {};
+    const todayMid = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     SCHEDULE.filter(e => {
       const d = D.parse(e.date);
-      return d >= today && d < D.addDays(today, 7);
+      return d >= todayMid && d < D.addDays(todayMid, 7);
     }).forEach(e => { (map[e.date] = map[e.date] || []).push(e); });
     return Object.keys(map).sort().map(date => ({ date, events: map[date] }));
   })();
@@ -458,9 +459,9 @@ function MonthAgenda({ month, byDate, isCurrentMonth, onTapComp }) {
     const o = {};
     weeks.forEach((ws, wi) => {
       const we = new Date(ws);
-      we.setDate(ws.getDate() + 6);
+      we.setDate(ws.getDate() + 7); // Monday midnight = exclusive end of Sunday
       if (isCurrentMonth) {
-        o[wi] = TODAY >= ws && TODAY <= we;
+        o[wi] = TODAY >= ws && TODAY < we;
       } else {
         o[wi] = true;
       }
